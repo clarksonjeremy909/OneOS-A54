@@ -250,8 +250,8 @@ object SessionPrefs {
         p(ctx).edit().putBoolean("heat_cap", on).apply()
     }
 
-    /** Freeze non-essential One UI apps while the guest session is open. On by default. */
-    fun hostSuspend(ctx: Context): Boolean = p(ctx).getBoolean("host_suspend", true)
+    /** Freeze non-essential One UI apps while the guest session is open. Off by default. */
+    fun hostSuspend(ctx: Context): Boolean = p(ctx).getBoolean("host_suspend", false)
 
     /** Safe lag reductions in every guest ROM (animation, cached processes, light log trim, I/O). Default on. */
     fun guestPerf(ctx: Context): Boolean = p(ctx).getBoolean("guest_perf", true)

@@ -1,5 +1,13 @@
 # OneOS A54 (0.5.24 tabanlı özel derleme)
 
+## 0.5.24.2 (hotfix, versionCode 169)
+
+- Acil düzeltme: One UI'ye döndükten sonra dondurulup gri kalan uygulamalar (Termux, KernelSU Manager ve diğerleri dahil).
+- OneOS açılınca (uygulama başlangıcı ve ana ekran) ve uygulama içi güncellemeden önce, kök olarak bütün paketlere `pm unsuspend` uygulanır; gerekirse `cmd package unsuspend` denenir.
+- "Konuk açıkken One UI uygulamalarını dondur" varsayılan olarak **kapalı**.
+- Ayarlar’da **Dondurulan uygulamaları geri aç** / **Unfreeze apps** düğmesi var.
+- Uygulama içi güncelleme, paket yükleyici dondurulmuş olsa bile kök `pm install` ile kurulur (0.5.24.1’de de kök varken bu yol kullanılıyordu; bu sürüm yüklemeden önce dondurulanları da çözer).
+
 Paketi değiştirilmedi: `com.fahadali.oneos`. Resmi OneOS ile aynı imza olmadığından kurmadan önce resmi uygulamayı kaldırmanız gerekir.
 
 ## Arayüz

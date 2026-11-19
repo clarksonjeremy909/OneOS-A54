@@ -1,11 +1,11 @@
 {
-  "versionCode": 168,
-  "versionName": "0.5.24.1",
-  "notes": "Based on official 0.5.24. Own update channel only; lag reductions for every guest ROM.",
-  "apkTr": "https://github.com/clarksonjeremy909/OneOS-A54/releases/download/v0.5.24-a54.1/OneOS-A54-0.5.24-tr.apk",
+  "versionCode": 169,
+  "versionName": "0.5.24.2",
+  "notes": "Hotfix: opening OneOS unsuspends grey/frozen apps (including Termux and KernelSU Manager). Freeze-while-guest is off by default. New Unfreeze apps button. In-app update uses root pm install after unsuspend.",
+  "apkTr": "https://github.com/clarksonjeremy909/OneOS-A54/releases/download/v0.5.24-a54.2/OneOS-A54-0.5.24.2-tr.apk",
   "bytesTr": 81591516,
-  "sha256Tr": "69806ab4f7a847167b5b7c2050a633937a1c4c481e73ee38dcd5cf13d00edc2f",
-  "apkEn": "https://github.com/clarksonjeremy909/OneOS-A54/releases/download/v0.5.24-a54.1/OneOS-A54-0.5.24-en.apk",
+  "sha256Tr": "5db1f939347a4697a68600df891e432fcf8eb878f0e35ab4a586be44eb537f7c",
+  "apkEn": "https://github.com/clarksonjeremy909/OneOS-A54/releases/download/v0.5.24-a54.2/OneOS-A54-0.5.24.2-en.apk",
   "bytesEn": 81591516,
-  "sha256En": "dcea72a476bd021a73dee6adf1c29dbfdc30590a69dc98dd0904a3730bd654f8"
+  "sha256En": "b0d3ffc54cbb5c0dc0aea34a547ade3da383b7443c775132a0f731a76d42b1b6"
 }

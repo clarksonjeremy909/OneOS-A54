@@ -489,9 +489,9 @@
     <string name="bring_media_working">Applying transfer…</string>
     <string name="bring_media_none">Tick at least one item, or apply to clear a previous list.</string>
     <string name="advanced_host_suspend_title">Freeze One UI apps while the guest is open</string>
-    <string name="advanced_host_suspend_summary">When the other system starts, OneOS reversibly freezes non-essential One UI apps (pm suspend) so they use less of the phone. System, phone, SMS, keyboard, accessibility, VPN, root-manager and allowlisted apps are left alone. They are thawed when you return, or if OneOS is opened again after a crash.</string>
-    <string name="advanced_host_suspend_unsuspend">Unfreeze them now</string>
-    <string name="advanced_host_suspend_unsuspend_summary">Thaw every One UI app OneOS froze for the last session.</string>
+    <string name="advanced_host_suspend_summary">When the other system starts, OneOS reversibly freezes non-essential One UI apps (pm suspend) so they use less of the phone. System, phone, SMS, keyboard, accessibility, VPN, root-manager and allowlisted apps are left alone. Off by default. They are thawed when you return, when you open OneOS, or when you tap Unfreeze apps.</string>
+    <string name="advanced_host_suspend_unsuspend">Unfreeze apps</string>
+    <string name="advanced_host_suspend_unsuspend_summary">Unfreeze every app still frozen on One UI, including leftovers from a guest session. Opening OneOS also does this. The freeze option above is off by default.</string>
     <string name="advanced_host_suspend_working">Freezing or thawing One UI apps…</string>
     <string name="advanced_host_suspend_unsuspend_done">Frozen One UI apps are running again.</string>
     <string name="advanced_host_suspend_unsuspend_fail">Some apps could not be thawed. Try again, or restart the phone.</string>

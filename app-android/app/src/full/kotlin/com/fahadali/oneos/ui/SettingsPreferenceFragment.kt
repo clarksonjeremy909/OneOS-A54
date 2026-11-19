@@ -2,6 +2,7 @@ package com.fahadali.oneos.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import com.fahadali.oneos.session.RemoveJob
 import com.fahadali.oneos.R
 import com.fahadali.oneos.session.LogJob
+import com.fahadali.oneos.session.HostUnfreeze
 import com.fahadali.oneos.session.SessionPrefs
 import dev.oneuiproject.oneui.R as OuiIcons
 
@@ -77,6 +79,26 @@ class SettingsPreferenceFragment : InsetPreferenceFragment() {
         val sessions = category(R.string.advanced_card_sessions)
         row(sessions, R.string.last_title, target = LastSessionActivity::class.java)
         toggle(sessions, R.string.advanced_heat_cap_title, R.string.advanced_heat_cap_summary, SessionPrefs.heatCap(ctx)) { SessionPrefs.setHeatCap(ctx, it) }
+        toggle(sessions, R.string.advanced_host_suspend_title, R.string.advanced_host_suspend_summary, SessionPrefs.hostSuspend(ctx)) { SessionPrefs.setHostSuspend(ctx, it) }
+        sessions.addDescribedPreference(Preference(ctx).apply {
+            key = "setting_host_unsuspend"
+            setTitle(R.string.advanced_host_suspend_unsuspend)
+            setSummary(R.string.advanced_host_suspend_unsuspend_summary)
+            isIconSpaceReserved = false
+            setOnPreferenceClickListener {
+                Toast.makeText(ctx, R.string.advanced_host_suspend_working, Toast.LENGTH_SHORT).show()
+                HostUnfreeze.unsuspendAll(ctx) { ok ->
+                    if (!isAdded) return@unsuspendAll
+                    Toast.makeText(
+                        ctx,
+                        if (ok) R.string.advanced_host_suspend_unsuspend_done
+                        else R.string.advanced_host_suspend_unsuspend_fail,
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                }
+                true
+            }
+        })
         toggle(sessions, R.string.advanced_guest_perf_title, R.string.advanced_guest_perf_summary, SessionPrefs.guestPerf(ctx)) { SessionPrefs.setGuestPerf(ctx, it) }
         toggle(sessions, R.string.advanced_full_logs_title, R.string.advanced_full_logs_summary, SessionPrefs.fullLogs(ctx)) { SessionPrefs.setFullLogs(ctx, it) }
         toggle(sessions, R.string.advanced_share_files_title, R.string.advanced_share_files_summary, SessionPrefs.shareFiles(ctx)) { SessionPrefs.setShareFiles(ctx, it) }

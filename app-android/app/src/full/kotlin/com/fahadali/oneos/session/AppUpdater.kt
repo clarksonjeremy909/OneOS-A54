@@ -157,6 +157,11 @@ object AppUpdater : BackgroundJob<AppUpdater.State>(State(), "oneos-update") {
                 apk.setReadable(true, false)
                 checkApk(app, apk, u)
                 update(State(Phase.INSTALLING, u, 100))
+                // Thaw every package first: a suspended package installer or
+                // store must not block the update. Root `pm install` (selfupdate)
+                // is used whenever su is granted; Android's installer is only
+                // the no-root fallback.
+                runCatching { HostUnfreeze.unsuspendAllBlocking() }
                 val su = SuProbe.runId(ROOT_PROBE_MS)
                 if (su.state == SuState.GRANTED && su.uid == 0) {
                     val reply = RootVerbs.run(app, RootScript.Verb.SELFUPDATE, listOf(u.bytes.toString(), u.sha256, u.versionCode.toString()), silenceMs = 5 * 60_000L)

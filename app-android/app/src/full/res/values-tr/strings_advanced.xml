@@ -496,9 +496,9 @@ OneOS, One UI ile birlikte kapanır.</string>
     <string name="bring_media_working">Aktarım uygulanıyor…</string>
     <string name="bring_media_none">En az bir öğe işaretleyin veya önceki listeyi temizlemek için uygulayın.</string>
     <string name="advanced_host_suspend_title">Konuk açıkken One UI uygulamalarını dondur</string>
-    <string name="advanced_host_suspend_summary">Diğer sistem açılınca OneOS, One UI\'deki gerekli olmayan uygulamaları geri alınabilir şekilde dondurur (pm suspend) ki telefon daha rahat kalsın. Sistem, telefon, SMS, klavye, erişilebilirlik, VPN, kök yöneticisi ve sizin dokunulmasın dediğiniz uygulamalara dokunulmaz. One UI\'ye dönünce, veya bir çökmeden sonra OneOS yine açılırsa, dondurulanlar geri açılır.</string>
-    <string name="advanced_host_suspend_unsuspend">Dondurulanları şimdi geri aç</string>
-    <string name="advanced_host_suspend_unsuspend_summary">Son oturum için dondurulan One UI uygulamalarını şimdi geri açar.</string>
+    <string name="advanced_host_suspend_summary">Diğer sistem açılınca OneOS, One UI\'deki gerekli olmayan uygulamaları geri alınabilir şekilde dondurur (pm suspend) ki telefon daha rahat kalsın. Sistem, telefon, SMS, klavye, erişilebilirlik, VPN, kök yöneticisi ve sizin dokunulmasın dediğiniz uygulamalara dokunulmaz. Varsayılan olarak kapalıdır. One UI\'ye dönünce, OneOS\'u açınca veya \'Dondurulan uygulamaları geri aç\' düğmesine basınca çözülürler.</string>
+    <string name="advanced_host_suspend_unsuspend">Dondurulan uygulamaları geri aç</string>
+    <string name="advanced_host_suspend_unsuspend_summary">One UI\'de hâlâ dondurulmuş bütün uygulamaları geri açar. OneOS\'u açmak da aynı işi yapar. Yukarıdaki dondurma seçeneği varsayılan olarak kapalıdır.</string>
     <string name="advanced_host_suspend_working">One UI uygulamaları donduruluyor veya geri açılıyor…</string>
     <string name="advanced_host_suspend_unsuspend_done">Dondurulan One UI uygulamaları yeniden çalışıyor.</string>
     <string name="advanced_host_suspend_unsuspend_fail">Bazı uygulamalar geri açılamadı. Yeniden deneyin veya telefonu yeniden başlatın.</string>
