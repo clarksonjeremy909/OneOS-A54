@@ -237,18 +237,27 @@ echo "=== [1/4] $(date +%T) Terminating Container Supervision & Zygote ==="
 touch /data/local/tmp/oneos/data/oneos_rec_stop 2>/dev/null
 # Restore only limits still owned by this session before One UI resumes.
 STAGE="$S" BB="$BB" /system/bin/sh "$S/fold8_coloros.sh" performance-restore || echo "Performance limits: restore failed; see performance_handover.log"
-# OneOS A54: restore any I/O scheduler / readahead values saved for this session.
+# OneOS A54: restore any I/O scheduler / readahead / iostats / add_random values
+# saved for this session, then any Canavar VM sysctls.
 if [ -s "$S/oneos_io.prev" ]; then
     while IFS="$(printf '\t')" read -r path kind value; do
         [ -n "$path" ] && [ -f "$path" ] || continue
         case "$kind" in
-            scheduler|readahead)
+            scheduler|readahead|iostats|add_random)
                 printf '%s\n' "$value" > "$path" 2>/dev/null || echo "I/O restore failed: $path"
                 ;;
         esac
     done < "$S/oneos_io.prev"
     rm -f "$S/oneos_io.prev"
     echo "Guest I/O tweaks: restored"
+fi
+if [ -s "$S/oneos_vm.prev" ]; then
+    while IFS="$(printf '\t')" read -r path value; do
+        [ -n "$path" ] && [ -f "$path" ] || continue
+        printf '%s\n' "$value" > "$path" 2>/dev/null || echo "VM restore failed: $path"
+    done < "$S/oneos_vm.prev"
+    rm -f "$S/oneos_vm.prev"
+    echo "Guest Canavar VM tweaks: restored"
 fi
 # The return-keys readers (oneos_switch.sh) live in the host namespace.
 # Only kill a listed PID when it was armed this boot AND is still a
@@ -1182,21 +1191,218 @@ fi
 "$BB" rm -rf $NODES
 echo "$(cat /proc/sys/kernel/random/boot_id 2>/dev/null) $(date +%s)" > $S/return_inplace.done
 echo oneos_return > /sys/power/wake_unlock 2>/dev/null
-# OneOS A54: thaw host apps frozen for the guest session. If package
-# manager is not ready yet, the list is left for the app to restore.
-LIST="$S/data/oneos_host_suspended.list"
-if [ -f "$LIST" ] && [ ! -L "$LIST" ]; then
-    if pm path android >/dev/null 2>&1; then
-        while read -r pkg rest; do
-            [ -n "$pkg" ] || continue
-            case "$pkg" in ''|.*|*.|*[!A-Za-z0-9._]*|*..*) continue ;; esac
-            case "$pkg" in *.*) ;; *) continue ;; esac
-            [ -z "$rest" ] || continue
-            pm unsuspend --user 0 "$pkg" >/dev/null 2>&1 || true
-        done < "$LIST"
-        rm -f "$LIST"
+# OneOS A54: thaw host apps frozen for the guest session. Lists live
+# outside guest userdata ($S/oneos_host_suspended.list and /data/adb)
+# because $S/data is the guest /data image and can be unmounted. Names
+# are dropped from the list only after a successful unsuspend. If the
+# package manager is not ready, a background retry keeps the lists and
+# a KernelSU/Magisk service.d hook retries again after the next boot.
+# A fallback also unsuspends packages still marked as suspended by
+# com.fahadali.oneos, android, or shell.
+oneos_host_pkg_ok() {
+    case "$1" in ''|.*|*.|*[!A-Za-z0-9._]*|*..*) return 1 ;; esac
+    case "$1" in *.*) return 0 ;; *) return 1 ;; esac
+}
+oneos_host_collect() {
+    f="$1"
+    [ -f "$f" ] && [ ! -L "$f" ] || return 0
+    while read -r pkg rest; do
+        [ -n "$pkg" ] || continue
+        oneos_host_pkg_ok "$pkg" && [ -z "$rest" ] || continue
+        case " $ONEOS_HOST_NAMES " in *" $pkg "*) ;; *) ONEOS_HOST_NAMES="$ONEOS_HOST_NAMES $pkg" ;; esac
+    done < "$f"
+}
+oneos_host_write_lists() {
+    names="$1"
+    for F in "$S/oneos_host_suspended.list" "$S/data/oneos_host_suspended.list" /data/adb/oneos_host_suspended.list; do
+        d=$(dirname "$F")
+        [ -d "$d" ] && [ ! -L "$d" ] || continue
+        if [ -n "$names" ]; then
+            printf '' > "$F" || continue
+            for pkg in $names; do
+                printf '%s\n' "$pkg" >> "$F"
+            done
+            chmod 0644 "$F" 2>/dev/null || true
+        else
+            rm -f "$F"
+        fi
+    done
+}
+oneos_host_fallback() {
+    dumpsys package 2>/dev/null | awk '
+        function flush() {
+            if (pkg != "" && sus == 1) {
+                b = tolower(by)
+                if (b ~ /^com\.fahadali\.oneos($|\.)/ || b == "android" || b == "shell" || b == "com.android.shell")
+                    print pkg
+            }
+        }
+        /^[[:space:]]*Package \[/ {
+            flush()
+            pkg = $0
+            sub(/.*\[/, "", pkg)
+            sub(/\].*/, "", pkg)
+            sus = 0
+            by = ""
+            next
+        }
+        /suspended=true/ { sus = 1 }
+        /suspended=false/ { sus = 0 }
+        /[Ss]uspending[Pp]ackage=/ {
+            line = $0
+            sub(/.*[Ss]uspending[Pp]ackage=/, "", line)
+            split(line, a, /[[:space:],]/)
+            by = a[1]
+        }
+        /suspended by package=/ {
+            line = $0
+            sub(/.*suspended by package=/, "", line)
+            split(line, a, /[[:space:],]/)
+            by = a[1]
+        }
+        END { flush() }
+    '
+}
+oneos_host_install_hook() {
+    hookdir="/data/adb/service.d"
+    [ -d "$hookdir" ] && [ ! -L "$hookdir" ] || return 0
+    # Reuse the same hook text written by oneos_root.sh when present; otherwise
+    # drop a compact retry script that reads the persistent lists + fallback.
+    if [ ! -f /data/adb/service.d/99oneos_host_unsuspend.sh ]; then
+        # oneos_root.sh is the canonical hook writer; a short waiter is enough
+        # here if the stage script is already on the phone from a later app.
+        if [ -f "$S/bin/oneos_root.sh" ]; then
+            # Cannot invoke the full root script during return; write a waiter
+            # that reuses the same list paths.
+            :
+        fi
+        cat > /data/adb/service.d/99oneos_host_unsuspend.sh << 'HOOK'
+#!/system/bin/sh
+# OneOS A54: thaw One UI apps left frozen after a guest session.
+until [ "$(getprop sys.boot_completed)" = 1 ] || [ "$(getprop sys.boot_completed)" = true ]; do
+    sleep 2
+done
+sleep 8
+S=/data/local/tmp/oneos
+names=""
+for f in "$S/oneos_host_suspended.list" "$S/data/oneos_host_suspended.list" /data/adb/oneos_host_suspended.list; do
+    [ -f "$f" ] && [ ! -L "$f" ] || continue
+    while read -r pkg rest; do
+        [ -n "$pkg" ] || continue
+        case "$pkg" in ''|.*|*.|*[!A-Za-z0-9._]*|*..*) continue ;; esac
+        case "$pkg" in *.*) ;; *) continue ;; esac
+        [ -z "$rest" ] || continue
+        case " $names " in *" $pkg "*) ;; *) names="$names $pkg" ;; esac
+    done < "$f"
+done
+fb=$(dumpsys package 2>/dev/null | awk '
+    function flush() {
+        if (pkg != "" && sus == 1) {
+            b = tolower(by)
+            if (b ~ /^com\.fahadali\.oneos($|\.)/ || b == "android" || b == "shell" || b == "com.android.shell")
+                print pkg
+        }
+    }
+    /^[[:space:]]*Package \[/ {
+        flush()
+        pkg = $0
+        sub(/.*\[/, "", pkg)
+        sub(/\].*/, "", pkg)
+        sus = 0
+        by = ""
+        next
+    }
+    /suspended=true/ { sus = 1 }
+    /suspended=false/ { sus = 0 }
+    /[Ss]uspending[Pp]ackage=/ {
+        line = $0
+        sub(/.*[Ss]uspending[Pp]ackage=/, "", line)
+        split(line, a, /[[:space:],]/)
+        by = a[1]
+    }
+    /suspended by package=/ {
+        line = $0
+        sub(/.*suspended by package=/, "", line)
+        split(line, a, /[[:space:],]/)
+        by = a[1]
+    }
+    END { flush() }
+')
+for pkg in $fb; do
+    case "$pkg" in ''|.*|*.|*[!A-Za-z0-9._]*|*..*) continue ;; esac
+    case "$pkg" in *.*) ;; *) continue ;; esac
+    case " $names " in *" $pkg "*) ;; *) names="$names $pkg" ;; esac
+done
+[ -n "$names" ] || exit 0
+i=0
+while [ "$i" -lt 30 ]; do
+    pm path android >/dev/null 2>&1 && break
+    sleep 5
+    i=$((i + 1))
+done
+pm path android >/dev/null 2>&1 || exit 0
+left=""
+for pkg in $names; do
+    if pm unsuspend --user 0 "$pkg" >/dev/null 2>&1; then
+        :
     else
-        echo "host apps still frozen: package manager not ready (list left at $LIST)"
+        case " $left " in *" $pkg "*) ;; *) left="$left $pkg" ;; esac
     fi
+done
+for F in "$S/oneos_host_suspended.list" "$S/data/oneos_host_suspended.list" /data/adb/oneos_host_suspended.list; do
+    d=$(dirname "$F")
+    [ -d "$d" ] && [ ! -L "$d" ] || continue
+    if [ -n "$left" ]; then
+        printf '' > "$F" || continue
+        for pkg in $left; do
+            printf '%s\n' "$pkg" >> "$F"
+        done
+        chmod 0644 "$F" 2>/dev/null || true
+    else
+        rm -f "$F"
+    fi
+done
+HOOK
+        chmod 0755 /data/adb/service.d/99oneos_host_unsuspend.sh 2>/dev/null || true
+        chown 0:0 /data/adb/service.d/99oneos_host_unsuspend.sh 2>/dev/null || true
+    fi
+}
+oneos_host_unsuspend_now() {
+    ONEOS_HOST_NAMES=""
+    oneos_host_collect "$S/oneos_host_suspended.list"
+    oneos_host_collect "$S/data/oneos_host_suspended.list"
+    oneos_host_collect /data/adb/oneos_host_suspended.list
+    fb=$(oneos_host_fallback)
+    for pkg in $fb; do
+        oneos_host_pkg_ok "$pkg" || continue
+        case " $ONEOS_HOST_NAMES " in *" $pkg "*) ;; *) ONEOS_HOST_NAMES="$ONEOS_HOST_NAMES $pkg" ;; esac
+    done
+    [ -n "$ONEOS_HOST_NAMES" ] || { oneos_host_write_lists ""; return 0; }
+    if ! pm path android >/dev/null 2>&1; then
+        oneos_host_write_lists "$ONEOS_HOST_NAMES"
+        return 1
+    fi
+    left=""
+    for pkg in $ONEOS_HOST_NAMES; do
+        if pm unsuspend --user 0 "$pkg" >/dev/null 2>&1; then
+            :
+        else
+            case " $left " in *" $pkg "*) ;; *) left="$left $pkg" ;; esac
+        fi
+    done
+    oneos_host_write_lists "$left"
+    [ -z "$left" ]
+}
+oneos_host_install_hook
+if ! oneos_host_unsuspend_now; then
+    echo "host apps still frozen: package manager not ready (lists kept; retrying in the background)"
+    (
+        i=0
+        while [ "$i" -lt 30 ]; do
+            sleep 10
+            oneos_host_unsuspend_now && exit 0
+            i=$((i + 1))
+        done
+    ) </dev/null >/dev/null 2>&1 &
 fi
 say "One UI restored in place ($(getenforce))."

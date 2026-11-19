@@ -16,6 +16,8 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <!-- Once OneOS installed itself this way, Android lets its later updates skip the prompt. -->
     <uses-permission android:name="android.permission.UPDATE_PACKAGES_WITHOUT_USER_ACTION" />
+    <!-- 0.5.25 A54: unsuspend host apps left frozen after a guest session, on One UI boot. -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <!-- Bring apps (0.4.75): without this Android hides other apps from us and the
          list showed two of 120 (11-10). Every app with a launcher icon, nothing more. -->
@@ -34,6 +36,14 @@
         <receiver
             android:name=".session.AppUpdater$ResultReceiver"
             android:exported="false" />
+        <receiver
+            android:name=".session.HostUnsuspendReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
         <activity android:name=".ui.GuestRuntimeActivity" android:exported="false" />
         <activity android:name=".ui.EnvironmentActivity" android:exported="false" />
         <activity android:name=".ui.BootProgressActivity" android:exported="false" />

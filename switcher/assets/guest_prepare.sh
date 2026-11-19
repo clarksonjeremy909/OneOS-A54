@@ -5664,49 +5664,81 @@ while true; do
     case "$(getprop sys.boot_completed)" in 1) ;; *) continue ;; esac
     # OneOS A54: reversible userspace lag reductions for every guest ROM (not only
     # OxygenOS). Flag is staged as /data/oneos_guest_perf.enable from session.env.
-    # Originals are saved in the guest /data and put back if the next session turns
-    # the option off. Nothing here disables a package or writes persist props.
-    if [ -f /data/oneos_guest_perf.enable ] && [ ! -f /data/oneos_guest_perf.applied ]; then
-        save=/data/oneos_guest_perf.saved
-        [ -f "$save" ] || : > "$save"
-        for k in window_animation_scale transition_animation_scale animator_duration_scale; do
-            if ! grep -q "^anim $k " "$save"; then
-                cur=$(settings get global "$k" 2>/dev/null || echo 1)
-                case "$cur" in null|'') cur=1 ;; esac
-                echo "anim $k $cur" >> "$save"
-            fi
-            settings put global "$k" 0.5 >/dev/null 2>&1 || true
-        done
-        if ! grep -q "^cached " "$save"; then
-            cur=$(cmd activity get-max-cached-processes 2>/dev/null | tr -dc '0-9')
-            case "$cur" in ''|*[!0-9]*) ;; *)
-                if [ "$cur" -gt 24 ]; then
-                    echo "cached $cur" >> "$save"
-                    cmd activity set-max-cached-processes 24 >/dev/null 2>&1 || true
-                fi
-                ;;
-            esac
-        fi
-        if ! grep -q "^log activity_starts_logging_enabled " "$save"; then
-            cur=$(settings get global activity_starts_logging_enabled 2>/dev/null || true)
-            case "$cur" in 1)
-                echo "log activity_starts_logging_enabled $cur" >> "$save"
-                settings put global activity_starts_logging_enabled 0 >/dev/null 2>&1 || true
-                ;;
-            esac
-        fi
-        : > /data/oneos_guest_perf.applied
-        echo "$(date) guest perf: applied (see $save)" >> /data/app_storage.log
-    elif [ ! -f /data/oneos_guest_perf.enable ] && [ -s /data/oneos_guest_perf.saved ]; then
+    # Canavar extras use /data/oneos_guest_beast.enable. Originals are saved in the
+    # guest /data and put back if the next session turns the option off. Nothing
+    # here disables a package or writes persist props.
+    want=""
+    [ -f /data/oneos_guest_perf.enable ] && want=perf
+    [ -f /data/oneos_guest_perf.enable ] && [ -f /data/oneos_guest_beast.enable ] && want=perf+beast
+    have=$(cat /data/oneos_guest_perf.applied 2>/dev/null || true)
+    restore_guest_perf() {
+        [ -s /data/oneos_guest_perf.saved ] || return 0
         while read -r typ a b; do
             case "$typ" in
                 anim) settings put global "$a" "$b" >/dev/null 2>&1 || true ;;
                 cached) cmd activity set-max-cached-processes "$a" >/dev/null 2>&1 || true ;;
-                log) settings put global "$a" "$b" >/dev/null 2>&1 || true ;;
+                log|setting) settings put global "$a" "$b" >/dev/null 2>&1 || true ;;
             esac
         done < /data/oneos_guest_perf.saved
         rm -f /data/oneos_guest_perf.applied /data/oneos_guest_perf.saved
         echo "$(date) guest perf: restored previous values" >> /data/app_storage.log
+    }
+    apply_setting() {
+        # apply_setting <save-tag> <key> <new> — saves the current global setting once.
+        tag=$1; key=$2; new=$3
+        save=/data/oneos_guest_perf.saved
+        [ -f "$save" ] || : > "$save"
+        if ! grep -q "^$tag $key " "$save"; then
+            cur=$(settings get global "$key" 2>/dev/null || true)
+            case "$cur" in null|'') cur=default ;; esac
+            echo "$tag $key $cur" >> "$save"
+        fi
+        settings put global "$key" "$new" >/dev/null 2>&1 || true
+    }
+    if [ "$want" != "$have" ]; then
+        [ -n "$have" ] && restore_guest_perf
+        if [ -n "$want" ]; then
+            save=/data/oneos_guest_perf.saved
+            [ -f "$save" ] || : > "$save"
+            anim=0.5
+            cached_cap=24
+            [ "$want" = perf+beast ] && anim=0.25 && cached_cap=16
+            for k in window_animation_scale transition_animation_scale animator_duration_scale; do
+                if ! grep -q "^anim $k " "$save"; then
+                    cur=$(settings get global "$k" 2>/dev/null || echo 1)
+                    case "$cur" in null|'') cur=1 ;; esac
+                    echo "anim $k $cur" >> "$save"
+                fi
+                settings put global "$k" "$anim" >/dev/null 2>&1 || true
+            done
+            if ! grep -q "^cached " "$save"; then
+                cur=$(cmd activity get-max-cached-processes 2>/dev/null | tr -dc '0-9')
+                case "$cur" in ''|*[!0-9]*) ;; *)
+                    if [ "$cur" -gt "$cached_cap" ]; then
+                        echo "cached $cur" >> "$save"
+                        cmd activity set-max-cached-processes "$cached_cap" >/dev/null 2>&1 || true
+                    fi
+                    ;;
+                esac
+            fi
+            # Base: trim activity-start logging; enable app standby and the cached-apps freezer
+            # when they are off. Canavar also turns off window blurs and error-report pings.
+            cur=$(settings get global activity_starts_logging_enabled 2>/dev/null || true)
+            case "$cur" in 1) apply_setting log activity_starts_logging_enabled 0 ;; esac
+            cur=$(settings get global app_standby_enabled 2>/dev/null || true)
+            case "$cur" in 0) apply_setting setting app_standby_enabled 1 ;; esac
+            cur=$(settings get global cached_apps_freezer 2>/dev/null || true)
+            case "$cur" in disabled|0) apply_setting setting cached_apps_freezer enabled ;; esac
+            if [ "$want" = perf+beast ]; then
+                apply_setting setting disable_window_blurs 1
+                cur=$(settings get global send_action_app_error 2>/dev/null || true)
+                case "$cur" in 1) apply_setting setting send_action_app_error 0 ;; esac
+                cur=$(settings get global wifi_verbose_logging_enabled 2>/dev/null || true)
+                case "$cur" in 1) apply_setting setting wifi_verbose_logging_enabled 0 ;; esac
+            fi
+            printf '%s\n' "$want" > /data/oneos_guest_perf.applied
+            echo "$(date) guest perf: applied $want (see $save)" >> /data/app_storage.log
+        fi
     fi
     # 0.5.18 (owner, A36: Nothing OS sluggish, "on Nothing Phone 3a it's smooth"): 217 of 242 guest apps ran
     # uncompiled (dexopt status verify): a guest's apps are compiled by the background dexopt job, which waits for
@@ -5740,7 +5772,7 @@ while true; do
               i=0; : > /data/oneos_dexopt.log
               for p in $pkgs; do
                   i=$((i + 1))
-                  cmd package compile -m speed "$p" >> /data/oneos_dexopt.log 2>&1
+                  nice -n 19 cmd package compile -m speed "$p" >> /data/oneos_dexopt.log 2>&1
                   [ $((i % 5)) -eq 0 ] && note "Optimizing apps for this system" "$i / $total · the phone may be warm and slower until it is done"
               done
               echo "$key" > /data/oneos_dexopt.done
@@ -5782,6 +5814,12 @@ if [ "${ONEOS_GUEST_PERF:-1}" = 1 ]; then
     touch "$STAGE/data/oneos_guest_perf.enable"
 else
     rm -f "$STAGE/data/oneos_guest_perf.enable"
+fi
+# OneOS A54: Canavar extras (ONEOS_GUEST_BEAST, default off). Only applied with perf.
+if [ "${ONEOS_GUEST_PERF:-1}" = 1 ] && [ "${ONEOS_GUEST_BEAST:-0}" = 1 ]; then
+    touch "$STAGE/data/oneos_guest_beast.enable"
+else
+    rm -f "$STAGE/data/oneos_guest_beast.enable"
 fi
 # OneOS A54: one-way copy of host *.apk (Download and Documents) into the
 # guest Download folder, when Bring apps asked for it. Host files are only read.

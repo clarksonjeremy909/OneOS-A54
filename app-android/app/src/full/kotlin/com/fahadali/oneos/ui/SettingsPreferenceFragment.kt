@@ -99,7 +99,9 @@ class SettingsPreferenceFragment : InsetPreferenceFragment() {
                 true
             }
         })
+        row(sessions, R.string.advanced_host_suspend_allow_title, R.string.advanced_host_suspend_allow_row_summary, target = HostSuspendAllowActivity::class.java)
         toggle(sessions, R.string.advanced_guest_perf_title, R.string.advanced_guest_perf_summary, SessionPrefs.guestPerf(ctx)) { SessionPrefs.setGuestPerf(ctx, it) }
+        toggle(sessions, R.string.advanced_guest_beast_title, R.string.advanced_guest_beast_summary, SessionPrefs.guestBeast(ctx)) { SessionPrefs.setGuestBeast(ctx, it) }
         toggle(sessions, R.string.advanced_full_logs_title, R.string.advanced_full_logs_summary, SessionPrefs.fullLogs(ctx)) { SessionPrefs.setFullLogs(ctx, it) }
         toggle(sessions, R.string.advanced_share_files_title, R.string.advanced_share_files_summary, SessionPrefs.shareFiles(ctx)) { SessionPrefs.setShareFiles(ctx, it) }
         toggle(sessions, R.string.usage_count_title, R.string.usage_count_summary, SessionPrefs.usageCount(ctx)) { SessionPrefs.setUsageCount(ctx, it) }

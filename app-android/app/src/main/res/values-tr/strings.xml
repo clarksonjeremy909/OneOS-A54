@@ -106,11 +106,11 @@ Magisk, OneOS\'a izin vermenizi isteyebilir. KernelSU veya APatch\'te önce süp
     <!-- About -->
     <string name="about_cat_app">OneOS A54</string>
     <string name="about_version_title">Sürüm</string>
-    <string name="about_what_title">OneOS nedir</string>
-    <string name="about_what_summary">Köklü bir Samsung amiral gemisinde, OneOS sunucusunda bir üretici güncellemesinden oluşturulan başka bir Android sistemini One UI\'nin yanında çalıştırır ve genellikle yeniden başlatmadan One UI\'ye döner. Hiçbir şey yazılmaz.</string>
+    <string name="about_what_title">OneOS A54 nedir</string>
+    <string name="about_what_summary">Galaxy A54 5G için gayriresmi bir OneOS çatalı. Köklü telefonda One UI\'nin yanında başka bir Android sistemi çalıştırır ve genellikle yeniden başlatmadan geri döner. Hiçbir şey yazılmaz. A54 5G için yapıldı; başka telefonlarda çalışması garanti değil.</string>
     <string name="about_version_scope_title">Bu sürüm</string>
     <string name="about_tested_title">Test edildi</string>
-    <string name="about_tested_summary">Z Fold (F8U), S26 Ultra, S25 Ultra ve S25 üzerinde test edildi. Diğer telefonlar denenmedi.</string>
+    <string name="about_tested_summary">Galaxy A54 5G'de test edildi: OxygenOS 16 açılıyor; ilk açılıştan 10–20 dk sonra akıcı, kasmalar azalıyor (ilk açılışta ısınma normal). Diğer A serisi ve başka telefonlar denenmedi, çalışacağı garanti değil.</string>
     <string name="about_safety_title">Güvenlik</string>
     <string name="about_cat_credits">Emeği geçenler</string>
     <string name="about_credit_oneos_title">OneOS A54</string>
@@ -205,4 +205,28 @@ Magisk, OneOS\'a izin vermenizi isteyebilir. KernelSU veya APatch\'te önce süp
     <string name="send_tg_join_title">OneOS grubuna katıl</string>
     <string name="send_tg_join_summary">Raporlar OneOS grubu üyeleri içindir. Katılın, sonra yeniden gönderin.</string>
     <string name="send_tg_no_app">Bağlantıyı açacak uygulama yok</string>
+
+    <string name="about_cat_team">OneOS A54 ekibi</string>
+    <string name="about_team_title">OneOS A54 ekibi</string>
+    <string name="about_team_summary">Miraç Aytaç ve Grok Bot. Galaxy A54 5G için özel yapıldı.</string>
+    <string name="about_credit_upstream_title">Orijinal OneOS</string>
+    <string name="about_credit_upstream_summary">fahadalijaved. Bu çatal, Apache 2.0 lisansı altında o projeden gelir.</string>
+    <string name="a54_intro_title">OneOS A54</string>
+    <string name="a54_intro_message">Bu gayriresmi OneOS çatalı Galaxy A54 5G için yapıldı. Galaxy A54 5G'de test edildi: OxygenOS 16 açılıyor; ilk açılıştan 10–20 dk sonra akıcı, kasmalar azalıyor (ilk açılışta ısınma normal). Telefonunuz A54 değilse yine deneyebilirsiniz ama çalışacağı garanti değil, risk size ait.\n\nGeliştiriciler: Miraç Aytaç, Grok Bot ve orijinal OneOS yapımcısı fahadalijaved.</string>
+    <string name="a54_intro_ok">Tamam</string>
+    <string name="report_verdict_ok">Bu telefonda OneOS A54'ü durduran bir şey bulunmadı.</string>
+    <string name="report_verdict_warn">Aşağıdaki %1$d uyarıyı okuyun.</string>
+    <string name="report_verdict_block">OneOS A54 bu telefonda çalışamaz: aşağıda %1$d engelleyici bulgu var.</string>
+    <string name="report_root_works">Root çalışıyor: %1$s</string>
+    <string name="report_root_timeout">Zamanında yanıt yok. Kök yöneticinizde %1$s uygulamasına izin verin, sonra tekrar deneyin.</string>
+    <string name="report_root_not_found">%1$s için su bulunamadı: %2$s</string>
+    <string name="report_root_denied">Root reddedildi: %1$s</string>
+    <string name="report_root_error">Kontrol başarısız: %1$s</string>
+    <string name="report_root_no_output">çıktı yok</string>
+    <string name="report_panels_none">Görünür ekran yok</string>
+    <string name="report_panels_active_only">Bu Android sürümünde yalnızca etkin ekranlar görünür</string>
+    <string name="report_root_su_visible">su şurada görünür: %1$s</string>
+    <string name="report_root_su_hidden">su, %1$s için görünmüyor</string>
+    <string name="report_root_kernelsu_hint"> (KernelSU bunu yalnızca izin verdiği uygulamalara gösterir)</string>
+
 </resources>

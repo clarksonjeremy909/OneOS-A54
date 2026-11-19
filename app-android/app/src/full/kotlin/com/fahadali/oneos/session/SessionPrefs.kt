@@ -256,6 +256,14 @@ object SessionPrefs {
     /** Safe lag reductions in every guest ROM (animation, cached processes, light log trim, I/O). Default on. */
     fun guestPerf(ctx: Context): Boolean = p(ctx).getBoolean("guest_perf", true)
     fun setGuestPerf(ctx: Context, on: Boolean) { p(ctx).edit().putBoolean("guest_perf", on).apply() }
+
+    /** Extra-aggressive reversible lag reductions; default off. Applied only when [guestPerf] is on. */
+    fun guestBeast(ctx: Context): Boolean = p(ctx).getBoolean("guest_beast", false)
+    fun setGuestBeast(ctx: Context, on: Boolean) { p(ctx).edit().putBoolean("guest_beast", on).apply() }
+
+    /** One-shot in-app intro for the A54 0.5.25 update. */
+    fun a54IntroSeen(ctx: Context): Boolean = p(ctx).getBoolean("a54_intro_v025", false)
+    fun setA54IntroSeen(ctx: Context, seen: Boolean) { p(ctx).edit().putBoolean("a54_intro_v025", seen).apply() }
     fun setHostSuspend(ctx: Context, on: Boolean) {
         p(ctx).edit().putBoolean("host_suspend", on).apply()
     }

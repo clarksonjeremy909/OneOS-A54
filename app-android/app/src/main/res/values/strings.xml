@@ -100,16 +100,16 @@
     <string name="logs_delete_confirm">Delete the session logs?</string>
 
     <!-- About -->
-    <string name="about_cat_app">OneOS</string>
+    <string name="about_cat_app">OneOS A54</string>
     <string name="about_version_title">Version</string>
-    <string name="about_what_title">What OneOS is</string>
-    <string name="about_what_summary">Runs another Android OS, built on the OneOS server from an OEM update, next to One UI on a rooted Samsung flagship, and goes back to One UI, usually without a restart. Nothing is flashed.</string>
+    <string name="about_what_title">What OneOS A54 is</string>
+    <string name="about_what_summary">An unofficial OneOS fork for the Galaxy A54 5G. On a rooted phone it runs another Android system next to One UI, usually returning without a restart. Nothing is flashed. Made for the A54 5G; other phones may work but are not guaranteed.</string>
     <string name="about_version_scope_title">This version</string>
     <string name="about_tested_title">Tested</string>
-    <string name="about_tested_summary">Tested on the Z Fold (F8U), S26 Ultra, S25 Ultra and S25. Other phones are untested.</string>
+    <string name="about_tested_summary">Tested on Galaxy A54 5G: OxygenOS 16 boots; smooth after 10–20 min from first boot, lag reduced (warming up on first boot is normal). Other A-series phones and other devices are untested and not guaranteed.</string>
     <string name="about_safety_title">Safety</string>
     <string name="about_cat_credits">Credits</string>
-    <string name="about_credit_oneos_title">OneOS</string>
+    <string name="about_credit_oneos_title">OneOS A54</string>
     <string name="about_credit_oneos_summary">The app, the framework patches and the server build. The session scripts started from the project credited below.</string>
     <string name="about_credit_onelineage_title">OneLineage</string>
     <string name="about_credit_onelineage_url" translatable="false">https://github.com/WeWaffles/OneLineage</string>
@@ -201,4 +201,28 @@
     <string name="send_tg_join_title">Join the OneOS group</string>
     <string name="send_tg_join_summary">Reports are for members of the OneOS group. Join, then send again.</string>
     <string name="send_tg_no_app">No app could open the link</string>
+
+    <string name="about_cat_team">OneOS A54 team</string>
+    <string name="about_team_title">OneOS A54 team</string>
+    <string name="about_team_summary">Miraç Aytaç and Grok Bot. Made for the Galaxy A54 5G.</string>
+    <string name="about_credit_upstream_title">Original OneOS</string>
+    <string name="about_credit_upstream_summary">fahadalijaved. This fork is based on that project under the Apache 2.0 license.</string>
+    <string name="a54_intro_title">OneOS A54</string>
+    <string name="a54_intro_message">This unofficial OneOS fork is made for the Galaxy A54 5G. Tested on Galaxy A54 5G: OxygenOS 16 boots; smooth after 10–20 min from first boot, lag reduced (warming up on first boot is normal). If your phone is not an A54 you can still try it, but it is not guaranteed — at your own risk.\n\nDevelopers: Miraç Aytaç, Grok Bot, and original OneOS author fahadalijaved.</string>
+    <string name="a54_intro_ok">OK</string>
+    <string name="report_verdict_ok">Nothing found that stops OneOS A54 on this phone.</string>
+    <string name="report_verdict_warn">Read the %1$d warning(s) below.</string>
+    <string name="report_verdict_block">OneOS A54 can't run on this phone: %1$d blocking finding(s) below.</string>
+    <string name="report_root_works">Root works: %1$s</string>
+    <string name="report_root_timeout">No answer in time. Allow %1$s in your root manager, then tap to try again.</string>
+    <string name="report_root_not_found">su not found for %1$s: %2$s</string>
+    <string name="report_root_denied">Root refused: %1$s</string>
+    <string name="report_root_error">Check failed: %1$s</string>
+    <string name="report_root_no_output">no output</string>
+    <string name="report_panels_none">None visible</string>
+    <string name="report_panels_active_only">Only active displays are visible on this Android version</string>
+    <string name="report_root_su_visible">su visible at %1$s</string>
+    <string name="report_root_su_hidden">su not visible to %1$s</string>
+    <string name="report_root_kernelsu_hint"> (KernelSU shows it only to apps it allows)</string>
+
 </resources>

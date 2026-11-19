@@ -91,13 +91,14 @@ class StageScriptTest {
         fun launch(
             mode: String = "session", hideGms: String = "0", code: String = this.code,
             heatCap: String = "1", secIms: String = "0", edmStub: String = "0", verboseBoot: String = "0",
-            fullLogs: String? = null, shareFiles: String? = null, guestPerf: String? = null,
+            fullLogs: String? = null, shareFiles: String? = null, guestPerf: String? = null, guestBeast: String? = null,
         ) = fr.run(
             RootScript.Verb.LAUNCH, mode, code, "0123456789abcdef", hideGms, heatCap, secIms, edmStub, verboseBoot,
             *listOfNotNull(
-                fullLogs ?: if (shareFiles != null || guestPerf != null) "1" else null,
-                shareFiles ?: guestPerf?.let { "0" },
-                guestPerf,
+                fullLogs ?: if (shareFiles != null || guestPerf != null || guestBeast != null) "1" else null,
+                shareFiles ?: if (guestPerf != null || guestBeast != null) "0" else null,
+                guestPerf ?: guestBeast?.let { "1" },
+                guestBeast,
             ).toTypedArray(),
         )
 

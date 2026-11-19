@@ -264,6 +264,18 @@ class SystemsFragment : Fragment() {
                 }
             }, 500)
         } else redraw(force = true)
+        view?.post { if (isResumed) maybeShowIntro() }
+    }
+
+    private fun maybeShowIntro() {
+        val ctx = context ?: return
+        if (SessionPrefs.a54IntroSeen(ctx)) return
+        AlertDialog.Builder(ctx)
+            .setTitle(R.string.a54_intro_title)
+            .setMessage(R.string.a54_intro_message)
+            .setPositiveButton(R.string.a54_intro_ok) { _, _ -> SessionPrefs.setA54IntroSeen(ctx, true) }
+            .setOnCancelListener { SessionPrefs.setA54IntroSeen(ctx, true) }
+            .show()
     }
 
     override fun onStart() {

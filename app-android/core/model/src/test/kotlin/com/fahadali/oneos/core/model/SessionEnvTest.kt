@@ -33,6 +33,7 @@ class SessionEnvTest {
             ONEOS_FULL_LOGS=1
             ONEOS_SHARE_FILES=0
             ONEOS_GUEST_PERF=1
+            ONEOS_GUEST_BEAST=0
             ONEOS_RETURN_MODE=inplace
 
             """.trimIndent(),
@@ -65,6 +66,7 @@ class SessionEnvTest {
             ONEOS_FULL_LOGS=1
             ONEOS_SHARE_FILES=0
             ONEOS_GUEST_PERF=1
+            ONEOS_GUEST_BEAST=0
             ONEOS_RETURN_MODE=inplace
 
             """.trimIndent(),
@@ -148,7 +150,7 @@ class SessionEnvTest {
         assertTrue(problems(good.removeSuffix("\n")).contains("must end with a newline"))
         assertTrue(problems(good.replace("\n", "\r\n")).isNotEmpty())
         assertTrue(problems("# comment\n$good").contains("line 1 is not KEY=VALUE"))
-        assertTrue(problems("$good\n").contains("line 23 is not KEY=VALUE"))
+        assertTrue(problems("$good\n").contains("line 24 is not KEY=VALUE"))
         assertTrue(problems(good.replace("ONEOS_APP=1", "export ONEOS_APP=1")).isNotEmpty())
         assertTrue(problems(good.replace("ONEOS_GUEST_FOLD=off", "ONEOS_GUEST_FOLD=\$(reboot)")).isNotEmpty())
         // A fold value in an S Ultra file: the profile decides the form.
@@ -201,10 +203,10 @@ class SessionEnvTest {
         // 0.5.06: LineageOS 24 too (its Google apps are One UI's, added by guest_google.sh; none from a payload).
         assertEquals(listOf(Images.FIND_N6, Images.FIND_X9U_IN_1105, Images.NOTHING_METROID, Images.OXYGEN16, Images.LINEAGE24), Images.ALL.filter { it.gmsHideable })
         assertEquals(
-            listOf("ONEOS_GUEST_HIDE_GMS", "ONEOS_HEAT_CAP", "ONEOS_GUEST_SEC_IMS", "ONEOS_GUEST_EDM_STUB", "ONEOS_VERBOSE_BOOT", "ONEOS_FULL_LOGS", "ONEOS_SHARE_FILES", "ONEOS_GUEST_PERF", "ONEOS_RETURN_MODE"),
+            listOf("ONEOS_GUEST_HIDE_GMS", "ONEOS_HEAT_CAP", "ONEOS_GUEST_SEC_IMS", "ONEOS_GUEST_EDM_STUB", "ONEOS_VERBOSE_BOOT", "ONEOS_FULL_LOGS", "ONEOS_SHARE_FILES", "ONEOS_GUEST_PERF", "ONEOS_GUEST_BEAST", "ONEOS_RETURN_MODE"),
             SessionEnv.ALLOWED.keys.toList().takeLast(9),
         )
-        assertEquals("ONEOS_GUEST_PERF", SessionEnv.ALLOWED.keys.toList().dropLast(1).last())
+        assertEquals("ONEOS_GUEST_BEAST", SessionEnv.ALLOWED.keys.toList().dropLast(1).last())
         for (p in Profiles.BUILT_IN.filter { it.enabled }) {
             val text = SessionEnv.generate(p)
             assertTrue(p.id, text.lines().contains("${SessionEnv.SEC_IMS}=0"))
@@ -282,6 +284,18 @@ class SessionEnvTest {
             assertEquals(emptyList<String>(), SessionEnv.validate(text.replace("ONEOS_GUEST_PERF=1", "ONEOS_GUEST_PERF=0")))
             for (bad in listOf("2", "", "yes")) {
                 assertTrue(SessionEnv.validate(text.replace("ONEOS_GUEST_PERF=1", "ONEOS_GUEST_PERF=$bad")).isNotEmpty())
+            }
+        }
+    }
+
+    @Test
+    fun guestBeastIsOffByDefaultAndStrictlyBoolean() {
+        for (profile in Profiles.BUILT_IN.filter { it.enabled }) {
+            val text = SessionEnv.generate(profile)
+            assertTrue(text.contains("ONEOS_GUEST_BEAST=0\n"))
+            assertEquals(emptyList<String>(), SessionEnv.validate(text.replace("ONEOS_GUEST_BEAST=0", "ONEOS_GUEST_BEAST=1")))
+            for (bad in listOf("2", "", "yes")) {
+                assertTrue(SessionEnv.validate(text.replace("ONEOS_GUEST_BEAST=0", "ONEOS_GUEST_BEAST=$bad")).isNotEmpty())
             }
         }
     }

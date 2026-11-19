@@ -129,6 +129,7 @@ object Profiles {
     const val ID_A16_S166 = "a16-s166"
     const val ID_A35 = "a35"
     const val ID_A54 = "a54"
+    const val ID_A73 = "a73"
     const val ID_A27 = "a27"
     const val ID_A17_5G = "a17-5g"
     const val ID_FLIP7_FE = "flip7-fe"
@@ -998,7 +999,35 @@ object Profiles {
      * and audio HAL, Mali, no SVE or SME, installd 85 methods): the [A26]'s chip and vendor, so its
      * choices and notes. Untested, with [EXYNOS].
      */
-    val A54 = A26.copy(id = ID_A54, label = "Galaxy A54 5G", modelPrefix = "SM-A546", codename = "a54x")
+    /**
+     * Galaxy A54 5G: same chip and vendor as [A26]. OxygenOS 16 was tested on a
+     * real SM-A546 / a54x / s5e8835 (One UI 8, Android 16): it boots; after 10–20
+     * minutes from first boot it is smooth and lag is reduced (warming on first
+     * boot is normal). Other images on this profile stay untested. Do not change
+     * the match keys (SM-A546 / a54x / s5e8835).
+     */
+    val A54 = A26.copy(
+        id = ID_A54, label = "Galaxy A54 5G", modelPrefix = "SM-A546", codename = "a54x",
+        choices = A26.choices.map { if (it.imageId == Images.ID_OXYGEN16) it.copy(tested = true) else it },
+    )
+
+    /**
+     * Galaxy A73 5G, added for the A54 fork (untested). Identifiers from the
+     * LineageOS device wiki (a73xq, SM-A736B / SM-A736B/DS, Qualcomm SM7325
+     * Snapdragon 778G) and Samsung's Latin America One UI 8 / Android 16 list
+     * (A73 5G, released). Wikipedia also lists current software as Android 16
+     * with One UI 8. No One UI 9 probe in this tree, so only OxygenOS 16, all
+     * choices untested. Snapdragon is the display path the app already knows.
+     */
+    val A73 = PhoneProfile(
+        id = ID_A73,
+        label = "Galaxy A73 5G",
+        modelPrefix = "SM-A736",
+        codename = "a73xq",
+        socModel = "SM7325",
+        form = FormFactor.BAR,
+        choices = listOf(OXYGEN16_CHOICE),
+    )
 
     /**
      * Galaxy A27, from 0.4.59: findings of 2026-11-07 (SM-A276B, a27xq, Snapdragon SM6475 "parrot",
@@ -1311,7 +1340,7 @@ object Profiles {
         S_8850, S_8850_JP, S_ULTRA_8650, S_8650, S_8550, S_PLUS_8550, S_PLUS_8850,
         S_PLUS_9965, FLIP7, A56, A57, FLIP5, FOLD6, A07, FLIP8, A36, FOLD5,
         S_ULTRA_8550, FLIP6, S_9945, S_EDGE_8750, S_FE_9945, A26, A17, A16, S_9965, A16_4G, A16_S166, A35, A54, A27, A17_5G, FLIP7_FE,
-        A06, A07_5G, A15, A24, A25, A33, A34, A53, E55, S_FE_9925, S_FE_8450, S_PLUS_9925, S_ULTRA_9925, S_ULTRA_8450,
+        A06, A07_5G, A15, A24, A25, A33, A34, A53, A73, E55, S_FE_9925, S_FE_8450, S_PLUS_9925, S_ULTRA_9925, S_ULTRA_8450,
         A55, S25_FE, S_8450, M55S, S_ULTRA_8450_JP, S_PLUS_9945, S_ULTRA_8550_JP, S_9925, A16_MTK, S_8550_JP, M35, A15_5G, S_PLUS_8650,
     )
 

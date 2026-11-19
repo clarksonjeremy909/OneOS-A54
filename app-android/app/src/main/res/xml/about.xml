@@ -28,6 +28,17 @@
             android:title="@string/before_title" />
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/about_cat_team">
+        <Preference
+            android:selectable="false"
+            android:summary="@string/about_team_summary"
+            android:title="@string/about_team_title" />
+        <Preference
+            android:selectable="false"
+            android:summary="@string/about_credit_upstream_summary"
+            android:title="@string/about_credit_upstream_title" />
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/about_cat_credits">
         <Preference
             android:selectable="false"

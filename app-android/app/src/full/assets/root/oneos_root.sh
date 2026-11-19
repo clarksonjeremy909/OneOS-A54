@@ -25,10 +25,10 @@
 #   env <bytes>                       stdin: session.env
 #   finish <profile> <image> <set> <versionCode>
 #   launch <session|dry> <versionCode> <sessionId> <hideGms> <heatCap> <secIms> <edmStub>
-#          [verboseBoot [fullLogs [shareFiles [guestPerf]]]]   (0|1 each; defaults 0, 1, 0 and 1:
+#          [verboseBoot [fullLogs [shareFiles [guestPerf [guestBeast]]]]]]   (0|1 each; defaults 0, 1, 0, 1 and 0:
 #                                     fullLogs is ONEOS_FULL_LOGS, the session's whole
 #                                     logcat capture; shareFiles is ONEOS_SHARE_FILES;
-#                                     guestPerf is ONEOS_GUEST_PERF, safe lag reductions in every guest.
+#                                     guestPerf is ONEOS_GUEST_PERF, safe lag reductions in every guest; guestBeast is ONEOS_GUEST_BEAST (Canavar), default off.
 #                                     One UI's DCIM, Pictures... shown in the guest)
 #                                     secIms 0|1: this launch's
 #                                     ONEOS_GUEST_SEC_IMS (this phone's
@@ -177,7 +177,7 @@ SET_OXYGENOS="services_patched.jar oplus-services_patched.jar vold_patched servi
 SET_ORIGINOS="BBKLauncher2_patched.apk BBKLauncher2_patched.apk.src_sha256 OneOSFoldCutout.apk OneOSGuest.apk OneOSPhoneInjection.apk adservices_payload.img appsearch_payload.img art_payload.img bt_payload.img configinfrastructure_payload.img conscrypt_payload.img crashrecovery_payload.img extservices_payload.img framework-adapter_patched.jar framework-wifi_patched.jar framework_patched.jar gmssystem_payload.img guards.txt healthfitness_payload.img i18n_payload.img libandroid_servers_patched.so libbluetooth_jni_patched.so libcamera_client_patched.so libcomposer_ext_patched.so libinputflinger_patched.so libinputservice_patched.so libsensorservice_patched.so mediaprovider_payload.img ondevicepersonalization_payload.img oneos-apex-requires.txt oneos-telephony.jar oneos-telephony.sha256 oneos-vivo-features.txt permission_payload.img profiling_payload.img rkpd_payload.img runtime_payload.img sdkext_payload.img service.incremental_patched.so services_patched.jar surfaceflinger_patched telephony-common_patched.jar telephonycore_payload.img tethering_payload.img vivo-framework_patched.jar vivo-service-wifi-ex-impl_patched.jar vivo-service-wifi_patched.jar vivo-services_patched.jar vivo-telephony-common-platform-ex_patched.jar vold_patched wifi_payload.img"
 # Host /data trees of switcher/assets/bridges.sh (relative to /data).
 BRIDGE_HOSTS="app app-staging user user_de dalvik-cache misc/profiles data media misc/user misc_ce/0/sdksandbox misc_de/0/sdksandbox misc_ce/0/rollback misc_de/0/rollback resource-cache"
-ENV_KEYS="ONEOS_APP ONEOS_PROFILE ONEOS_SPLASH_COMPONENT ONEOS_WALLPAPER_PROBE ONEOS_RECORD ONEOS_LOGCAT ONEOS_GUEST_FORM ONEOS_GUEST_FOLD ONEOS_COVER_TSP ONEOS_GUEST_FOLD_CONTINUE ONEOS_GUEST_UNFOLD_PORTRAIT ONEOS_GUEST_COMPACT_WINDOW ONEOS_GUEST_WALLPAPER_GRID ONEOS_GUEST_HIDE_GMS ONEOS_HEAT_CAP ONEOS_GUEST_SEC_IMS ONEOS_GUEST_EDM_STUB ONEOS_VERBOSE_BOOT ONEOS_FULL_LOGS ONEOS_SHARE_FILES ONEOS_GUEST_PERF ONEOS_RETURN_MODE"
+ENV_KEYS="ONEOS_APP ONEOS_PROFILE ONEOS_SPLASH_COMPONENT ONEOS_WALLPAPER_PROBE ONEOS_RECORD ONEOS_LOGCAT ONEOS_GUEST_FORM ONEOS_GUEST_FOLD ONEOS_COVER_TSP ONEOS_GUEST_FOLD_CONTINUE ONEOS_GUEST_UNFOLD_PORTRAIT ONEOS_GUEST_COMPACT_WINDOW ONEOS_GUEST_WALLPAPER_GRID ONEOS_GUEST_HIDE_GMS ONEOS_HEAT_CAP ONEOS_GUEST_SEC_IMS ONEOS_GUEST_EDM_STUB ONEOS_VERBOSE_BOOT ONEOS_FULL_LOGS ONEOS_SHARE_FILES ONEOS_GUEST_PERF ONEOS_GUEST_BEAST ONEOS_RETURN_MODE"
 # Images whose Google services a session may hide (ONEOS_GUEST_HIDE_GMS=1;
 # ImageRef.gmsHideable): the Find X9 Ultra IN build (again from 0.4.11) and
 # the Find N6 global build (0.4.38). The Pixel images have them too, but their
@@ -966,6 +966,7 @@ env_value() {
         ONEOS_SHARE_FILES) echo 0 ;;
         # A54: safe reversible lag reductions in every guest; a launch's choice; Prepare writes 1.
         ONEOS_GUEST_PERF) echo 1 ;;
+        ONEOS_GUEST_BEAST) echo 0 ;;
         # 0.4.7: Back to One UI restarts One UI in place; a failed check reboots.
         ONEOS_RETURN_MODE) echo inplace ;;
         *) return 1 ;;
@@ -987,7 +988,7 @@ check_env() { # <file> <form> <profile> <image>
         case "$seen" in *" $key "*) refuse "session.env sets $key twice" ;; esac
         seen="$seen$key "
         want=$(env_value "$key" "$2" "$3") || refuse "session.env key $key is not allowed"
-        if [ "$key" = ONEOS_GUEST_SEC_IMS ] || [ "$key" = ONEOS_GUEST_EDM_STUB ] || [ "$key" = ONEOS_VERBOSE_BOOT ] || [ "$key" = ONEOS_FULL_LOGS ] || [ "$key" = ONEOS_SHARE_FILES ] || [ "$key" = ONEOS_GUEST_PERF ]; then
+        if [ "$key" = ONEOS_GUEST_SEC_IMS ] || [ "$key" = ONEOS_GUEST_EDM_STUB ] || [ "$key" = ONEOS_VERBOSE_BOOT ] || [ "$key" = ONEOS_FULL_LOGS ] || [ "$key" = ONEOS_SHARE_FILES ] || [ "$key" = ONEOS_GUEST_PERF ] || [ "$key" = ONEOS_GUEST_BEAST ]; then
             case "$val" in 0|1) continue ;; *) refuse "session.env $key=$val is not 0 or 1" ;; esac
         fi
         if [ "$key" = ONEOS_GUEST_HIDE_GMS ] && [ "$val" = 1 ]; then
@@ -1002,6 +1003,8 @@ check_env() { # <file> <form> <profile> <image>
         [ "$k" = ONEOS_SHARE_FILES ] && continue
         # A system prepared before this A54 build has no ONEOS_GUEST_PERF line: on; the launch adds it.
         [ "$k" = ONEOS_GUEST_PERF ] && continue
+        # A system prepared before this A54 build has no ONEOS_GUEST_BEAST line: off; the launch adds it.
+        [ "$k" = ONEOS_GUEST_BEAST ] && continue
         case "$seen" in *" $k "*) ;; *) refuse "session.env lacks $k" ;; esac
     done
 }
@@ -1382,8 +1385,8 @@ switch_verdict() {
 }
 
 do_launch() {
-    [ $# -ge 7 ] && [ $# -le 11 ] || usage "launch <session|dry> <versionCode> <sessionId> <hideGms> <heatCap> <secIms> <edmStub> [verboseBoot [fullLogs [shareFiles [guestPerf]]]]"
-    mode=$1 code=$2 sid=$3 gms=$4 heat=$5 secims=$6 edmstub=$7 verbose=${8:-0} fulllogs=${9:-1} sharefiles=${10:-0} guestperf=${11:-1}
+    [ $# -ge 7 ] && [ $# -le 12 ] || usage "launch <session|dry> <versionCode> <sessionId> <hideGms> <heatCap> <secIms> <edmStub> [verboseBoot [fullLogs [shareFiles [guestPerf [guestBeast]]]]]"
+    mode=$1 code=$2 sid=$3 gms=$4 heat=$5 secims=$6 edmstub=$7 verbose=${8:-0} fulllogs=${9:-1} sharefiles=${10:-0} guestperf=${11:-1} guestbeast=${12:-0}
     case "$mode" in session|dry) ;; *) usage "launch mode $mode" ;; esac
     is_dec "$code" || usage "launch versionCode $code"
     case "$sid" in *[!0-9a-f]*|'') usage "launch session id" ;; esac
@@ -1396,6 +1399,7 @@ do_launch() {
     case "$fulllogs" in 0|1) ;; *) usage "launch fullLogs $fulllogs" ;; esac
     case "$sharefiles" in 0|1) ;; *) usage "launch shareFiles $sharefiles" ;; esac
     case "$guestperf" in 0|1) ;; *) usage "launch guestPerf $guestperf" ;; esac
+    case "$guestbeast" in 0|1) ;; *) usage "launch guestBeast $guestbeast" ;; esac
     [ -n "$T" ] || [ "$(id -u)" = 0 ] || refuse "not root"
     step "checks"
     [ ! -e "$STAGE/.oneos_update" ] || refuse "the installed system update did not finish: retry the update"
@@ -1456,12 +1460,14 @@ do_launch() {
     # launch writes its own. (Before the test root's stop, so the tests see it.)
     grep -q '^ONEOS_SHARE_FILES=' "$STAGE/session.env" || echo "ONEOS_SHARE_FILES=0" >> "$STAGE/session.env" || die "could not write session.env for this launch"
     grep -q '^ONEOS_GUEST_PERF=' "$STAGE/session.env" || echo "ONEOS_GUEST_PERF=1" >> "$STAGE/session.env" || die "could not write session.env for this launch"
+    grep -q '^ONEOS_GUEST_BEAST=' "$STAGE/session.env" || echo "ONEOS_GUEST_BEAST=0" >> "$STAGE/session.env" || die "could not write session.env for this launch"
     sed -e "s/^ONEOS_GUEST_HIDE_GMS=.*/ONEOS_GUEST_HIDE_GMS=$gms/" -e "s/^ONEOS_HEAT_CAP=.*/ONEOS_HEAT_CAP=$heat/" \
         -e "s/^ONEOS_GUEST_SEC_IMS=.*/ONEOS_GUEST_SEC_IMS=$secims/" \
         -e "s/^ONEOS_VERBOSE_BOOT=.*/ONEOS_VERBOSE_BOOT=$verbose/" \
         -e "s/^ONEOS_FULL_LOGS=.*/ONEOS_FULL_LOGS=$fulllogs/" \
         -e "s/^ONEOS_SHARE_FILES=.*/ONEOS_SHARE_FILES=$sharefiles/" \
         -e "s/^ONEOS_GUEST_PERF=.*/ONEOS_GUEST_PERF=$guestperf/" \
+        -e "s/^ONEOS_GUEST_BEAST=.*/ONEOS_GUEST_BEAST=$guestbeast/" \
         -e "s/^ONEOS_GUEST_EDM_STUB=.*/ONEOS_GUEST_EDM_STUB=$edmstub/" "$STAGE/session.env" > "$STAGE/session.env.tmp" &&
         grep -q -x "ONEOS_GUEST_HIDE_GMS=$gms" "$STAGE/session.env.tmp" && grep -q -x "ONEOS_HEAT_CAP=$heat" "$STAGE/session.env.tmp" &&
         grep -q -x "ONEOS_GUEST_SEC_IMS=$secims" "$STAGE/session.env.tmp" &&
@@ -1469,6 +1475,7 @@ do_launch() {
         grep -q -x "ONEOS_FULL_LOGS=$fulllogs" "$STAGE/session.env.tmp" &&
         grep -q -x "ONEOS_SHARE_FILES=$sharefiles" "$STAGE/session.env.tmp" &&
         grep -q -x "ONEOS_GUEST_PERF=$guestperf" "$STAGE/session.env.tmp" &&
+        grep -q -x "ONEOS_GUEST_BEAST=$guestbeast" "$STAGE/session.env.tmp" &&
         grep -q -x "ONEOS_GUEST_EDM_STUB=$edmstub" "$STAGE/session.env.tmp" &&
         own "$STAGE/session.env.tmp" 0644 &&
         mv -f "$STAGE/session.env.tmp" "$STAGE/session.env" || die "could not write session.env for this launch"
@@ -2621,35 +2628,118 @@ do_bring_media() {
 }
 
 # OneOS A54: reversibly freeze already-vetted host third-party apps while a
-# guest session runs (`pm suspend`), and thaw exactly the names recorded in
-# $STAGE/data/oneos_host_suspended.list. Never disable or uninstall.
+# guest session runs (`pm suspend`), and thaw them from a persistent list.
+# The list is stored at $STAGE/oneos_host_suspended.list (outside guest
+# userdata) and also at $STAGE/data/oneos_host_suspended.list so older
+# return scripts can still find the names. A name is dropped only after a
+# successful unsuspend. A fallback also unsuspends packages still marked
+# as suspended by this app (com.fahadali.oneos) or by android/shell, which
+# is how `pm` records a root/shell freeze. Never disable or uninstall.
+# The KernelSU/Magisk boot hook and the /data/adb copy of the list are
+# installed by return_to_oneui.sh (writes outside the stage).
+HOST_SUSPEND_LIST="$STAGE/oneos_host_suspended.list"
+HOST_SUSPEND_LIST_LEGACY="$STAGE/data/oneos_host_suspended.list"
+
+host_suspend_collect_from() {
+    f="$1"
+    [ -n "$f" ] && [ -f "$f" ] && [ ! -L "$f" ] || return 0
+    while read -r pkg rest; do
+        [ -n "$pkg" ] || continue
+        is_package "$pkg" && [ -z "$rest" ] || continue
+        in_list "$pkg" "$names" || names="$names $pkg"
+    done < "$f"
+}
+
+host_suspend_write_lists() {
+    names="$1"
+    for F in "$HOST_SUSPEND_LIST" "$HOST_SUSPEND_LIST_LEGACY"; do
+        d=$(dirname "$F")
+        [ -d "$d" ] && [ ! -L "$d" ] || continue
+        if [ -n "$names" ]; then
+            printf '' > "$F" || continue
+            for pkg in $names; do
+                printf '%s\n' "$pkg" >> "$F"
+            done
+            own "$F" 0644 2>/dev/null || true
+        else
+            rm -f "$F"
+        fi
+    done
+}
+
+# Packages still marked suspended by this app, or by the shell/root `pm`
+# that applied the freeze (Android records that as android or shell).
+host_suspend_fallback_packages() {
+    dumpsys package 2>/dev/null | awk '
+        function flush() {
+            if (pkg != "" && sus == 1) {
+                b = tolower(by)
+                if (b ~ /^com\.fahadali\.oneos($|\.)/ || b == "android" || b == "shell" || b == "com.android.shell")
+                    print pkg
+            }
+        }
+        /^[[:space:]]*Package \[/ {
+            flush()
+            pkg = $0
+            sub(/.*\[/, "", pkg)
+            sub(/\].*/, "", pkg)
+            sus = 0
+            by = ""
+            next
+        }
+        /suspended=true/ { sus = 1 }
+        /suspended=false/ { sus = 0 }
+        /[Ss]uspending[Pp]ackage=/ {
+            line = $0
+            sub(/.*[Ss]uspending[Pp]ackage=/, "", line)
+            split(line, a, /[[:space:],]/)
+            by = a[1]
+        }
+        /suspended by package=/ {
+            line = $0
+            sub(/.*suspended by package=/, "", line)
+            split(line, a, /[[:space:],]/)
+            by = a[1]
+        }
+        END { flush() }
+    '
+}
+
 host_unsuspend_list() {
     extra="${1:-}"
-    part="$STAGE/data/oneos_host_suspended.list"
     names=""
-    if [ -f "$part" ] && [ ! -L "$part" ]; then
-        while read -r pkg rest; do
-            [ -n "$pkg" ] || continue
-            is_package "$pkg" && [ -z "$rest" ] || continue
-            in_list "$pkg" "$names" || names="$names $pkg"
-        done < "$part"
-    fi
-    if [ -n "$extra" ] && [ -f "$extra" ] && [ ! -L "$extra" ]; then
-        while read -r pkg rest; do
-            [ -n "$pkg" ] || continue
-            is_package "$pkg" && [ -z "$rest" ] || continue
-            in_list "$pkg" "$names" || names="$names $pkg"
-        done < "$extra"
-    fi
+    host_suspend_collect_from "$HOST_SUSPEND_LIST"
+    host_suspend_collect_from "$HOST_SUSPEND_LIST_LEGACY"
+    host_suspend_collect_from "$extra"
+    fb=$(host_suspend_fallback_packages)
+    for pkg in $fb; do
+        is_package "$pkg" || continue
+        in_list "$pkg" "$names" || names="$names $pkg"
+    done
     HOST_UNSUSPEND_COUNT=0
-    [ -n "$names" ] || { rm -f "$part"; return 0; }
-    pm path android >/dev/null 2>&1 || return 1
+    HOST_UNSUSPEND_LEFT=0
+    if [ -z "$names" ]; then
+        host_suspend_write_lists ""
+        return 0
+    fi
+    if ! pm path android >/dev/null 2>&1; then
+        host_suspend_write_lists "$names"
+        return 1
+    fi
+    left=""
     for pkg in $names; do
         if pm unsuspend --user 0 "$pkg" >/dev/null 2>&1; then
             HOST_UNSUSPEND_COUNT=$((HOST_UNSUSPEND_COUNT + 1))
+            say "@@RESULT host_unsuspend $pkg"
+        else
+            in_list "$pkg" "$left" || left="$left $pkg"
+            say "@@RESULT host_unsuspend_left $pkg"
         fi
     done
-    rm -f "$part"
+    host_suspend_write_lists "$left"
+    for pkg in $left; do
+        HOST_UNSUSPEND_LEFT=$((HOST_UNSUSPEND_LEFT + 1))
+    done
     return 0
 }
 
@@ -2672,7 +2762,7 @@ do_host_unsuspend() {
     else
         host_unsuspend_list || refuse "package manager is not ready; frozen apps were left as they were"
     fi
-    say "@@OK host-unsuspend $HOST_UNSUSPEND_COUNT"
+    say "@@OK host-unsuspend $HOST_UNSUSPEND_COUNT left=$HOST_UNSUSPEND_LEFT"
 }
 
 do_host_suspend() {
@@ -2693,15 +2783,10 @@ do_host_suspend() {
         in_list "$pkg" "$list" || list="$list $pkg"
     done < "$part"
     rm -f "$part"
-    F="$STAGE/data/oneos_host_suspended.list"
-    exist=""
-    if [ -f "$F" ] && [ ! -L "$F" ]; then
-        while read -r pkg rest; do
-            [ -n "$pkg" ] || continue
-            is_package "$pkg" && [ -z "$rest" ] || continue
-            in_list "$pkg" "$exist" || exist="$exist $pkg"
-        done < "$F"
-    fi
+    names=""
+    host_suspend_collect_from "$HOST_SUSPEND_LIST"
+    host_suspend_collect_from "$HOST_SUSPEND_LIST_LEGACY"
+    exist="$names"
     n=0
     for pkg in $list; do
         case "$pkg" in
@@ -2722,15 +2807,7 @@ do_host_suspend() {
             say "@@RESULT host_suspend $pkg"
         fi
     done
-    if [ -n "$exist" ]; then
-        printf '' > "$F" || die "could not write $F"
-        for pkg in $exist; do
-            printf '%s\n' "$pkg" >> "$F"
-        done
-        own "$F" 0644
-    else
-        rm -f "$F"
-    fi
+    host_suspend_write_lists "$exist"
     say "@@OK host-suspend $n"
 }
 

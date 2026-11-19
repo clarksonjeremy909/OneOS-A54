@@ -197,6 +197,7 @@ case "${ONEOS_GUEST_GMS:-1}" in 0|1) ;; *) refuse "ONEOS_GUEST_GMS=$ONEOS_GUEST_
 # Cool down when hot (the heat cap below): 0 or 1, unset meaning 1.
 case "${ONEOS_HEAT_CAP:-1}" in 0|1) ;; *) refuse "ONEOS_HEAT_CAP=$ONEOS_HEAT_CAP (0 or 1)" ;; esac
 case "${ONEOS_GUEST_PERF:-1}" in 0|1) ;; *) refuse "ONEOS_GUEST_PERF=$ONEOS_GUEST_PERF (0 or 1)" ;; esac
+case "${ONEOS_GUEST_BEAST:-0}" in 0|1) ;; *) refuse "ONEOS_GUEST_BEAST=$ONEOS_GUEST_BEAST (0 or 1)" ;; esac
 case "${ONEOS_FULL_LOGS:-1}" in 0|1) ;; *) refuse "ONEOS_FULL_LOGS=$ONEOS_FULL_LOGS (0 or 1)" ;; esac
 case "${ONEOS_SHARE_FILES:-0}" in 0|1) ;; *) refuse "ONEOS_SHARE_FILES=$ONEOS_SHARE_FILES (0 or 1)" ;; esac
 [ "${ONEOS_GUEST_GMS:-1}" = 1 ] && [ "${ONEOS_GUEST_HIDE_GMS:-0}" = 1 ] && [ -f "$STAGE/gmssystem_payload.img" ] &&
@@ -3773,15 +3774,19 @@ echo "Session sampler: every 30 s to $STAGE/diag_series.txt"
 # kernel's thermal limits and the cap above stay. It runs without the cap too
 # (only the status then); ONEOS_GUEST_THERMAL_MAP=0 leaves the HAL's.
 
-# OneOS A54: reversible I/O tweaks for every guest (ONEOS_GUEST_PERF=1). The
-# kernel is shared, so originals are saved on the stage and restored in
+# OneOS A54: reversible I/O and light VM tweaks for every guest (ONEOS_GUEST_PERF=1).
+# The kernel is shared, so originals are saved on the stage and restored in
 # return_to_oneui.sh. Only real block devices; never loop/ram/dm/zram. The
 # scheduler becomes none only when that name is already listed. readahead
-# is lowered to 128 KB only when it is already higher. Write failures are
-# ignored and do not abort the session.
-rm -f "$STAGE/oneos_io.prev"
+# is lowered to 128 KB (64 KB in Canavar) only when it is already higher.
+# iostats and add_random are turned off when those nodes exist. Canavar may
+# also lower dirty ratios when /proc/sys/vm exposes them. Write failures are
+# ignored and do not abort the session. No clocks or thermal limits are changed.
+rm -f "$STAGE/oneos_io.prev" "$STAGE/oneos_vm.prev"
 if [ "${ONEOS_GUEST_PERF:-1}" = 1 ]; then
     : > "$STAGE/oneos_io.prev"
+    RA_CAP=128
+    [ "${ONEOS_GUEST_BEAST:-0}" = 1 ] && RA_CAP=64
     for b in /sys/block/*; do
         [ -d "$b/queue" ] || continue
         name=${b##*/}
@@ -3803,15 +3808,51 @@ if [ "${ONEOS_GUEST_PERF:-1}" = 1 ]; then
         if [ -f "$ra" ]; then
             val=$(cat "$ra" 2>/dev/null || true)
             case "$val" in *[!0-9]*|'') ;; *)
-                if [ "$val" -gt 128 ]; then
+                if [ "$val" -gt "$RA_CAP" ]; then
                     printf '%s\t%s\t%s\n' "$ra" readahead "$val" >> "$STAGE/oneos_io.prev"
-                    printf '%s\n' 128 > "$ra" 2>/dev/null || true
+                    printf '%s\n' "$RA_CAP" > "$ra" 2>/dev/null || true
                 fi
                 ;;
             esac
         fi
+        for node in iostats add_random; do
+            f="$b/queue/$node"
+            [ -f "$f" ] || continue
+            val=$(cat "$f" 2>/dev/null || true)
+            case "$val" in
+                1)
+                    printf '%s\t%s\t%s\n' "$f" "$node" "$val" >> "$STAGE/oneos_io.prev"
+                    printf '%s\n' 0 > "$f" 2>/dev/null || true
+                    ;;
+            esac
+        done
     done
-    echo "Guest I/O tweaks: on (saved $(wc -l < "$STAGE/oneos_io.prev" 2>/dev/null || echo 0) values in $STAGE/oneos_io.prev)"
+    if [ "${ONEOS_GUEST_BEAST:-0}" = 1 ]; then
+        : > "$STAGE/oneos_vm.prev"
+        # Only when the node exists and is a number higher than a conservative cap.
+        if [ -f /proc/sys/vm/dirty_ratio ]; then
+            val=$(cat /proc/sys/vm/dirty_ratio 2>/dev/null || true)
+            case "$val" in *[!0-9]*|'') ;; *)
+                if [ "$val" -gt 20 ]; then
+                    printf '%s\t%s\n' /proc/sys/vm/dirty_ratio "$val" >> "$STAGE/oneos_vm.prev"
+                    printf '%s\n' 20 > /proc/sys/vm/dirty_ratio 2>/dev/null || true
+                fi
+                ;;
+            esac
+        fi
+        if [ -f /proc/sys/vm/dirty_background_ratio ]; then
+            val=$(cat /proc/sys/vm/dirty_background_ratio 2>/dev/null || true)
+            case "$val" in *[!0-9]*|'') ;; *)
+                if [ "$val" -gt 10 ]; then
+                    printf '%s\t%s\n' /proc/sys/vm/dirty_background_ratio "$val" >> "$STAGE/oneos_vm.prev"
+                    printf '%s\n' 10 > /proc/sys/vm/dirty_background_ratio 2>/dev/null || true
+                fi
+                ;;
+            esac
+        fi
+        echo "Guest Canavar VM tweaks: on (saved $(wc -l < "$STAGE/oneos_vm.prev" 2>/dev/null || echo 0) values)"
+    fi
+    echo "Guest I/O tweaks: on (saved $(wc -l < "$STAGE/oneos_io.prev" 2>/dev/null || echo 0) values in $STAGE/oneos_io.prev, readahead cap ${RA_CAP} KB)"
 else
     echo "Guest I/O tweaks: off (ONEOS_GUEST_PERF=0)"
 fi

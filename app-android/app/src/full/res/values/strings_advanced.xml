@@ -8,6 +8,8 @@
 
     <!-- Shared -->
     <string name="advanced_details">Details</string>
+    <string name="advanced_guest_beast_title">Beast mode</string>
+    <string name="advanced_guest_beast_summary">Stronger, still reversible lag reductions: animations at 0.25×, a tighter background-app cap, window blurs off, a little more logging turned down, and milder I/O and dirty-page caps when the kernel exposes them. Does not raise clocks or remove thermal limits. Off by default; applied only while Reduce lag is also on. Turn it off if something feels wrong.</string>
 
     <!-- Advanced -->
     <string name="advanced_title">Settings</string>
@@ -323,9 +325,9 @@
 
     <!-- About OneOS and Phone details (main's texts, in plain words and naming no system, for this edition) -->
     <string name="tested_scope">Tested on the Z Fold (F8U), S26 Ultra, S25 Ultra and S25.</string>
-    <string name="about_what_summary">Runs another Android system next to One UI on a rooted phone, and comes back to One UI, usually without a restart. Nothing is flashed.</string>
+    <string name="about_what_summary">An unofficial OneOS fork for the Galaxy A54 5G. On a rooted phone it runs another Android system next to One UI, usually returning without a restart. Nothing is flashed. Made for the A54 5G; other phones may work but are not guaranteed.</string>
     <string name="about_version_scope_summary">Sets up a system you downloaded in its own folder and switches to it. Back to One UI or Volume Up + Down brings you back. OneOS downloads nothing itself and deletes nothing outside its folder without asking.</string>
-    <string name="about_tested_summary">Tested on the Z Fold (F8U), S26 Ultra, S25 Ultra and S25. Other phones are untested.</string>
+    <string name="about_tested_summary">Tested on Galaxy A54 5G: OxygenOS 16 boots; smooth after 10–20 min from first boot, lag reduced (warming up on first boot is normal). Other A-series phones and other devices are untested and not guaranteed.</string>
     <string name="about_safety_summary">Every change OneOS makes as root is checked first, by the app and by root. Nothing outside OneOS\'s folder is ever deleted, and the other system is kept away from One UI\'s data.</string>
     <string name="report_title">Phone details</string>
     <string name="report_warning_next">Setup and the switch run their own checks and stop anything this phone can\'t run.</string>
@@ -501,7 +503,7 @@
     <string name="advanced_host_suspend_allow_summary">Ticked apps are never frozen. System, phone, SMS, keyboard and similar apps are already excluded.</string>
     <string name="advanced_host_suspend_allow_empty">No third-party apps to add.</string>
     <string name="advanced_guest_perf_title">Reduce lag in every guest system</string>
-    <string name="advanced_guest_perf_summary">Applies to every guest ROM, not only OxygenOS. Animations run at half speed, cached background processes are capped moderately, a little guest activity logging is turned down, flash readahead is limited, and the I/O scheduler is set to none when the kernel offers it. Original values are saved and restored when you return to One UI. First-session app compile and the optional One UI freeze stay separate. Turn this off if something feels wrong. No guest apps are disabled.</string>
+    <string name="advanced_guest_perf_summary">Applies to every guest ROM, not only OxygenOS. Animations run at half speed, cached background processes are capped moderately, a little guest activity logging is turned down, app standby and the cached-apps freezer can be turned on, flash readahead is limited, I/O accounting may be lightened, and the I/O scheduler is set to none when the kernel offers it. First-session app compile runs at a lower priority so the phone runs a little cooler. Original values are saved and restored when you return to One UI. The optional One UI freeze stays separate. Turn this off if something feels wrong. No guest apps are disabled.</string>
     <!-- 0.5.17 (owner): the warning before "Switch with a screen lock set" (LockRiskDialog). -->
     <string name="lock_risk_title">Switch with a screen lock: you take the risk</string>
     <string name="lock_risk_message">Recent Samsung firmware blocks Download Mode while a PIN, pattern, password, fingerprint or face lock is set. If a switch goes wrong with your lock on, your phone may not start and may not reach Download Mode either: then the only way back is a factory reset, which erases everything on it. This has happened to a tester.\n\nA Download Mode module (such as backdownload) lowers this risk but does not remove it. Back up first. You alone are responsible for what happens to your phone and its data.</string>

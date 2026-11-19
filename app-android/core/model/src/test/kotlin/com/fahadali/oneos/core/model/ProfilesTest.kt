@@ -301,7 +301,7 @@ class ProfilesTest {
                 Profiles.FOLD6, Profiles.A07, Profiles.FLIP8, Profiles.A36, Profiles.FOLD5,
                 Profiles.S_ULTRA_8550, Profiles.FLIP6, Profiles.S_9945, Profiles.S_EDGE_8750, Profiles.S_FE_9945,
                 Profiles.A26, Profiles.A17, Profiles.A16, Profiles.S_9965, Profiles.A16_4G, Profiles.A16_S166, Profiles.A35, Profiles.A54, Profiles.A27, Profiles.A17_5G, Profiles.FLIP7_FE,
-                Profiles.A06, Profiles.A07_5G, Profiles.A15, Profiles.A24, Profiles.A25, Profiles.A33, Profiles.A34, Profiles.A53, Profiles.E55,
+                Profiles.A06, Profiles.A07_5G, Profiles.A15, Profiles.A24, Profiles.A25, Profiles.A33, Profiles.A34, Profiles.A53, Profiles.A73, Profiles.E55,
                 Profiles.S_FE_9925, Profiles.S_FE_8450, Profiles.S_PLUS_9925, Profiles.S_ULTRA_9925, Profiles.S_ULTRA_8450,
                 Profiles.A55, Profiles.S25_FE, Profiles.S_8450, Profiles.M55S, Profiles.S_ULTRA_8450_JP, Profiles.S_PLUS_9945,
                 Profiles.S_ULTRA_8550_JP, Profiles.S_9925, Profiles.A16_MTK, Profiles.S_8550_JP,
@@ -310,7 +310,7 @@ class ProfilesTest {
             Profiles.BUILT_IN,
         )
         // 0.4.67: the phones still on One UI 8 take OxygenOS 16 only, untested, as bar phones.
-        for (p in listOf(Profiles.A06, Profiles.A07_5G, Profiles.A24, Profiles.A25, Profiles.A33, Profiles.A53, Profiles.E55,
+        for (p in listOf(Profiles.A06, Profiles.A07_5G, Profiles.A24, Profiles.A25, Profiles.A33, Profiles.A53, Profiles.A73, Profiles.E55,
                 Profiles.S_FE_9925, Profiles.S_FE_8450, Profiles.S_PLUS_9925, Profiles.S_ULTRA_9925, Profiles.S_ULTRA_8450, Profiles.S_8450, Profiles.M55S, Profiles.S_ULTRA_8450_JP,
                 Profiles.S_9925, Profiles.A16_MTK, Profiles.A15_5G)) {
             assertEquals(p.id, listOf(ImageChoice(Images.ID_OXYGEN16, PackageSets.ID_OXYGEN16, tested = false)), p.choices)
@@ -394,6 +394,11 @@ class ProfilesTest {
         assertEquals(Profiles.A35, Profiles.resolve("SM-A356E", "a35x", "s5e8835").profile)
         assertEquals(Profiles.A35, Profiles.resolve("SM-A356U1", "a35x", "s5e8835").profile)
         assertEquals(Profiles.A54, Profiles.resolve("SM-A546E", "a54x", "s5e8835").profile)
+        assertTrue(Profiles.A54.choices.any { it.imageId == Images.ID_OXYGEN16 && it.tested })
+        assertTrue(Profiles.A26.choices.none { it.imageId == Images.ID_OXYGEN16 && it.tested })
+        assertEquals(Profiles.A73, Profiles.resolve("SM-A736B", "a73xq", "SM7325").profile)
+        assertEquals("SM7325", Profiles.A73.socModel)
+        assertTrue(Profiles.A73.choices.none { it.tested })
         // 0.4.95: the Galaxy M35 5G (SM-M356B, m35x), the same chip and vendor as the A35 5G: the A26's systems and
         // notes; not by another phone's codename or chip.
         assertEquals(Profiles.M35, Profiles.resolve("SM-M356B", "m35x", "s5e8835").profile)

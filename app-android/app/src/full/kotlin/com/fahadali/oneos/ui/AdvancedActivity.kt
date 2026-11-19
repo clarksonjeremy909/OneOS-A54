@@ -103,6 +103,9 @@ class AdvancedFragment : CardsFragment() {
         CardRows.toggle(sessions, getString(R.string.advanced_guest_perf_title), getString(R.string.advanced_guest_perf_summary), SessionPrefs.guestPerf(ctx)) { on ->
             SessionPrefs.setGuestPerf(ctx, on)
         }
+        CardRows.toggle(sessions, getString(R.string.advanced_guest_beast_title), getString(R.string.advanced_guest_beast_summary), SessionPrefs.guestBeast(ctx)) { on ->
+            SessionPrefs.setGuestBeast(ctx, on)
+        }
         CardRows.toggle(sessions, getString(R.string.advanced_full_logs_title), getString(R.string.advanced_full_logs_summary), SessionPrefs.fullLogs(ctx)) { on ->
             SessionPrefs.setFullLogs(ctx, on)
         }

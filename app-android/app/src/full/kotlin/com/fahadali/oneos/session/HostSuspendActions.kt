@@ -10,8 +10,11 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * Talks to the `host-suspend` / `host-unsuspend` root verbs. The list of
- * packages that were actually frozen is kept in the stage and mirrored in
- * [SessionPrefs] so a crash can still unsuspend exactly those packages.
+ * packages that were actually frozen is kept in the stage (outside guest
+ * userdata) and mirrored in [SessionPrefs] so a crash, a One UI return,
+ * a boot, or opening the app can still unsuspend them. The unsuspend
+ * verb also thaws any package still marked suspended by this app or by
+ * `android` / shell (the identity `pm` records when it runs as root).
  */
 object HostSuspendActions {
     @Volatile var busy: Boolean = false
@@ -24,16 +27,17 @@ object HostSuspendActions {
     fun pending(ctx: Context): Boolean = SessionPrefs.hostSuspendedList(ctx).isNotEmpty()
 
     /**
-     * Crash recovery: if a list is still stored, unsuspend exactly those
-     * packages. Starts at most once per process; runs off the main thread.
+     * Crash / boot / launch recovery. Always asks the root script to thaw the
+     * saved list plus any leftover packages suspended by this app or by
+     * android/shell, even when the saved list is empty. Starts at most once
+     * per process; runs off the main thread.
      */
     fun restoreOnStart(ctx: Context, after: (() -> Unit)? = null) {
         val app = ctx.applicationContext
-        if (!pending(app)) {
+        if (!restoreStarted.compareAndSet(false, true)) {
             after?.let { main.post(it) }
             return
         }
-        if (!restoreStarted.compareAndSet(false, true)) return
         unsuspend(app, after)
     }
 
@@ -55,7 +59,7 @@ object HostSuspendActions {
                 feed = RootShell.Feed { it.write(body) },
                 silenceMs = 60_000L,
             )
-            val fromRoot = HostSuspend.parseList(reply.reply.results.joinToString("\n") { it.removePrefix("host_suspend ").let { n -> if (n == it) "" else n } })
+            val fromRoot = prefixed(reply.reply.results, "host_suspend ")
             val kept = if (fromRoot.isNotEmpty()) HostSuspend.merge(already, fromRoot) else SessionPrefs.hostSuspendedList(ctx)
             SessionPrefs.setHostSuspendedList(ctx, kept)
             if (!reply.ok) reply.problem ?: "host-suspend refused" else null
@@ -82,6 +86,9 @@ object HostSuspendActions {
         runUnsuspend(ctx.applicationContext)
     }
 
+    private fun prefixed(results: List<String>, prefix: String): List<String> =
+        HostSuspend.parseList(results.joinToString("\n") { it.removePrefix(prefix).let { n -> if (n == it) "" else n } })
+
     private fun runUnsuspend(ctx: Context) {
         val backup = SessionPrefs.hostSuspendedList(ctx)
         val body = HostSuspend.formatList(backup).toByteArray(Charsets.UTF_8)
@@ -90,7 +97,12 @@ object HostSuspendActions {
                 ctx, RootScript.Verb.HOST_UNSUSPEND, listOf(body.size.toString()),
                 feed = RootShell.Feed { it.write(body) }, silenceMs = 60_000L,
             )
-            if (reply.ok) SessionPrefs.setHostSuspendedList(ctx, emptyList())
+            val left = prefixed(reply.reply.results, "host_unsuspend_left ")
+            when {
+                reply.ok -> SessionPrefs.setHostSuspendedList(ctx, left)
+                left.isNotEmpty() -> SessionPrefs.setHostSuspendedList(ctx, left)
+                else -> SessionPrefs.setHostSuspendedList(ctx, backup)
+            }
         } catch (_: Exception) {
             // Leave the list in prefs so the next start can try again.
         }
