@@ -2031,7 +2031,7 @@
           "image": "oxygenos16-cph2745",
           "label": "OxygenOS 16, OnePlus CPH2745 build",
           "set": "oxygen16",
-          "tested": false
+          "tested": true
         },
         {
           "image": "nothingos5-asteroids",
@@ -2401,6 +2401,24 @@
       "model": "SM-A536",
       "codename": "a53x",
       "chip": "s5e8825",
+      "form": "bar",
+      "enabled": true,
+      "disabledReason": null,
+      "systems": [
+        {
+          "image": "oxygenos16-cph2745",
+          "label": "OxygenOS 16, OnePlus CPH2745 build",
+          "set": "oxygen16",
+          "tested": false
+        }
+      ]
+    },
+    {
+      "id": "a73",
+      "label": "Galaxy A73 5G",
+      "model": "SM-A736",
+      "codename": "a73xq",
+      "chip": "SM7325",
       "form": "bar",
       "enabled": true,
       "disabledReason": null,

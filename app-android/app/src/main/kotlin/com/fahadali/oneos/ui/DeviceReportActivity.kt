@@ -174,7 +174,7 @@ class DeviceReportFragment : PreferenceFragmentCompat() {
         sw.row("Kernel", f.kernel.ifEmpty { NOT_REPORTED })
 
         val root = category(getString(R.string.report_cat_root))
-        root.row("Root manager", rootText(f))
+        root.row(getString(R.string.report_root_manager), rootText(f))
         checkRootPref = root.row(
             getString(R.string.check_root_title),
             if (probing) getString(R.string.check_root_running) else probeText(probe),
@@ -217,13 +217,13 @@ class DeviceReportFragment : PreferenceFragmentCompat() {
     }
 
     private fun displaysText(f: DeviceFacts): String {
-        if (f.panels.isEmpty()) return "None visible"
+        if (f.panels.isEmpty()) return getString(R.string.report_panels_none)
         val lines = f.panels.map { p ->
             val size = p.diagonalInches?.let { String.format(Locale.ROOT, ", %.1f in", it) } ?: ""
             "#${p.displayId} ${p.name}: ${p.widthPx} x ${p.heightPx} px$size"
         }.toMutableList()
         if (!f.panelsComplete) {
-            lines += "Only active displays are visible on this Android version"
+            lines += getString(R.string.report_panels_active_only)
         }
         return lines.joinToString("\n")
     }
@@ -232,21 +232,21 @@ class DeviceReportFragment : PreferenceFragmentCompat() {
         append(f.rootKind.label)
         if (f.root.managerPackages.isNotEmpty()) append("\nApp: ${f.root.managerPackages.joinToString()}")
         append(
-            if (f.root.suPaths.isNotEmpty()) "\nsu visible at ${f.root.suPaths.joinToString()}"
-            else "\nsu not visible to ${getString(R.string.app_name)}",
+            if (f.root.suPaths.isNotEmpty()) "\n" + getString(R.string.report_root_su_visible, f.root.suPaths.joinToString())
+            else "\n" + getString(R.string.report_root_su_hidden, getString(R.string.app_name)),
         )
         if (f.rootKind == RootKind.KERNELSU && f.root.suPaths.isEmpty()) {
-            append(" (KernelSU shows it only to apps it allows)")
+            append(getString(R.string.report_root_kernelsu_hint))
         }
     }
 
     private fun probeText(p: SuProbeResult?): String = when (p?.state) {
         null -> getString(R.string.check_root_summary)
-        SuState.GRANTED -> "Root works: ${p.output}"
-        SuState.TIMEOUT -> "No answer in time. Allow ${getString(R.string.app_name)} in your root manager, then tap to try again."
-        SuState.NOT_FOUND -> "su not found for ${getString(R.string.app_name)}: ${p.output}"
-        SuState.DENIED -> "Root refused: ${p.output.ifEmpty { "no output" }}"
-        SuState.ERROR -> "Check failed: ${p.output}"
+        SuState.GRANTED -> getString(R.string.report_root_works, p.output)
+        SuState.TIMEOUT -> getString(R.string.report_root_timeout, getString(R.string.app_name))
+        SuState.NOT_FOUND -> getString(R.string.report_root_not_found, getString(R.string.app_name), p.output)
+        SuState.DENIED -> getString(R.string.report_root_denied, p.output.ifEmpty { getString(R.string.report_root_no_output) })
+        SuState.ERROR -> getString(R.string.report_root_error, p.output)
     }
 
     private fun confirmRootCheck() {
@@ -292,9 +292,9 @@ class DeviceReportFragment : PreferenceFragmentCompat() {
         val warns = r.count(Level.WARN)
         val blocks = r.count(Level.BLOCK)
         return when (r.verdict) {
-            Verdict.COMPATIBLE -> "Nothing found that stops OneOS on this phone. ${CompatEvaluator.TESTED_SCOPE}"
-            Verdict.WARNING -> "Read the $warns warning${plural(warns)} below. ${getString(R.string.report_warning_next)}"
-            Verdict.NOT_SUPPORTED -> "OneOS can't run on this phone: $blocks blocking finding${plural(blocks)} below."
+            Verdict.COMPATIBLE -> getString(R.string.report_verdict_ok)
+            Verdict.WARNING -> getString(R.string.report_verdict_warn, warns)
+            Verdict.NOT_SUPPORTED -> getString(R.string.report_verdict_block, blocks)
         }
     }
 

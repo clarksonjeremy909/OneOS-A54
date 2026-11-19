@@ -204,7 +204,7 @@ class SessionEnvTest {
         assertEquals(listOf(Images.FIND_N6, Images.FIND_X9U_IN_1105, Images.NOTHING_METROID, Images.OXYGEN16, Images.LINEAGE24), Images.ALL.filter { it.gmsHideable })
         assertEquals(
             listOf("ONEOS_GUEST_HIDE_GMS", "ONEOS_HEAT_CAP", "ONEOS_GUEST_SEC_IMS", "ONEOS_GUEST_EDM_STUB", "ONEOS_VERBOSE_BOOT", "ONEOS_FULL_LOGS", "ONEOS_SHARE_FILES", "ONEOS_GUEST_PERF", "ONEOS_GUEST_BEAST", "ONEOS_RETURN_MODE"),
-            SessionEnv.ALLOWED.keys.toList().takeLast(9),
+            SessionEnv.ALLOWED.keys.toList().takeLast(10),
         )
         assertEquals("ONEOS_GUEST_BEAST", SessionEnv.ALLOWED.keys.toList().dropLast(1).last())
         for (p in Profiles.BUILT_IN.filter { it.enabled }) {

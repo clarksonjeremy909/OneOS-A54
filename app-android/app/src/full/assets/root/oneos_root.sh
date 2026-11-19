@@ -242,6 +242,7 @@ profile_info() {
         a16-s166) echo "SM-S166 a16x s5e8535 bar" ;;
         a35) echo "SM-A356 a35x s5e8835 bar" ;;
         a54) echo "SM-A546 a54x s5e8835 bar" ;;
+        a73) echo "SM-A736 a73xq SM7325 bar" ;;
         a16) echo "SM-A166 a16x s5e8535 bar" ;;
         a17-5g) echo "SM-A176 a17x s5e8535 bar" ;;
         flip7-fe) echo "SM-F761 b7r s5e9945 flip" ;;
@@ -554,6 +555,7 @@ profile_set() {
         "a26 oxygenos16-cph2745") echo oxygen16 ;;
         "a35 oxygenos16-cph2745") echo oxygen16 ;;
         "a54 oxygenos16-cph2745") echo oxygen16 ;;
+        "a73 oxygenos16-cph2745") echo oxygen16 ;;
         "a17 oxygenos16-cph2745") echo oxygen16 ;;
         "a16-4g oxygenos16-cph2745") echo oxygen16 ;;
         "a16 oxygenos16-cph2745") echo oxygen16 ;;
@@ -2653,7 +2655,7 @@ host_suspend_collect_from() {
 host_suspend_write_lists() {
     names="$1"
     for F in "$HOST_SUSPEND_LIST" "$HOST_SUSPEND_LIST_LEGACY"; do
-        d=$(dirname "$F")
+        d=${F%/*}
         [ -d "$d" ] && [ ! -L "$d" ] || continue
         if [ -n "$names" ]; then
             printf '' > "$F" || continue

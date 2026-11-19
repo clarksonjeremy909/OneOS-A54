@@ -16,7 +16,7 @@ class HostUnsuspendReceiver : BroadcastReceiver() {
             Intent.ACTION_BOOT_COMPLETED,
             Intent.ACTION_MY_PACKAGE_REPLACED -> {
                 val pending = goAsync()
-                HostSuspendActions.restoreOnStart(context.applicationContext) {
+                HostUnfreeze.unsuspendAll(context.applicationContext) {
                     pending.finish()
                 }
             }

@@ -212,7 +212,8 @@
     <string name="a54_intro_ok">OK</string>
     <string name="report_verdict_ok">Nothing found that stops OneOS A54 on this phone.</string>
     <string name="report_verdict_warn">Read the %1$d warning(s) below.</string>
-    <string name="report_verdict_block">OneOS A54 can't run on this phone: %1$d blocking finding(s) below.</string>
+    <string name="report_verdict_block">OneOS A54 can\'t run on this phone: %1$d blocking finding(s) below.</string>
+    <string name="report_root_manager">Root manager</string>
     <string name="report_root_works">Root works: %1$s</string>
     <string name="report_root_timeout">No answer in time. Allow %1$s in your root manager, then tap to try again.</string>
     <string name="report_root_not_found">su not found for %1$s: %2$s</string>

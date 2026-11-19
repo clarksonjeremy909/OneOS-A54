@@ -300,7 +300,7 @@ Downloads: each system's own link below (the SourceForge mirror, resumable); all
   - Galaxy A16 4G (SM-A165, MT6789), not tested yet
   - Galaxy A16 5G (SM-S166V) (SM-S166, s5e8535), not tested yet
   - Galaxy A35 5G (SM-A356, s5e8835), not tested yet
-  - Galaxy A54 5G (SM-A546, s5e8835), not tested yet
+  - Galaxy A54 5G (SM-A546, s5e8835)
   - Galaxy A17 5G (SM-A176, s5e8535), not tested yet
   - Galaxy A06 (SM-A066, MT6835), not tested yet
   - Galaxy A07 5G (SM-A076, MT6835), not tested yet
@@ -310,6 +310,7 @@ Downloads: each system's own link below (the SourceForge mirror, resumable); all
   - Galaxy A33 5G (SM-A336, s5e8825), not tested yet
   - Galaxy A34 5G (SM-A346, MT6877), not tested yet
   - Galaxy A53 5G (SM-A536, s5e8825), not tested yet
+  - Galaxy A73 5G (SM-A736, SM7325), not tested yet
   - Galaxy F55/E55 (SM-E556, SM7450), not tested yet
   - Galaxy S23 FE (SM-S711, s5e9925), not tested yet
   - Galaxy S23 FE (Snapdragon) (SM-S711, SM8450), not tested yet

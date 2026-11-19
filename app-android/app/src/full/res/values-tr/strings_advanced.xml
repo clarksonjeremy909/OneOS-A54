@@ -330,9 +330,9 @@ OneOS, One UI ile birlikte kapanır.</string>
 
     <!-- About OneOS and Phone details (main's texts, in plain words and naming no system, for this edition) -->
     <string name="tested_scope">Z Fold (F8U), S26 Ultra, S25 Ultra ve S25 üzerinde test edildi.</string>
-    <string name="about_what_summary">Köklü bir telefonda One UI\'nin yanında başka bir Android sistemi çalıştırır ve genellikle yeniden başlatmadan One UI\'ye döner. Hiçbir şey yazılmaz.</string>
+    <string name="about_what_summary">Galaxy A54 5G için gayriresmi bir OneOS çatalı. Köklü telefonda One UI\'nin yanında başka bir Android sistemi çalıştırır ve genellikle yeniden başlatmadan geri döner. Hiçbir şey yazılmaz. A54 5G için yapıldı; başka telefonlarda çalışması garanti değil.</string>
     <string name="about_version_scope_summary">İndirdiğiniz bir sistemi kendi klasörüne kurar ve ona geçer. One UI\'ye dön veya Ses Aç + Kıs sizi geri getirir. OneOS kendisi bir şey indirmez ve sormadan klasörünün dışında hiçbir şeyi silmez.</string>
-    <string name="about_tested_summary">Z Fold (F8U), S26 Ultra, S25 Ultra ve S25 üzerinde test edildi. Diğer telefonlar denenmedi.</string>
+    <string name="about_tested_summary">Galaxy A54 5G\'de test edildi: OxygenOS 16 açılıyor; ilk açılıştan 10–20 dk sonra akıcı, kasmalar azalıyor (ilk açılışta ısınma normal). Diğer A serisi ve başka telefonlar denenmedi, çalışacağı garanti değil.</string>
     <string name="about_safety_summary">OneOS\'un root olarak yaptığı her değişiklik önce uygulama ve root tarafından kontrol edilir. OneOS klasörünün dışında hiçbir şey silinmez ve diğer sistem One UI verisinden uzak tutulur.</string>
     <string name="report_title">Telefon ayrıntıları</string>
     <string name="report_warning_next">Kurulum ve geçiş kendi kontrollerini çalıştırır ve bu telefonun çalıştıramayacağı şeyleri durdurur.</string>
@@ -509,6 +509,8 @@ OneOS, One UI ile birlikte kapanır.</string>
     <string name="advanced_host_suspend_allow_empty">Eklenecek üçüncü taraf uygulama yok.</string>
     <string name="advanced_guest_perf_title">Her konuk sistemde kasmayı azalt</string>
     <string name="advanced_guest_perf_summary">Yalnızca OxygenOS için değil, her konuk ROM\'da geçerlidir. Animasyonlar yarı hızda çalışır, arka planda bekleyen süreçler makul ölçüde sınırlanır, konuk etkinlik günlüklerinin bir kısmı kısılır, flash okuma önbelleği sınırlanır ve çekirdek izin veriyorsa I/O zamanlayıcı none yapılır. Özgün değerler kaydedilir ve One UI\'ye dönünce geri yüklenir. İlk oturumdaki uygulama derlemesi ve isteğe bağlı One UI dondurma ayrı durur. Bir şey ters giderse kapatın. Konuk uygulamalar kapatılmaz.</string>
+    <string name="advanced_guest_beast_title">Canavar modu</string>
+    <string name="advanced_guest_beast_summary">Daha güçlü, yine de geri alınabilir kasma azaltma: animasyonlar 0,25×, daha sıkı arka plan uygulama sınırı, pencere bulanıklığı kapalı, biraz daha az günlük, çekirdek izin veriyorsa daha hafif I/O ve dirty-page sınırları. Saatleri yükseltmez, ısıl sınırları kaldırmaz. Varsayılan olarak kapalıdır; yalnızca “kasmayı azalt” da açıkken uygulanır. Bir şey ters gelirse kapatın.</string>
     <!-- 0.5.17 (owner): the warning before "Switch with a screen lock set" (LockRiskDialog). -->
     <string name="lock_risk_title">Ekran kilidi varken geçiş: riski siz üstlenirsiniz</string>
     <string name="lock_risk_message">Yeni Samsung yazılımları, PIN, desen, parola, parmak izi veya yüz kilidi varken Download Mode\'u engeller. Kilidiniz açıkken bir geçiş ters giderse telefonunuz açılmayabilir ve Download Mode\'a da ulaşamayabilir: o zaman tek dönüş yolu her şeyi silen fabrika sıfırlamasıdır. Bu bir testçiye oldu.

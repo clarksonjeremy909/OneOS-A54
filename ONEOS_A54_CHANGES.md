@@ -1,5 +1,14 @@
 # OneOS A54 (0.5.24 tabanlı özel derleme)
 
+## 0.5.25 (versionCode 170)
+
+- Marka: “OneOS A54 ekibi” / “OneOS A54 team” (Miraç Aytaç, Grok Bot; orijinal OneOS: fahadalijaved). İlk açılışta tanıtım ekranı.
+- Test notu (uygulama, README, sürüm notları): “Galaxy A54 5G'de test edildi: OxygenOS 16 açılıyor; ilk açılıştan 10–20 dk sonra akıcı, kasmalar azalıyor (ilk açılışta ısınma normal).”
+- **Canavar modu** / **Beast mode**: varsayılan kapalı, yalnızca “kasmayı azalt” açıkken. Animasyon 0,25×, daha sıkı arka plan sınırı, bulanıklık/günlük kısma, güvenli I/O; saat yükseltme veya ısıl sınır kaldırma yok. Kapatınca ve One UI’ye dönünce geri alınır.
+- Daha fazla Türkçe (Özet/Device Report, tanıtım, Canavar, hakkında). İngilizce APK İngilizce kalır.
+- A73 5G profili eklendi (doğrulanmış: SM-A736 / a73xq / SM7325; yalnızca OxygenOS 16; **test edilmedi**). A54 eşleşme anahtarları değişmedi. Resmi One UI 8 listesinde olmayan veya kimliği doğrulanmayan modeller (A05/A05s, A14, A23, A52/A52s, A72 vb.) eklenmedi. Katalogdaki diğer güncel A modelleri zaten resmi OneOS’ta vardı.
+- Dondurma düzeltmesi (0.5.24.2 üzerine): OneOS açılınca ve güncellemede bütün paketler `pm unsuspend` / `cmd package unsuspend` ile çözülür. Ayrıca dönüşte (`return_to_oneui.sh`), KernelSU/Magisk `service.d` açılış kancası ve BOOT_COMPLETED alıcısı, kayıtlı listeyi ve `com.fahadali.oneos` / android / shell tarafından dondurulmuş paketleri çözer. Liste `$STAGE/oneos_host_suspended.list` altında (konuk /data dışında) tutulur; başarısız unsuspend listeden silinmez. Özellik varsayılan **kapalı**. Ayarlar: **Dondurulan uygulamaları geri aç**.
+
 ## 0.5.24.2 (hotfix, versionCode 169)
 
 - Acil düzeltme: One UI'ye döndükten sonra dondurulup gri kalan uygulamalar (Termux, KernelSU Manager ve diğerleri dahil).

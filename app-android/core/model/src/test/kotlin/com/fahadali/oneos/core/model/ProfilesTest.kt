@@ -409,9 +409,15 @@ class ProfilesTest {
         // 0.4.59: the Galaxy A27 (SM-A276B), the A36's SM6475 and generation, so its choices and notes.
         assertEquals(Profiles.A27, Profiles.resolve("SM-A276B", "a27xq", "SM6475").profile)
         assertEquals(listOf(Profiles.A36.choices, Profiles.A36.notes), listOf(Profiles.A27.choices, Profiles.A27.notes))
-        for (p in listOf(Profiles.A35, Profiles.A54, Profiles.M35)) {
+        for (p in listOf(Profiles.A35, Profiles.M35)) {
             assertEquals(listOf(Profiles.A26.choices, Profiles.A26.notes, Profiles.A26.form), listOf(p.choices, p.notes, p.form))
         }
+        // A54 keeps the A26 notes and form, but OxygenOS 16 is marked tested only on A54.
+        assertEquals(listOf(Profiles.A26.notes, Profiles.A26.form), listOf(Profiles.A54.notes, Profiles.A54.form))
+        assertEquals(
+            Profiles.A26.choices.filter { it.imageId != Images.ID_OXYGEN16 },
+            Profiles.A54.choices.filter { it.imageId != Images.ID_OXYGEN16 },
+        )
         // 0.4.68, findings of 2026-11-08: the Galaxy A55 5G (Exynos 1480, the A35's Cortex-A78/A55, so its choices; vendor
         // API 34 and kernel 6.1, so that older-vendor note), the S25 FE (the S24 FE's Exynos 2400, vendor and screen), and
         // the Galaxy S22 with Snapdragon (One UI 8, the S22 Ultra's SM8450: OxygenOS 16 only).
