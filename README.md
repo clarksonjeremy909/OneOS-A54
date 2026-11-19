@@ -17,7 +17,7 @@
 > [!WARNING]
 > **Resmi OneOS değildir.** Deneyseldir ve telefonunuzun verisini bozabilir. Root (KernelSU, Magisk veya APatch) gerekir. Bu yapımı kendi riskinizle kurun; Samsung, Google, OnePlus veya orijinal OneOS yapımcısı desteklemez. Önce yedek alın.
 
-Kaynak, upstream **OneOS 0.5.23** üzerine kuruludur. Değişiklik listesi: [ONEOS_A54_CHANGES.md](ONEOS_A54_CHANGES.md). Lisans: [Apache License 2.0](LICENSE).
+Kaynak, upstream **OneOS 0.5.24** üzerine kuruludur. Değişiklik listesi: [ONEOS_A54_CHANGES.md](ONEOS_A54_CHANGES.md). Lisans: [Apache License 2.0](LICENSE).
 
 ---
 
@@ -43,7 +43,7 @@ Bu yapım özellikle **Galaxy A54 5G** için hazırlanmıştır. Telefonunuz bir
 ### Kurulum
 
 1. **Resmi OneOS’u kaldırın.** Bu çatalın imzası resmi uygulamadan farklıdır; üstüne kurulmaz. Önceki **OneOS A54** sürümünün üzerine kurulabilir (aynı imza). Türkçe ve İngilizce APK aynı paket adını kullanır; biri diğerinin üzerine kurulur.
-2. [Releases](https://github.com/clarksonjeremy909/OneOS-A54/releases) sayfasından `OneOS-A54-0.5.23-tr.apk` (Türkçe) veya `OneOS-A54-0.5.23-en.apk` (İngilizce) dosyasını indirin. SHA-256 özeti sürüm notlarındadır.
+2. [Releases](https://github.com/clarksonjeremy909/OneOS-A54/releases) sayfasından `OneOS-A54-0.5.24-tr.apk` (Türkçe) veya `OneOS-A54-0.5.24-en.apk` (İngilizce) dosyasını indirin. SHA-256 özeti sürüm notlarındadır.
 3. APK’yı kurun, root izni verin ve OneOS A54 içinden OxygenOS 16’yı hazırlayın.
 
 ### Güncellemeler
@@ -69,7 +69,7 @@ Uygulama, resmi OneOS güncelleme bildirimine bakmaz. Yeni sürümler bu repodak
 
 **OneOS A54** is an **unofficial modified fork** of [OneOS](https://github.com/fahadalijaved/OneOS) made specifically for the Samsung Galaxy A54 5G (SM-A546). It is a dual-boot-style system switcher: on One UI 8 / Android 16 you can start an OxygenOS 16 guest without flashing a ROM. There is a Turkish APK and an English APK.
 
-This tree is based on upstream **OneOS 0.5.23**. See [ONEOS_A54_CHANGES.md](ONEOS_A54_CHANGES.md) for the A54 changes. Licensed under the [Apache License 2.0](LICENSE).
+This tree is based on upstream **OneOS 0.5.24**. See [ONEOS_A54_CHANGES.md](ONEOS_A54_CHANGES.md) for the A54 changes. Licensed under the [Apache License 2.0](LICENSE).
 
 ### Features
 
@@ -91,7 +91,7 @@ This build was made specifically for the **Galaxy A54 5G**. If your phone is not
 ### Install
 
 1. **Uninstall official OneOS first.** This fork is signed with a different key and will not install over it. You *can* update over a previous **OneOS A54** build (same key). The Turkish and English APKs share the same package name, so installing one replaces the other.
-2. Download `OneOS-A54-0.5.23-tr.apk` (Turkish) or `OneOS-A54-0.5.23-en.apk` (English) from [Releases](https://github.com/clarksonjeremy909/OneOS-A54/releases). The SHA-256 digest is in the release notes.
+2. Download `OneOS-A54-0.5.24-tr.apk` (Turkish) or `OneOS-A54-0.5.24-en.apk` (English) from [Releases](https://github.com/clarksonjeremy909/OneOS-A54/releases). The SHA-256 digest is in the release notes.
 3. Install the APK, grant root, and prepare OxygenOS 16 from inside OneOS A54.
 
 ### Updates

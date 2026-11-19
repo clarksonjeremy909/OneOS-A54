@@ -90,4 +90,12 @@ class AppUpdateTest {
         val apk = "\"https://github.com/someone/OneOS-A54/releases/download/v0.5.23-a54.1/OneOS-A54-0.5.23-tr.apk\""
         assertTrue(AppUpdate.parse(json(apk = apk)).isFailure)
     }
+
+    @Test
+    fun refusesOfficialApkOnTheA54Channel() {
+        val official = "https://github.com/fahadalijaved/OneOS/releases/download/v0.5.24/OneOS-0.5.24.apk"
+        val text = """{"versionCode": 167, "versionName": "0.5.24", "notes": "official", "apkTr": "$official", "bytesTr": 56898761, "sha256Tr": "$sha"}"""
+        assertTrue(AppUpdate.parse(text, channel = "tr").isFailure)
+        assertTrue(AppUpdate.parse(json(apk = "\"$official\"")).isSuccess)
+    }
 }

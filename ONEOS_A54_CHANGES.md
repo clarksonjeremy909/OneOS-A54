@@ -1,4 +1,4 @@
-# OneOS A54 (0.5.23 tabanlı özel derleme)
+# OneOS A54 (0.5.24 tabanlı özel derleme)
 
 Paketi değiştirilmedi: `com.fahadali.oneos`. Resmi OneOS ile aynı imza olmadığından kurmadan önce resmi uygulamayı kaldırmanız gerekir.
 
@@ -43,6 +43,14 @@ Bu ayarlar yalnızca OxygenOS için değil, hazırlanan her konuk sistem için g
 - Türkçe (`-Poneos.ui=tr`, arayüz zorlanır) ve İngilizce (`-Poneos.ui=en`, telefon diline göre `values-tr`) APK’lar aynı paket adını kullanır.
 - Kasma azaltma (dexopt, ısı freni seçeneği, host-suspend, yeni `ONEOS_GUEST_PERF` ayarları) her konuk ROM için geçerlidir, yalnızca OxygenOS için değil.
 - Cihaz kapıları değişmedi. README, yapımın Galaxy A54 5G için olduğunu ve başka telefonlarda garanti edilmediğini belirtir.
+
+## Upstream 0.5.24 ve 0.5.24.1
+- Resmi [v0.5.24](https://github.com/fahadalijaved/OneOS/releases/tag/v0.5.24) (`70aa91d`) alındı: raporlar artık yükleme hizmetine değil, özel OneOSReports Telegram grubuna gider (eski worker kapatıldı); parmak izi One UI'de kurulur.
+- `versionCode` **168**, `versionName` **0.5.24.1** (s25 derlemesinde görünen ad `0.5.24.1-s25`). Resmi 0.5.24 de `versionCode` 167 olduğu için 0.5.23.1 ile aynı sayıdaydı; 168 her ikisinin de üstündedir.
+- Güncelleme yalnızca bu çatalın `version.json` dosyasındandır. A54 kanalı resmi OneOS APK adresini kabul etmez. 0.5.23 (166) yapımlarında görülen resmi “0.5.24 kullanılabilir” bandı, resmi `update.json` dosyasındandı; 0.5.23.1 ve sonrası o dosyayı indirmez.
+- Türkçe gönderim metinleri 0.5.24’teki Telegram akışına göre güncellendi.
+- Önceki A54 değişiklikleri (TR/EN APK, dexopt, ısı freni, host-suspend, her konukta kasma azaltma, A54 5G README notu) korundu.
+
 
 ## Derleme
 - Seri: s25, `packSets` kapalı (set dosyaları çalışma anında indirilir).

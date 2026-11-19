@@ -170,9 +170,9 @@ Magisk, OneOS\'a izin vermenizi isteyebilir. KernelSU veya APatch\'te önce süp
     <string name="usage_count_title">Anonim kullanım sayısı</string>
     <string name="usage_count_summary">Günde bir kez, rastgele bir kimlik, telefon modeliniz, OneOS sürümü ve kurduğunuz sistemler; böylece etkin telefonları sayabiliriz. Hesap, numara, konum veya dosya yok.</string>
     <string name="send_privacy_title">Ekibin gördükleri</string>
-    <string name="send_privacy_summary">Paylaş\'ın gönderdiği aynı dosya, kişisel veriler zaten kaldırılmış halde ve yanıtlarınız. Raporlar 30 gün saklanır. Genel uyumluluk tablosu yalnızca yanıtları sayar: notunuz, adınız veya telefon ayrıntıları asla sayılmaz.</string>
-    <string name="send_button">OneOS ekibine gönder</string>
-    <string name="send_button_summary">Mobil veri veya Wi-Fi kullanır</string>
+    <string name="send_privacy_summary">Paylaş\'ın oluşturduğu aynı dosya, kişisel veriler zaten kaldırılmış halde ve yanıtlarınız; özel OneOSReports grubuna OneOS ekibi ve üyeleri için gönderilir. Genel uyumluluk tablosu yalnızca yanıtları sayar: notunuz, adınız veya telefon ayrıntıları asla sayılmaz.</string>
+    <string name="send_button">OneOSReports\'a gönder</string>
+    <string name="send_button_summary">Raporu Telegram\'da açar: OneOSReports grubunu seçip gönderin</string>
     <string name="send_preparing">Hazırlanıyor…</string>
     <string name="send_progress">Gönderiliyor… %2$s içinde %1$d%%</string>
     <string name="send_sending">Gönderiliyor</string>
@@ -180,8 +180,8 @@ Magisk, OneOS\'a izin vermenizi isteyebilir. KernelSU veya APatch\'te önce süp
     <string name="send_from_guest_summary">Diğer sistemde işaretledikleriniz. Göndermeden önce aşağıdakileri değiştirebilirsiniz.</string>
     <string name="send_need_start">Önce başlayıp başlamadığını seçin</string>
     <string name="send_too_big">Dosya gönderilemeyecek kadar büyük (%1$s). Bunun yerine Paylaş\'ı kullanın.</string>
-    <string name="send_done_title">Gönderildi. Teşekkürler!</string>
-    <string name="send_done_summary">Rapor kodu %1$s. Kopyalamak için dokunun ve yazarsanız Telefon raporlarında bundan bahsedin.</string>
+    <string name="send_done_title">Telegram\'da hazır</string>
+    <string name="send_done_summary">Rapor kodu %1$s. OneOSReports\'a gönderildikten sonra bot altında yanıtlar. Kodu kopyalamak için dokunun.</string>
     <string name="send_copied">Rapor kodu kopyalandı</string>
     <string name="send_again">Yeniden gönder</string>
     <string name="send_failed_title">Gönderilemedi</string>
@@ -200,6 +200,8 @@ Magisk, OneOS\'a izin vermenizi isteyebilir. KernelSU veya APatch\'te önce süp
     <string name="send_tg_signed_in">Telegram ile oturum açıldı</string>
     <string name="send_tg_sign_out">Oturumu kapat</string>
     <string name="send_tg_expired">Oturum açmanın süresi doldu. Yeniden deneyin.</string>
+    <string name="send_tg_reports_join_title">OneOSReports\'a katılın (bir kez)</string>
+    <string name="send_tg_reports_join_summary">Raporlar bu özel gruba gider. OneOS grubunun üyeleri otomatik alınır.</string>
     <string name="send_tg_join_title">OneOS grubuna katıl</string>
     <string name="send_tg_join_summary">Raporlar OneOS grubu üyeleri içindir. Katılın, sonra yeniden gönderin.</string>
     <string name="send_tg_no_app">Bağlantıyı açacak uygulama yok</string>

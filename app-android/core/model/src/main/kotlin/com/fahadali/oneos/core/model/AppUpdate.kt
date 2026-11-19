@@ -103,7 +103,12 @@ data class AppUpdate(
             if (!NAME.matches(name)) error("versionName '$name'")
             val official = apk.startsWith(APK_PREFIX) && APK_PATH.matches(apk.removePrefix(APK_PREFIX))
             val a54 = apk.startsWith(A54_APK_PREFIX) && A54_APK_PATH.matches(apk.removePrefix(A54_APK_PREFIX))
-            if (!official && !a54 && !(test && DRIVE_APK.matches(apk))) error("the APK is not a OneOS release file: $apk")
+            // A54 channels (tr/en) may only name this fork's release APKs, never official OneOS.
+            if (suffix.isNotEmpty()) {
+                if (!a54 && !(test && DRIVE_APK.matches(apk))) error("the APK is not a OneOS A54 release file: $apk")
+            } else if (!official && !a54 && !(test && DRIVE_APK.matches(apk))) {
+                error("the APK is not a OneOS release file: $apk")
+            }
             if (bytes !in 1..MAX_BYTES) error("APK size $bytes")
             if (!HEX64.matches(sha)) error("sha256 '$sha'")
             val notes = optStr("notes")?.trim()?.takeIf { it.isNotEmpty() }
