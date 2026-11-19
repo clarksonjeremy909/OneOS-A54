@@ -34,7 +34,7 @@ class SessionEnvTest {
             ONEOS_SHARE_FILES=0
             ONEOS_GUEST_PERF=1
             ONEOS_GUEST_BEAST=0
-            ONEOS_GUEST_REFRESH=auto
+            ONEOS_GUEST_REFRESH=off
             ONEOS_RETURN_MODE=inplace
 
             """.trimIndent(),
@@ -68,7 +68,7 @@ class SessionEnvTest {
             ONEOS_SHARE_FILES=0
             ONEOS_GUEST_PERF=1
             ONEOS_GUEST_BEAST=0
-            ONEOS_GUEST_REFRESH=auto
+            ONEOS_GUEST_REFRESH=off
             ONEOS_RETURN_MODE=inplace
 
             """.trimIndent(),
@@ -306,12 +306,12 @@ class SessionEnvTest {
     fun guestRefreshDefaultsToAutoAndAcceptsPanelRates() {
         for (profile in Profiles.BUILT_IN.filter { it.enabled }) {
             val text = SessionEnv.generate(profile)
-            assertTrue(text.contains("ONEOS_GUEST_REFRESH=auto\n"))
+            assertTrue(text.contains("ONEOS_GUEST_REFRESH=off\n"))
             for (ok in listOf("60", "90", "120", "auto")) {
-                assertEquals(emptyList<String>(), SessionEnv.validate(text.replace("ONEOS_GUEST_REFRESH=auto", "ONEOS_GUEST_REFRESH=$ok")))
+                assertEquals(emptyList<String>(), SessionEnv.validate(text.replace("ONEOS_GUEST_REFRESH=off", "ONEOS_GUEST_REFRESH=$ok")))
             }
             for (bad in listOf("144", "24", "120.0", "", "max")) {
-                assertTrue(bad, SessionEnv.validate(text.replace("ONEOS_GUEST_REFRESH=auto", "ONEOS_GUEST_REFRESH=$bad")).isNotEmpty())
+                assertTrue(bad, SessionEnv.validate(text.replace("ONEOS_GUEST_REFRESH=off", "ONEOS_GUEST_REFRESH=$bad")).isNotEmpty())
             }
         }
     }

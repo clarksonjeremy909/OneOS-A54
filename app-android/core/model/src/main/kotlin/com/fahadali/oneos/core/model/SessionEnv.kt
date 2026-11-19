@@ -101,7 +101,7 @@ object SessionEnv {
         SHARE_FILES to Regex("[01]"),
         GUEST_PERF to Regex("[01]"),
         GUEST_BEAST to Regex("[01]"),
-        GUEST_REFRESH to Regex("auto|([3-9][0-9]|1[01][0-9]|120)"),
+        GUEST_REFRESH to Regex("off|auto|([3-9][0-9]|1[01][0-9]|120)"),
         RETURN_MODE to Regex("inplace"),
     )
 
@@ -172,7 +172,7 @@ object SessionEnv {
         out[SHARE_FILES] = "0"
         out[GUEST_PERF] = "1"
         out[GUEST_BEAST] = "0"
-        out[GUEST_REFRESH] = "auto"
+        out[GUEST_REFRESH] = "off"
         out[RETURN_MODE] = "inplace"
         return out
     }
@@ -228,7 +228,7 @@ object SessionEnv {
                     k == HEAT_CAP -> Unit
                     k == SEC_IMS -> {} // 0 or 1, a launch's choice on any phone and image
                     k == EDM_STUB || k == VERBOSE_BOOT || k == FULL_LOGS || k == SHARE_FILES || k == GUEST_PERF || k == GUEST_BEAST -> {} // 0 or 1, a launch's choice on any phone and image
-                    k == GUEST_REFRESH -> {} // auto or 30-120, a launch's choice; the switcher only applies a physical mode
+                    k == GUEST_REFRESH -> {} // off, auto or 30-120; the switcher only applies a physical mode, peak only
                     k != HIDE_GMS -> if (got != v) p += "$k=$got does not match profile $id ($v)"
                     got == "1" && image?.gmsHideable != true -> p += if (image?.googleServices == true) {
                         "$HIDE_GMS=1, but the ${image.shortName} image's sessions present Google services, which cannot be hidden"

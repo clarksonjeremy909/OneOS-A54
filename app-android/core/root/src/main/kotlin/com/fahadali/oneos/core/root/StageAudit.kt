@@ -407,13 +407,13 @@ object ShellScan {
  * phone's user data, reboots, settings, package wipes or mounts.
  */
 object StageAudit {
-    val VERBS = listOf("guest-runtime", "guest-module", "guest-module-state", "begin", "receive", "keep-raw", "keep-files", "table", "env", "finish", "launch", "recover", "old-list", "purge", "restore", "remove", "remove-system", "tool-app", "reset-data", "selfupdate", "bring-collect", "bring-clear", "bring-status", "bring-forget", "bring-catalog", "bring-add", "bring-media", "host-suspend", "host-unsuspend")
+    val VERBS = listOf("guest-runtime", "guest-module", "guest-module-state", "begin", "receive", "keep-raw", "keep-files", "table", "env", "finish", "launch", "recover", "old-list", "purge", "restore", "remove", "remove-system", "tool-app", "reset-data", "selfupdate", "bring-collect", "bring-clear", "bring-status", "bring-forget", "bring-catalog", "bring-add", "bring-media", "host-suspend", "host-unsuspend", "bring-contacts", "bug-log")
 
     val ALLOWED: Set<String> = setOf(
         "umask", "[", "echo", "printf", "id", "stat", "awk", "sed", "grep", "sort", "head", "tail", "cut", "tr", "wc",
         "cat", "ls", "mkdir", "mv", "cp", "rm", "chown", "chmod", "chcon", "sha256sum", "date", "getprop", "dumpsys", "pm", "getevent", "du",
         "env", "unset", "export", "set", "read", "exit", "return", "shift", "true", "false", "break", "continue", "exec",
-        "trap", "am", "od", "find", "sleep",
+        "trap", "am", "od", "find", "sleep", "logcat", "dmesg", "content",
         // 0.5.17: tool-app off stops the one process whose program is that app's libtimer.so (tool_pids).
         "kill",
     )
@@ -428,7 +428,7 @@ object StageAudit {
     )
 
     /** Path expressions that are the stage or under it (variables the audit checks the assignments of). */
-    private val STAGE_VARS = setOf("STAGE", "ATTIC", "PLAN", "RECEIVED", "part", "dst", "S", "F", "upd", "upapk", "LOCK", "NEW")
+    private val STAGE_VARS = setOf("STAGE", "ATTIC", "PLAN", "RECEIVED", "part", "dst", "S", "F", "upd", "upapk", "LOCK", "NEW", "RAW", "PH", "EM")
 
     /** Helpers that write their first argument; their call sites must pass a stage path. */
     private val WRITE_HELPERS = setOf("own", "mkdir_mine", "bring_drop", "bring_aside", "bring_clearout")
@@ -675,6 +675,8 @@ object StageAudit {
                 "exec" -> if (args.firstOrNull()?.endsWith("/system/bin/sh") != true && args.firstOrNull() != "@SH@") p += "line ${c.line}: exec ${args.firstOrNull()}"
                 "sed" -> if (args.any { it == "-i" || it.startsWith("-i") }) p += "line ${c.line}: sed -i"
                 "find" -> if (args != BRING_FIND) p += "line ${c.line}: find ${args.joinToString(" ")}"
+                "logcat", "dmesg" -> if (c.function != "do_bug_log") p += "line ${c.line}: $n ${args.joinToString(" ")}"
+                "content" -> if (c.function != "do_bring_contacts" || args.firstOrNull() != "query") p += "line ${c.line}: content ${args.joinToString(" ")}"
             }
             if (c.function == MIGRATE_FUNCTION && (n in WRITES || n in WRITE_HELPERS || n == "to_attic") &&
                 !(n == "mv" && args in MIGRATE_MOVES)

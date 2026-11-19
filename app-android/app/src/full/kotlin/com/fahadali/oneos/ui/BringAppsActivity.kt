@@ -17,6 +17,7 @@ import com.fahadali.oneos.core.model.Images
 import com.fahadali.oneos.core.model.Level
 import com.fahadali.oneos.session.BringAppsJob
 import com.fahadali.oneos.session.BringMedia
+import com.fahadali.oneos.session.BringContactsJob
 import com.fahadali.oneos.session.BringAppsJob.Phase
 import com.fahadali.oneos.session.StageCheck
 import dev.oneuiproject.oneui.R as OuiIcons
@@ -82,6 +83,7 @@ class BringAppsFragment : CardsFragment() {
         asked = false
         syncStage()
         subs += BringAppsJob.observe { redraw() }
+        subs += BringContactsJob.observe { redraw() }
         subs += StageCheck.observe { syncStage(); redraw() }
         // The same page again: what became of the copies, and what is newer on One UI, is read again.
         if (!asked) BringAppsJob.refresh(requireContext())
@@ -162,7 +164,32 @@ class BringAppsFragment : CardsFragment() {
             ) { BringAppsJob.applyMedia(ctx) }
         }
 
-        // The apps on One UI, a box each. The header counts the ticks.
+
+        val contacts = Cards.section(column, getString(R.string.bring_contacts_title), rows = true)
+        CardRows.text(contacts, getString(R.string.bring_contacts_body, system), R.style.OneOS_Text_Caption)
+        val cst = BringContactsJob.state
+        when {
+            cst.busy ->
+                CardRows.tint(
+                    Cards.row(contacts, OuiIcons.drawable.ic_oui_download, getString(R.string.bring_contacts_working), cst.message),
+                    Level.INFO,
+                )
+            else -> CardRows.row(
+                contacts, OuiIcons.drawable.ic_oui_privacy,
+                getString(R.string.bring_contacts_run),
+                cst.message ?: getString(R.string.bring_contacts_summary),
+                enabled = prepared && !stale && !st.busy,
+            ) {
+                AlertDialog.Builder(ctx)
+                    .setTitle(R.string.bring_contacts_title)
+                    .setMessage(getString(R.string.bring_contacts_confirm, system))
+                    .setPositiveButton(R.string.bring_contacts_run) { _, _ -> BringContactsJob.start(ctx) }
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .show()
+            }
+        }
+
+                // The apps on One UI, a box each. The header counts the ticks.
         val apps = Cards.section(
             column, getString(R.string.bring_card_apps),
             trailing = if (ticked > 0) resources.getQuantityString(R.plurals.bring_ticked_n, ticked, ticked) else null,

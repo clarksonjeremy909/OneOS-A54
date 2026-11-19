@@ -28,6 +28,8 @@ import com.fahadali.oneos.core.model.Level
 import com.fahadali.oneos.core.model.Plain
 import com.fahadali.oneos.core.model.Units
 import com.fahadali.oneos.core.root.RootProbe
+import com.fahadali.oneos.session.BringContactsJob
+import com.fahadali.oneos.session.BugLogJob
 import com.fahadali.oneos.session.LaunchJob
 import com.fahadali.oneos.session.PrepareJob
 import com.fahadali.oneos.session.Readiness
@@ -125,6 +127,8 @@ class EnvironmentActivity : EdgeToEdgeActivity() {
         subscriptions += StageCheck.observe { if (!it.busy) Readiness.tick(this); render() }
         subscriptions += PrepareJob.observe { render() }
         subscriptions += LaunchJob.observe { render() }
+        subscriptions += BringContactsJob.observe { render() }
+        subscriptions += BugLogJob.observe { render() }
         // Only what this page shows of the log save (11-10): it rebuilt every row for each of the 135
         // "Collecting N of M" lines, and "Skip saving logs" rebuilt under the finger lost its tap.
         subscriptions += com.fahadali.oneos.session.LogJob.observeBy({ Triple(it.busy, it.recovering, it.stopping) }) { render() }
@@ -371,9 +375,21 @@ class EnvironmentActivity : EdgeToEdgeActivity() {
             startActivity(Intent(this, GuestRuntimeActivity::class.java).putExtra("image", image.id))
         }
         // Bring apps lives on each system's page, like Root (owner, 11-10); its screen says so when another system is set up now.
-        PrebootCards.row(PrebootCards.section(column, getString(R.string.environment_apps)), getString(R.string.bring_title),
+        val appsSec = PrebootCards.section(column, getString(R.string.environment_apps))
+        PrebootCards.row(appsSec, getString(R.string.bring_title),
             getString(R.string.environment_bring_summary), chevron = true, enabled = !preview) {
             startActivity(BringAppsActivity.intent(this, image))
+        }
+        val cSt = BringContactsJob.state
+        PrebootCards.row(appsSec, getString(R.string.bring_contacts_title),
+            cSt.message ?: getString(R.string.bring_contacts_summary), chevron = true,
+            enabled = !preview && !cSt.busy) {
+            AlertDialog.Builder(this)
+                .setTitle(R.string.bring_contacts_title)
+                .setMessage(getString(R.string.bring_contacts_confirm, image.name))
+                .setPositiveButton(R.string.bring_contacts_run) { _, _ -> BringContactsJob.start(this) }
+                .setNegativeButton(android.R.string.cancel, null)
+                .show()
         }
         PrebootCards.row(PrebootCards.section(column), getString(R.string.environment_report), chevron = true) {
             if (preview) AlertDialog.Builder(this).setTitle(R.string.environment_report).setMessage(R.string.environment_preview).setPositiveButton(android.R.string.ok, null).show()

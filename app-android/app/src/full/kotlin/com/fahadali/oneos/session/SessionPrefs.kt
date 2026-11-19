@@ -261,9 +261,27 @@ object SessionPrefs {
     fun guestBeast(ctx: Context): Boolean = p(ctx).getBoolean("guest_beast", false)
     fun setGuestBeast(ctx: Context, on: Boolean) { p(ctx).edit().putBoolean("guest_beast", on).apply() }
 
-    /** Guest refresh-rate choice: "auto" or an integer Hz the panel actually supports. Default auto. */
-    fun guestRefresh(ctx: Context): String = GuestRefresh.normalize(p(ctx).getString("guest_refresh", GuestRefresh.AUTO))
-    fun setGuestRefresh(ctx: Context, value: String) { p(ctx).edit().putString("guest_refresh", GuestRefresh.normalize(value)).apply() }
+    /**
+     * Guest refresh-rate choice: "off" (system default), "auto" (peak only at the
+     * panel maximum) or an integer Hz the panel actually supports. Default off
+     * since 0.5.27: the previous auto min=peak pin could blank some Exynos panels.
+     * A leftover "auto" from 0.5.26's default is migrated to off once.
+     */
+    fun guestRefresh(ctx: Context): String {
+        migrateGuestRefresh(ctx)
+        return GuestRefresh.normalize(p(ctx).getString("guest_refresh", GuestRefresh.OFF))
+    }
+    fun setGuestRefresh(ctx: Context, value: String) {
+        p(ctx).edit().putString("guest_refresh", GuestRefresh.normalize(value)).putInt("guest_refresh_pref_ver", 27).apply()
+    }
+    private fun migrateGuestRefresh(ctx: Context) {
+        val prefs = p(ctx)
+        if (prefs.getInt("guest_refresh_pref_ver", 0) >= 27) return
+        val v = prefs.getString("guest_refresh", null)
+        val e = prefs.edit().putInt("guest_refresh_pref_ver", 27)
+        if (v == null || v == GuestRefresh.AUTO) e.putString("guest_refresh", GuestRefresh.OFF)
+        e.apply()
+    }
 
     /** One-shot in-app intro for the A54 0.5.25 update. */
     fun a54IntroSeen(ctx: Context): Boolean = p(ctx).getBoolean("a54_intro_v025", false)

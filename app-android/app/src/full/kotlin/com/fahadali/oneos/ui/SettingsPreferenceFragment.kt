@@ -14,6 +14,7 @@ import com.fahadali.oneos.session.LogJob
 import com.fahadali.oneos.session.HostUnfreeze
 import com.fahadali.oneos.session.SessionPrefs
 import com.fahadali.oneos.session.AppUpdater
+import com.fahadali.oneos.session.BugLogJob
 import com.fahadali.oneos.BuildConfig
 import dev.oneuiproject.oneui.R as OuiIcons
 
@@ -183,6 +184,31 @@ class SettingsPreferenceFragment : InsetPreferenceFragment() {
                 true
             }
         })
+
+        help.addDescribedPreference(Preference(ctx).apply {
+            key = "setting_bug_log"
+            setTitle(R.string.bug_log_title)
+            setSummary(R.string.bug_log_summary)
+            isIconSpaceReserved = false
+            isEnabled = !BugLogJob.state.busy
+            setOnPreferenceClickListener {
+                if (BugLogJob.state.busy) return@setOnPreferenceClickListener true
+                Toast.makeText(ctx, R.string.bug_log_working, Toast.LENGTH_SHORT).show()
+                BugLogJob.start(ctx)
+                var unsub: (() -> Unit)? = null
+                unsub = BugLogJob.observe { s ->
+                    if (s.busy) return@observe
+                    unsub?.invoke()
+                    val act = activity ?: return@observe
+                    val msg = if (s.ok && s.fileName != null) act.getString(R.string.bug_log_ok, s.fileName)
+                    else act.getString(R.string.bug_log_failed, s.message ?: "no answer")
+                    AlertDialog.Builder(act).setTitle(R.string.bug_log_title).setMessage(msg)
+                        .setPositiveButton(android.R.string.ok, null).show()
+                }
+                true
+            }
+        })
+
         row(help, R.string.about_title, target = AboutActivity::class.java)
         row(help, R.string.team_title, R.string.advanced_team_summary, target = DebugSettingsActivity::class.java)
         preferenceScreen.addBottomInset()

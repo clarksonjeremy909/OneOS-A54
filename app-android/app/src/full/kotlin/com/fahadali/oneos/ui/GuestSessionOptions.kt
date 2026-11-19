@@ -19,13 +19,17 @@ import com.fahadali.oneos.session.SessionPrefs
 internal object GuestSessionOptions {
     fun label(ctx: Context): String {
         val v = SessionPrefs.guestRefresh(ctx)
-        return if (v == GuestRefresh.AUTO) ctx.getString(R.string.advanced_guest_refresh_auto)
-        else ctx.getString(R.string.advanced_guest_refresh_hz, v.toIntOrNull() ?: 0)
+        return when (v) {
+            GuestRefresh.OFF -> ctx.getString(R.string.advanced_guest_refresh_off)
+            GuestRefresh.AUTO -> ctx.getString(R.string.advanced_guest_refresh_auto)
+            else -> ctx.getString(R.string.advanced_guest_refresh_hz, v.toIntOrNull() ?: 0)
+        }
     }
 
     fun choices(ctx: Context): List<Pair<String, String>> {
         val rates = GuestRefresh.availableHz(ctx)
         return buildList {
+            add(GuestRefresh.OFF to ctx.getString(R.string.advanced_guest_refresh_off))
             add(GuestRefresh.AUTO to ctx.getString(R.string.advanced_guest_refresh_auto))
             for (hz in rates) add(hz.toString() to ctx.getString(R.string.advanced_guest_refresh_hz, hz))
         }
@@ -57,7 +61,7 @@ internal object GuestSessionOptions {
         }
         parent.addView(title, LinearLayout.LayoutParams(-1, -2))
         val group = RadioGroup(ctx).apply {
-            orientation = LinearLayout.HORIZONTAL
+            orientation = LinearLayout.VERTICAL
             id = View.generateViewId()
         }
         val current = SessionPrefs.guestRefresh(ctx)
@@ -73,9 +77,9 @@ internal object GuestSessionOptions {
             group.addView(button, LinearLayout.LayoutParams(-2, -2).apply { marginEnd = dp(8) })
         }
         if (!matched) {
-            val auto = group.getChildAt(0) as? RadioButton
-            auto?.isChecked = true
-            SessionPrefs.setGuestRefresh(ctx, GuestRefresh.AUTO)
+            val first = group.getChildAt(0) as? RadioButton
+            first?.isChecked = true
+            SessionPrefs.setGuestRefresh(ctx, GuestRefresh.OFF)
         }
         parent.addView(group, LinearLayout.LayoutParams(-1, -2))
         parent.addView(TextView(ctx).apply {

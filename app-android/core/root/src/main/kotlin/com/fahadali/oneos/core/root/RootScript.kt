@@ -32,7 +32,7 @@ import com.fahadali.oneos.core.model.PackageSets
  * that image's on that phone); `launch` carries this launch's
  * `ONEOS_GUEST_HIDE_GMS`, `ONEOS_HEAT_CAP`, `ONEOS_GUEST_SEC_IMS` and (0.4.32)
  * `ONEOS_GUEST_EDM_STUB`, then optionally `ONEOS_VERBOSE_BOOT`, `ONEOS_FULL_LOGS`,
- * (0.5.20) `ONEOS_SHARE_FILES`, `ONEOS_GUEST_PERF` and `ONEOS_GUEST_BEAST` (0 or 1 each; default 0, 1, 0, 1 and 0), then optionally `ONEOS_GUEST_REFRESH` (`auto` or 30-120; default auto).
+ * (0.5.20) `ONEOS_SHARE_FILES`, `ONEOS_GUEST_PERF` and `ONEOS_GUEST_BEAST` (0 or 1 each; default 0, 1, 0, 1 and 0), then optionally `ONEOS_GUEST_REFRESH` (`off`, `auto` or 30-120; default off).
  */
 object RootScript {
     const val ASSET = "root/oneos_root.sh"
@@ -182,6 +182,20 @@ object RootScript {
          * Zero args uses only the stage list.
          */
         HOST_UNSUSPEND("host-unsuspend", Stdin.DATA),
+
+        /**
+         * OneOS A54 0.5.27: export One UI contacts as a vCard into the stage
+         * (`$STAGE/data/oneos_host_contacts.vcf`). Never deletes contacts.
+         * The switcher imports on the next guest boot (insert only).
+         */
+        BRING_CONTACTS("bring-contacts", Stdin.NONE),
+
+        /**
+         * OneOS A54 0.5.27: write a short logcat/dmesg excerpt under the stage
+         * and stream it back as `@@RESULT buglog` lines for the app to save
+         * to Download. No write outside the stage.
+         */
+        BUG_LOG("bug-log", Stdin.NONE),
     }
 
     /**
@@ -286,9 +300,9 @@ object RootScript {
                 args.getOrNull(9)?.let { if (it != "0" && it != "1") p += "launch: share my files is not 0 or 1" }
                 args.getOrNull(10)?.let { if (it != "0" && it != "1") p += "launch: guest perf is not 0 or 1" }
                 args.getOrNull(11)?.let { if (it != "0" && it != "1") p += "launch: guest beast is not 0 or 1" }
-                args.getOrNull(12)?.let { if (it != "auto" && !Regex("^(?:[3-9][0-9]|1[01][0-9]|120)$").matches(it)) p += "launch: guest refresh '$it' is not auto or 30-120" }
+                args.getOrNull(12)?.let { if (it != "off" && it != "auto" && !Regex("^(?:[3-9][0-9]|1[01][0-9]|120)$").matches(it)) p += "launch: guest refresh '$it' is not off, auto or 30-120" }
             }
-            Verb.RECOVER, Verb.OLD_LIST, Verb.REMOVE, Verb.REMOVE_SYSTEM, Verb.RESET_DATA, Verb.BRING_CLEAR, Verb.BRING_STATUS -> need(0)
+            Verb.RECOVER, Verb.OLD_LIST, Verb.REMOVE, Verb.REMOVE_SYSTEM, Verb.RESET_DATA, Verb.BRING_CLEAR, Verb.BRING_STATUS, Verb.BRING_CONTACTS, Verb.BUG_LOG -> need(0)
             Verb.BRING_COLLECT, Verb.BRING_CATALOG -> {
                 need(1)
                 arg(0, DEC, "a size")

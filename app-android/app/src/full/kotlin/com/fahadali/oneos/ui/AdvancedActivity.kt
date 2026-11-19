@@ -12,6 +12,7 @@ import com.fahadali.oneos.core.model.Level
 import com.fahadali.oneos.core.model.Units
 import com.fahadali.oneos.core.root.OutcomeKind
 import com.fahadali.oneos.session.LogJob
+import com.fahadali.oneos.session.BugLogJob
 import com.fahadali.oneos.session.OldStagesJob
 import com.fahadali.oneos.session.RemoveJob
 import com.fahadali.oneos.session.SessionPrefs
@@ -47,6 +48,7 @@ class AdvancedFragment : CardsFragment() {
         super.onStart()
         // Not for each "Collecting N of M" line (0.4.76): rows rebuilt under the finger lose their tap.
         subs += LogJob.observeBy({ Triple(it.phase, it.recovering, it.stopping) }) { redraw() }
+        subs += BugLogJob.observe { redraw() }
         subs += OldStagesJob.observe { redraw() }
         subs += StageCheck.observe { redraw() }
         subs += RemoveJob.observe { redraw() }
@@ -121,6 +123,15 @@ class AdvancedFragment : CardsFragment() {
         }
         val logs = LogJob.state
         val zip = LogJob.latestZip(ctx)
+        val bug = BugLogJob.state
+        if (bug.busy) {
+            Cards.row(sessions, OuiIcons.drawable.ic_oui_file_type_txt, getString(R.string.bug_log_working), bug.message)
+        } else {
+            Cards.row(sessions, OuiIcons.drawable.ic_oui_file_type_txt, getString(R.string.bug_log_title), getString(R.string.bug_log_summary)) {
+                Toast.makeText(ctx, R.string.bug_log_working, Toast.LENGTH_SHORT).show()
+                BugLogJob.start(ctx)
+            }
+        }
         if (zip != null && !logs.busy) {
             Cards.row(sessions, OuiIcons.drawable.ic_oui_file_type_txt, getString(R.string.logs_title), getString(R.string.advanced_logs_summary)) {
                 startActivity(Intent(ctx, FindingsActivity::class.java).putExtra(FindingsActivity.EXTRA_ZIP, zip.path))

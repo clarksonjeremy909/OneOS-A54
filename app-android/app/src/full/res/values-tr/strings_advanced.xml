@@ -512,10 +512,27 @@ OneOS, One UI ile birlikte kapanır.</string>
     <string name="advanced_guest_beast_title">Canavar modu</string>
     <string name="advanced_guest_beast_summary">Daha güçlü, yine de geri alınabilir kasma azaltma: animasyonlar 0,25×, daha sıkı arka plan uygulama sınırı, pencere bulanıklığı kapalı, biraz daha az günlük, çekirdek izin veriyorsa daha hafif I/O ve dirty-page sınırları. Saatleri yükseltmez, ısıl sınırları kaldırmaz. Varsayılan olarak kapalıdır; yalnızca “kasmayı azalt” da açıkken uygulanır. Bir şey ters gelirse kapatın.</string>
     <string name="advanced_guest_refresh_title">Yenileme hızı</string>
-    <string name="advanced_guest_refresh_summary">Diğer sisteme geçince kullanılır. Otomatik, bu telefonun panelindeki en yüksek hıza sabitler; değişken yenilemenin takılmasını önler. Yalnızca panelin gerçekten desteklediği hızlar listelenir; hız aşırtma yoktur. One UI olduğu gibi bırakılır.</string>
-    <string name="advanced_guest_refresh_auto">Otomatik (panelin en yükseği)</string>
+    <string name="advanced_guest_refresh_summary">Diğer sisteme geçince kullanılır. Sistem varsayılanı, konuk sistemin kendi hızını bırakır ve eski sabitlemeyi temizler. Seçilen hız yalnızca tepe değeri yazar (alt sınır yazılmaz); böylece panel düşebilir ve bazı Exynos panellerdeki kısa siyah ekran önlenir. Yalnızca panelin gerçekten desteklediği hızlar listelenir. One UI olduğu gibi bırakılır.</string>
+    <string name="advanced_guest_refresh_off">Sistem varsayılanı</string>
+    <string name="advanced_guest_refresh_auto">Panele sabitle (en yüksek)</string>
     <string name="advanced_guest_refresh_hz">%1$d Hz</string>
-    <string name="guest_refresh_hint">Sabit yenileme hızı takılmayı azaltır. Kare düşmesi sürerse 60 Hz seçin; 90 Hz yalnızca bu panelde varsa görünür.</string>
+
+    <string name="bug_log_title">Hata kaydı oluştur</string>
+    <string name="bug_log_summary">Kısa bir logcat ve dmesg özetini İndirilenler klasörüne kaydeder, gönderebilmeniz için. Root gerekir. SMS veya fotoğraf içermez.</string>
+    <string name="bug_log_working">Hata kaydı kaydediliyor…</string>
+    <string name="bug_log_ok">İndirilenler/%1$s dosyasına kaydedildi. Siyah ekranı teşhis etmek için bu dosyayı paylaşın.</string>
+    <string name="bug_log_failed">Hata kaydı kaydedilemedi: %1$s</string>
+
+    <string name="bring_contacts_title">Kişileri aktar</string>
+    <string name="bring_contacts_summary">One UI kişilerinizi bu sisteme kopyalar. İki tarafta da hiçbir kişi silinmez. Diğer sistemde zaten olan kişiler atlanır. Kopya bir sonraki geçişte içeri alınır; bir vCard da o sistemin İndirilenler klasörüne konur.</string>
+    <string name="bring_contacts_body">One UI\'den %1$s sistemine tek yönlü kopya. İki taraftaki mevcut kişiler durur. Hazırlanmış bir sistem ve root gerekir.</string>
+    <string name="bring_contacts_run">Kişileri bu sisteme kopyala</string>
+    <string name="bring_contacts_confirm">One UI kişileri %1$s sistemine kopyalanacak. Hiçbir kişi silinmez. Devam edilsin mi?</string>
+    <string name="bring_contacts_working">Kişiler kopyalanıyor…</string>
+    <string name="bring_contacts_ok">%1$s. Bu sisteme bir sonraki geçişte içeri alınırlar.</string>
+    <string name="bring_contacts_failed">Kişiler kopyalanamadı: %1$s</string>
+    <string name="bring_contacts_need_system">Önce bu sistemi hazırlayın, sonra kişileri kopyalayın.</string>
+    <string name="guest_refresh_hint">Ekran siyah olup geri geldiyse en güvenlisi Sistem varsayılanı. Kare düşmesi olursa panele sabitleyin veya 60 Hz seçin. 90 Hz yalnızca bu panelde varsa görünür.</string>
     <string name="settings_check_updates">Güncellemeleri denetle</string>
     <string name="settings_check_updates_summary">Altı saatlik otomatik denetimi beklemeden şimdi bakar. Bu projenin GitHub sürümlerinden eşleşen Türkçe veya İngilizce APK\'yı indirir.</string>
     <string name="settings_check_updates_checking">Güncellemeler denetleniyor…</string>

@@ -30,7 +30,7 @@ Kaynak, upstream **OneOS 0.5.24** üzerine kuruludur. Değişiklik listesi: [ONE
 - **Kasma azaltma (her konuk ROM)** — yalnızca OxygenOS için değil. İlk oturumda uygulama derlemesi (`dexopt` / `speed`) açık; “Her konuk sistemde kasmayı azalt” (varsayılan açık, Ayarlar’dan kapanır): animasyonlar yarı hız, arka plan süreç sınırı, hafif günlük kısma, güvenli I/O ayarları. Hepsi kaydedilir ve One UI’ye dönünce geri alınır. “Isınınca soğut” (45 °C işlemci freni) varsayılan olarak kapalıdır. Konuk uygulamalar kapatılmaz.
 - **Dosyaları aktar** — Bring apps içinde fotoğraf, video, İndirilenler, belgeler, müzik (klasör paylaşımı), APK kopyası ve uygulama getirme.
 - **Konuk açıkken One UI uygulamalarını dondur** — varsayılan **kapalı**. Açılırsa, konuk ROM çalışırken gerekli olmayan One UI uygulamaları geri alınabilir biçimde duraklatılır. One UI’ye dönüşte, uygulama açılışında ve açılışta çözülürler. Ayarlar’da **Dondurulan uygulamaları geri aç** düğmesi vardır.
-- **Yenileme hızı** — her konuk ROM’da, sistem kartında ve geçiş ekranında. Otomatik veya panelin gerçekten desteklediği hızlar (A54’te genelde 60/120 Hz; 90 Hz yalnızca panelde varsa). Sabit hız, değişken yenilemenin takılmasını azaltır. One UI değişmez.
+- **Yenileme hızı** — her konuk ROM’da, sistem kartında ve geçiş ekranında. Varsayılan: Sistem varsayılanı (konuğun kendi hızı; eski min=peak pin temizlenir). İsteğe bağlı olarak panele sabitleme veya panelin desteklediği bir hız (A54’te genelde 60/120 Hz; 90 Hz yalnızca panelde varsa); yalnızca tepe hız yazılır. One UI değişmez.
 - **Canavar modu** — isteğe bağlı, varsayılan kapalı; daha güçlü ama yine de geri alınabilir kasma azaltma (saat yükseltme veya ısıl sınır kaldırma yok). Yalnızca “kasmayı azalt” da açıkken uygulanır. Yeri: Ayarlar → Oturumlar, “Her konuk sistemde kasmayı azalt”ın hemen altı.
 
 ### Gereksinimler
@@ -45,7 +45,7 @@ Bu yapım özellikle **Galaxy A54 5G** için hazırlanmıştır. Telefonunuz bir
 ### Kurulum
 
 1. **Resmi OneOS’u kaldırın.** Bu çatalın imzası resmi uygulamadan farklıdır; üstüne kurulmaz. Önceki **OneOS A54** sürümünün üzerine kurulabilir (aynı imza). Türkçe ve İngilizce APK aynı paket adını kullanır; biri diğerinin üzerine kurulur.
-2. [Releases](https://github.com/clarksonjeremy909/OneOS-A54/releases) sayfasından `OneOS-A54-0.5.26-tr.apk` (Türkçe) veya `OneOS-A54-0.5.26-en.apk` (İngilizce) dosyasını indirin. SHA-256 özeti sürüm notlarındadır.
+2. [Releases](https://github.com/clarksonjeremy909/OneOS-A54/releases) sayfasından `OneOS-A54-0.5.27-tr.apk` (Türkçe) veya `OneOS-A54-0.5.27-en.apk` (İngilizce) dosyasını indirin. SHA-256 özeti sürüm notlarındadır.
 3. APK’yı kurun, root izni verin ve OneOS A54 içinden OxygenOS 16’yı hazırlayın.
 
 ### Güncellemeler
@@ -80,7 +80,7 @@ This tree is based on upstream **OneOS 0.5.24**. See [ONEOS_A54_CHANGES.md](ONEO
 - **Lag reductions for every guest ROM**, not only OxygenOS: first-session dexopt (`speed`) stays on; “Reduce lag in every guest system” (default on, can be turned off in Settings) halves animation speed, caps cached background processes, trims a little guest activity logging, and applies reversible I/O tweaks (readahead 128 KB if higher, scheduler `none` only when the kernel lists it). All of those are saved and restored on return to One UI. “Cool down when hot” (45 °C CPU throttle) is off by default. Guest packages are never disabled.
 - **File transfer** in Bring apps: photos, videos, Downloads, documents, music (folder share), APK copy, and app bring.
 - **Freeze One UI apps while any guest is open** (default **off**). If you turn it on, non-essential One UI apps are reversibly suspended. They are thawed on return to One UI, when OneOS opens, and on boot. Settings has an **Unfreeze apps** button.
-- **Refresh rate** — on every guest ROM, on the system card and the switch sheet. Auto or rates the panel actually reports (typically 60/120 Hz on the A54; 90 Hz only if the panel has it). Pinning min and peak to the same rate reduces VRR stutter. One UI is left as it is.
+- **Refresh rate** — on every guest ROM, on the system card and the switch sheet. Default: System default (the guest's own rate; a leftover min=peak pin is cleared). Optional pin to the panel maximum or a reported rate (typically 60/120 Hz on the A54; 90 Hz only if the panel has it); only the peak is written. One UI is left as it is.
 - **Beast mode** — optional, default off; stronger but still reversible lag reductions (no overclocking or thermal-limit removal). Applied only while “Reduce lag” is also on. Location: Settings → Sessions, immediately under “Reduce lag in every guest system”.
 
 ### Requirements
@@ -95,7 +95,7 @@ This build was made specifically for the **Galaxy A54 5G**. If your phone is not
 ### Install
 
 1. **Uninstall official OneOS first.** This fork is signed with a different key and will not install over it. You *can* update over a previous **OneOS A54** build (same key). The Turkish and English APKs share the same package name, so installing one replaces the other.
-2. Download `OneOS-A54-0.5.26-tr.apk` (Turkish) or `OneOS-A54-0.5.26-en.apk` (English) from [Releases](https://github.com/clarksonjeremy909/OneOS-A54/releases). The SHA-256 digest is in the release notes.
+2. Download `OneOS-A54-0.5.27-tr.apk` (Turkish) or `OneOS-A54-0.5.27-en.apk` (English) from [Releases](https://github.com/clarksonjeremy909/OneOS-A54/releases). The SHA-256 digest is in the release notes.
 3. Install the APK, grant root, and prepare OxygenOS 16 from inside OneOS A54.
 
 ### Updates

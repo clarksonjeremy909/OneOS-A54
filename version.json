@@ -1,11 +1,11 @@
 {
-  "versionCode": 171,
-  "versionName": "0.5.26",
-  "notes": "Refresh-rate picker and lag/frame-drop pin on every guest ROM (not only OxygenOS). Check for updates now. Guest Environment Update starts an on-phone restage when the installed image can be reused; the button is hidden when it cannot. No heat settings added.",
-  "apkTr": "https://github.com/clarksonjeremy909/OneOS-A54/releases/download/v0.5.26-a54/OneOS-A54-0.5.26-tr.apk",
-  "bytesTr": 81665244,
-  "sha256Tr": "15c1b37bcf9ead68838303e82f1337062c4b7ccdd43f49ee0976d55bb3267b40",
-  "apkEn": "https://github.com/clarksonjeremy909/OneOS-A54/releases/download/v0.5.26-a54/OneOS-A54-0.5.26-en.apk",
-  "bytesEn": 81665244,
-  "sha256En": "d04c4a3cdc3d347f3adcbf0e5dd0953fedae230794972c941ea0a6a69107ebb4"
+  "versionCode": 172,
+  "versionName": "0.5.27",
+  "notes": "Safer guest refresh (system default; peak only if a rate is chosen) after in-guest black flashes on OxygenOS. Save a problem log to Download. Transfer contacts from One UI to the guest without deleting any. No heat settings added.",
+  "apkTr": "https://github.com/clarksonjeremy909/OneOS-A54/releases/download/v0.5.27-a54/OneOS-A54-0.5.27-tr.apk",
+  "bytesTr": 81698012,
+  "sha256Tr": "64d5cbf064caec62327d8f4435ff71d8b257da5f8353e10ecca94b0d2c29ccda",
+  "apkEn": "https://github.com/clarksonjeremy909/OneOS-A54/releases/download/v0.5.27-a54/OneOS-A54-0.5.27-en.apk",
+  "bytesEn": 81698012,
+  "sha256En": "d8815380279d53c397cec552d656f6b3e50fc355e62d73c74410bacf5d64b01c"
 }

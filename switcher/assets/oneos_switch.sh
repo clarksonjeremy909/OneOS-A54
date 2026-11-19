@@ -2113,18 +2113,28 @@ esac
 # back to 60 Hz.  Read the highest physical mode (up to OneOS's 120 Hz policy)
 # from the One UI dump captured before the switch.  Keep 120 as the conservative
 # fallback for old stages or an incomplete dump.
+# 0.5.27: default is off (leave the guest's own rate; clear a leftover min=peak
+# pin). auto or a chosen Hz sets only peak_refresh_rate, never min: pinning
+# min=peak to 120 on some Exynos panels can blank the display and recover
+# inside the guest. An unknown rate, or 90 Hz when the dump has none, falls
+# back to the panel maximum. Applied only in the guest; One UI is not changed.
 GUEST_REFRESH=120.0
 R=$(awk -F'fps=' '{ for (i = 2; i <= NF; i++) { v = $i + 0; if (v >= 30 && v <= 120 && v > m) m = v } }
     END { if (m) printf "%.1f", m }' "$STAGE/display_host.txt" 2>/dev/null)
 case "$R" in
     30.0|[3-9][0-9].0|1[01][0-9].0|120.0) GUEST_REFRESH=$R ;;
 esac
-# ONEOS_GUEST_REFRESH=auto|<Hz>: pin min=peak to a physical mode of this panel
-# (avoids VRR stutter). An unknown rate, or 90 Hz when the dump has none, falls
-# back to the panel maximum. Applied only in the guest; One UI is not changed.
-WANT=${ONEOS_GUEST_REFRESH:-auto}
+PANEL_MAX=$GUEST_REFRESH
+WANT=${ONEOS_GUEST_REFRESH:-off}
 case "$WANT" in
-    auto|"") echo "Guest refresh-rate policy: ${GUEST_REFRESH} Hz (auto, panel maximum)" ;;
+    off|default|"")
+        GUEST_REFRESH=off
+        echo "Guest refresh-rate policy: system default (clears leftover min/peak pin)"
+        ;;
+    auto)
+        echo "Guest refresh-rate policy: ${PANEL_MAX} Hz (auto, peak only, panel maximum)"
+        GUEST_REFRESH=$PANEL_MAX
+        ;;
     [3-9][0-9]|1[01][0-9]|120)
         PICK=$(awk -F'fps=' -v want="$WANT" '{
             for (i = 2; i <= NF; i++) {
@@ -2135,15 +2145,17 @@ case "$WANT" in
         case "$PICK" in
             30.0|[3-9][0-9].0|1[01][0-9].0|120.0)
                 GUEST_REFRESH=$PICK
-                echo "Guest refresh-rate policy: ${GUEST_REFRESH} Hz (chosen)"
+                echo "Guest refresh-rate policy: ${GUEST_REFRESH} Hz (chosen, peak only)"
                 ;;
             *)
-                echo "ONEOS_GUEST_REFRESH=$WANT is not a physical mode of this panel: using ${GUEST_REFRESH} Hz"
+                GUEST_REFRESH=$PANEL_MAX
+                echo "ONEOS_GUEST_REFRESH=$WANT is not a physical mode of this panel: using ${GUEST_REFRESH} Hz (peak only)"
                 ;;
         esac
         ;;
     *)
-        echo "ONEOS_GUEST_REFRESH=$WANT is not auto or 30-120: using ${GUEST_REFRESH} Hz"
+        echo "ONEOS_GUEST_REFRESH=$WANT is not off, auto or 30-120: using system default"
+        GUEST_REFRESH=off
         ;;
 esac
 # ONEOS_GUEST_POSTURE=live: the fold line's posture follows the guest's hinge
@@ -2208,6 +2220,115 @@ $G /system/bin/am start -n com.nothing.ntessentialspace/.MainActivity >/dev/null
 ESSOPEN
     chmod 700 "$STAGE/data/oneos_essential_open.sh"
 fi
+# 0.5.27: import a One UI vCard into the guest contacts provider (insert only).
+cat > "$STAGE/oneos_contacts_import.sh" <<'CNTIMP'
+#!/system/bin/sh
+# oneos_contacts_import.sh <guest system_server pid> <busybox> <stage>
+P=$1; BB=$2; STAGE=$3
+G="$BB nsenter -t $P -m /system/bin/sh /data/oneos_genv.sh"
+VCF="$STAGE/data/oneos_host_contacts.vcf"
+[ -f "$VCF" ] && [ ! -L "$VCF" ] || exit 0
+# Wait until the guest contacts provider answers (user may still be unlocking).
+ok=0
+i=0
+while [ $i -lt 30 ]; do
+    if $G /system/bin/content query --uri content://com.android.contacts/contacts --limit 1 >/dev/null 2>&1; then
+        ok=1
+        break
+    fi
+    i=$((i + 1))
+    sleep 2
+done
+[ "$ok" = 1 ] || { echo "contacts: provider not ready, will retry next boot"; exit 0; }
+# Backup copy in the guest Download folder (manual import if insert fails).
+DL=/data/media/0/Download
+if [ -d /data/media/0 ] && [ ! -L /data/media/0 ]; then
+    mkdir -p "$DL" 2>/dev/null || true
+    if [ -d "$DL" ] && [ ! -L "$DL" ]; then
+        cp "$VCF" "$DL/OneOS-kisiler.vcf" 2>/dev/null || true
+        chmod 0644 "$DL/OneOS-kisiler.vcf" 2>/dev/null || true
+    fi
+fi
+# Existing guest phone numbers (digits only) — never delete, skip duplicates.
+EXIST=$($G /system/bin/content query --uri content://com.android.contacts/data --projection mimetype:data1 2>/dev/null | awk '
+    /mimetype=vnd.android.cursor.item\/phone_v2/ {
+        line=$0
+        sub(/.*data1=/, "", line)
+        sub(/,.*/, "", line)
+        gsub(/[^0-9+]/, "", line)
+        if (line != "") print line
+    }
+')
+added=0
+skipped=0
+fn=""; tels=""; emails=""; incard=0
+flush() {
+    [ "$incard" = 1 ] || return 0
+    # Skip if any phone already exists in the guest.
+    dup=0
+    for t in $tels; do
+        n=$t
+        echo "$EXIST" | grep -qx "$n" && dup=1
+    done
+    if [ "$dup" = 1 ]; then
+        skipped=$((skipped + 1))
+        fn=""; tels=""; emails=""; incard=0
+        return 0
+    fi
+    uri=$($G /system/bin/content insert --uri content://com.android.contacts/raw_contacts --bind account_name:s: --bind account_type:s: 2>/dev/null | tr -d '\r')
+    id=$(echo "$uri" | sed -n 's|.*/raw_contacts/\([0-9][0-9]*\).*|\1|p')
+    [ -n "$id" ] || { fn=""; tels=""; emails=""; incard=0; return 0; }
+    if [ -n "$fn" ]; then
+        $G /system/bin/content insert --uri content://com.android.contacts/data \
+            --bind raw_contact_id:i:"$id" \
+            --bind mimetype:s:vnd.android.cursor.item/name \
+            --bind data1:s:"$fn" >/dev/null 2>&1 || true
+    fi
+    for t in $tels; do
+        $G /system/bin/content insert --uri content://com.android.contacts/data \
+            --bind raw_contact_id:i:"$id" \
+            --bind mimetype:s:vnd.android.cursor.item/phone_v2 \
+            --bind data1:s:"$t" --bind data2:i:2 >/dev/null 2>&1 || true
+        EXIST="$EXIST
+$t"
+    done
+    for e in $emails; do
+        $G /system/bin/content insert --uri content://com.android.contacts/data \
+            --bind raw_contact_id:i:"$id" \
+            --bind mimetype:s:vnd.android.cursor.item/email_v2 \
+            --bind data1:s:"$e" >/dev/null 2>&1 || true
+    done
+    added=$((added + 1))
+    fn=""; tels=""; emails=""; incard=0
+}
+while IFS= read -r line || [ -n "$line" ]; do
+    line=$(printf '%s' "$line" | tr -d '\r')
+    case "$line" in
+        BEGIN:VCARD*|BEGIN:vcard*) flush; incard=1; continue ;;
+        END:VCARD*|END:vcard*) flush; continue ;;
+    esac
+    [ "$incard" = 1 ] || continue
+    case "$line" in
+        FN:*|FN\;*)
+            fn=${line#*:}
+            fn=$(printf '%s' "$fn" | tr -d '\\')
+            ;;
+        TEL:*|TEL\;*)
+            tel=${line#*:}
+            tel=$(printf '%s' "$tel" | tr -d ' ()-')
+            [ -n "$tel" ] && tels="$tels $tel"
+            ;;
+        EMAIL:*|EMAIL\;*)
+            em=${line#*:}
+            [ -n "$em" ] && emails="$emails $em"
+            ;;
+    esac
+done < "$VCF"
+flush
+echo "contacts: added $added, skipped $skipped (existing numbers kept)"
+CNTIMP
+chmod 700 "$STAGE/oneos_contacts_import.sh"
+
 # 0.5.18: kept in a variable, written to a file through a here-document (no argument: /system/bin/sh's printf is a
 # program) and run from there. As `sh -c "<script>"` it hit the kernel's 128 KiB limit for one argument once it grew
 # past it (A36, Nothing: "Argument list too long", no status bar, power key or cutout overlays that session).
@@ -2265,8 +2386,20 @@ while true; do
                 echo \"[UI Activator] screen timeout: was stay_on_while_plugged_in=\${SOP:-?} screen_off_timeout=\${SOT:-?}; the forced values reset once (0, 60000)\"
             fi
             $BB nsenter -t \$PID -m /system/bin/sh /data/oneos_genv.sh /system/bin/settings put system haptic_feedback_enabled 1
-            $BB nsenter -t \$PID -m /system/bin/sh /data/oneos_genv.sh /system/bin/settings put system peak_refresh_rate $GUEST_REFRESH
-            $BB nsenter -t \$PID -m /system/bin/sh /data/oneos_genv.sh /system/bin/settings put system min_refresh_rate $GUEST_REFRESH
+            RF=$GUEST_REFRESH
+            $BB nsenter -t \$PID -m /system/bin/sh /data/oneos_genv.sh /system/bin/settings delete system min_refresh_rate >/dev/null 2>&1
+            if [ \"\$RF\" = off ]; then
+                $BB nsenter -t \$PID -m /system/bin/sh /data/oneos_genv.sh /system/bin/settings delete system peak_refresh_rate >/dev/null 2>&1
+                echo '[UI Activator] refresh: system default (cleared leftover min/peak pin)'
+            else
+                $BB nsenter -t \$PID -m /system/bin/sh /data/oneos_genv.sh /system/bin/settings put system peak_refresh_rate \$RF
+                echo \"[UI Activator] refresh: peak \$RF (min not pinned)\"
+            fi
+            # 0.5.27: one-way contacts copy from One UI, staged as a vcf. Never deletes.
+            if [ -f $STAGE/data/oneos_host_contacts.vcf ] && [ ! -L $STAGE/data/oneos_host_contacts.vcf ]; then
+                echo '[UI Activator] contacts: importing One UI copy (existing guest contacts are kept)'
+                /system/bin/sh $STAGE/oneos_contacts_import.sh \$PID \"\$BB\" $STAGE >/dev/null 2>&1 &
+            fi
             # ColorOS's touch idle (OTI) pushes SurfaceFlinger to 240/60 Hz over the
             # 120 Hz policy on this panel (run 29); also staged off by guest_prepare.sh.
             $BB nsenter -t \$PID -m /system/bin/sh /data/oneos_genv.sh /system/bin/dumpsys oplus_vrr_service oti false >/dev/null 2>&1 && echo '[UI Activator] refresh rate: ColorOS touch idle off'

@@ -189,7 +189,7 @@ class StageAuditTest {
         bad("bring_drop \"\$BCE\"", b, source)
         bad("bring_drop /data/local/tmp/x", b, "is not under the stage")
         bad("bring_drop \"\$OLD_PARENT/x\"", st, "is not under the stage")
-        assertTrue(StageAudit.VERBS.containsAll(listOf("bring-collect", "bring-clear", "bring-status", "bring-forget", "bring-catalog", "bring-add", "bring-media", "host-suspend", "host-unsuspend")))
+        assertTrue(StageAudit.VERBS.containsAll(listOf("bring-collect", "bring-clear", "bring-status", "bring-forget", "bring-catalog", "bring-add", "bring-media", "host-suspend", "host-unsuspend", "bring-contacts", "bug-log")))
         // The session-time verb and the rest copy through bring_one only.
         bad("cp -a \"\$BFROM\" \"\$NEW/ce/\"", "do_bring_add", source)
         bad("[ -d \"\$BCE\" ]", "do_bring_forget", source)

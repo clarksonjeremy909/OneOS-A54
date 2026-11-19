@@ -11,10 +11,27 @@
     <string name="advanced_guest_beast_title">Beast mode</string>
     <string name="advanced_guest_beast_summary">Stronger, still reversible lag reductions: animations at 0.25×, a tighter background-app cap, window blurs off, a little more logging turned down, and milder I/O and dirty-page caps when the kernel exposes them. Does not raise clocks or remove thermal limits. Off by default; applied only while Reduce lag is also on. Turn it off if something feels wrong.</string>
     <string name="advanced_guest_refresh_title">Refresh rate</string>
-    <string name="advanced_guest_refresh_summary">Used when you switch to the other system. Auto pins the rate to this phone\'s panel maximum, which avoids stutter from a variable rate. Only rates the panel actually supports are listed; nothing is overclocked. One UI is left as it is.</string>
-    <string name="advanced_guest_refresh_auto">Auto (panel maximum)</string>
+    <string name="advanced_guest_refresh_summary">Used when you switch to the other system. System default leaves the guest\'s own rate and clears a leftover pin. A chosen rate sets only the peak (not the minimum), so the panel can still drop; this avoids brief black screens on some Exynos panels. Only rates the panel actually supports are listed. One UI is left as it is.</string>
+    <string name="advanced_guest_refresh_off">System default</string>
+    <string name="advanced_guest_refresh_auto">Pin to panel maximum</string>
     <string name="advanced_guest_refresh_hz">%1$d Hz</string>
-    <string name="guest_refresh_hint">A fixed rate reduces stutter. Choose 60 Hz if frames still drop; 90 Hz appears only if this panel has that mode.</string>
+
+    <string name="bug_log_title">Save a problem log</string>
+    <string name="bug_log_summary">Writes a short logcat and dmesg excerpt to Download so you can send it. Needs root. It does not include SMS or photos.</string>
+    <string name="bug_log_working">Saving the problem log…</string>
+    <string name="bug_log_ok">Saved to Download/%1$s. Share that file so the black screen can be diagnosed.</string>
+    <string name="bug_log_failed">The problem log could not be saved: %1$s</string>
+
+    <string name="bring_contacts_title">Transfer contacts</string>
+    <string name="bring_contacts_summary">Copies your One UI contacts into this system. Nothing is deleted on either side. Contacts already in the other system are skipped. The copy is imported the next time you switch, and a vCard is also placed in that system\'s Download folder.</string>
+    <string name="bring_contacts_body">One-way copy from One UI into %1$s. Existing contacts in both systems stay. Needs a prepared system and root.</string>
+    <string name="bring_contacts_run">Copy contacts to this system</string>
+    <string name="bring_contacts_confirm">One UI contacts will be copied into %1$s. No contact is deleted. Continue?</string>
+    <string name="bring_contacts_working">Copying contacts…</string>
+    <string name="bring_contacts_ok">%1$s. They are imported the next time you switch to this system.</string>
+    <string name="bring_contacts_failed">Contacts could not be copied: %1$s</string>
+    <string name="bring_contacts_need_system">Prepare this system first, then copy contacts.</string>
+    <string name="guest_refresh_hint">System default is safest if the screen went black and came back. Pin to panel maximum or pick 60 Hz if frames drop. 90 Hz appears only if this panel has that mode.</string>
     <string name="settings_check_updates">Check for updates</string>
     <string name="settings_check_updates_summary">Looks now, without waiting for the six-hour automatic check. Downloads the matching Turkish or English APK from this project\'s GitHub releases.</string>
     <string name="settings_check_updates_checking">Checking for updates…</string>

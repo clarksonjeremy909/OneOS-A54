@@ -30,7 +30,7 @@
 #                                     fullLogs is ONEOS_FULL_LOGS, the session's whole
 #                                     logcat capture; shareFiles is ONEOS_SHARE_FILES;
 #                                     guestPerf is ONEOS_GUEST_PERF, safe lag reductions in every guest; guestBeast is ONEOS_GUEST_BEAST (Canavar), default off;
-#                                     guestRefresh is ONEOS_GUEST_REFRESH (auto or 30-120 Hz).
+#                                     guestRefresh is ONEOS_GUEST_REFRESH (off, auto or 30-120 Hz; default off).
 #                                     One UI's DCIM, Pictures... shown in the guest)
 #                                     secIms 0|1: this launch's
 #                                     ONEOS_GUEST_SEC_IMS (this phone's
@@ -971,7 +971,7 @@ env_value() {
         # A54: safe reversible lag reductions in every guest; a launch's choice; Prepare writes 1.
         ONEOS_GUEST_PERF) echo 1 ;;
         ONEOS_GUEST_BEAST) echo 0 ;;
-        ONEOS_GUEST_REFRESH) echo auto ;;
+        ONEOS_GUEST_REFRESH) echo off ;;
         # 0.4.7: Back to One UI restarts One UI in place; a failed check reboots.
         ONEOS_RETURN_MODE) echo inplace ;;
         *) return 1 ;;
@@ -997,7 +997,7 @@ check_env() { # <file> <form> <profile> <image>
             case "$val" in 0|1) continue ;; *) refuse "session.env $key=$val is not 0 or 1" ;; esac
         fi
         if [ "$key" = ONEOS_GUEST_REFRESH ]; then
-            case "$val" in auto|[3-9][0-9]|1[01][0-9]|120) continue ;; *) refuse "session.env $key=$val is not auto or 30-120" ;; esac
+            case "$val" in off|auto|[3-9][0-9]|1[01][0-9]|120) continue ;; *) refuse "session.env $key=$val is not off, auto or 30-120" ;; esac
         fi
         if [ "$key" = ONEOS_GUEST_HIDE_GMS ] && [ "$val" = 1 ]; then
             in_list "$4" "$IMAGES_GMS" || refuse "session.env hides Google services, but $4 has none a session may hide"
@@ -1013,7 +1013,7 @@ check_env() { # <file> <form> <profile> <image>
         [ "$k" = ONEOS_GUEST_PERF ] && continue
         # A system prepared before this A54 build has no ONEOS_GUEST_BEAST line: off; the launch adds it.
         [ "$k" = ONEOS_GUEST_BEAST ] && continue
-        # A system prepared before 0.5.26 has no ONEOS_GUEST_REFRESH line: auto; the launch adds it.
+        # A system prepared before 0.5.26 has no ONEOS_GUEST_REFRESH line: off since 0.5.27; the launch adds it.
         [ "$k" = ONEOS_GUEST_REFRESH ] && continue
         case "$seen" in *" $k "*) ;; *) refuse "session.env lacks $k" ;; esac
     done
@@ -1396,7 +1396,7 @@ switch_verdict() {
 
 do_launch() {
     [ $# -ge 7 ] && [ $# -le 13 ] || usage "launch <session|dry> <versionCode> <sessionId> <hideGms> <heatCap> <secIms> <edmStub> [verboseBoot [fullLogs [shareFiles [guestPerf [guestBeast [guestRefresh]]]]]]"
-    mode=$1 code=$2 sid=$3 gms=$4 heat=$5 secims=$6 edmstub=$7 verbose=${8:-0} fulllogs=${9:-1} sharefiles=${10:-0} guestperf=${11:-1} guestbeast=${12:-0} guestrefresh=${13:-auto}
+    mode=$1 code=$2 sid=$3 gms=$4 heat=$5 secims=$6 edmstub=$7 verbose=${8:-0} fulllogs=${9:-1} sharefiles=${10:-0} guestperf=${11:-1} guestbeast=${12:-0} guestrefresh=${13:-off}
     case "$mode" in session|dry) ;; *) usage "launch mode $mode" ;; esac
     is_dec "$code" || usage "launch versionCode $code"
     case "$sid" in *[!0-9a-f]*|'') usage "launch session id" ;; esac
@@ -1410,7 +1410,7 @@ do_launch() {
     case "$sharefiles" in 0|1) ;; *) usage "launch shareFiles $sharefiles" ;; esac
     case "$guestperf" in 0|1) ;; *) usage "launch guestPerf $guestperf" ;; esac
     case "$guestbeast" in 0|1) ;; *) usage "launch guestBeast $guestbeast" ;; esac
-    case "$guestrefresh" in auto|[3-9][0-9]|1[01][0-9]|120) ;; *) usage "launch guestRefresh $guestrefresh" ;; esac
+    case "$guestrefresh" in off|auto|[3-9][0-9]|1[01][0-9]|120) ;; *) usage "launch guestRefresh $guestrefresh" ;; esac
     [ -n "$T" ] || [ "$(id -u)" = 0 ] || refuse "not root"
     step "checks"
     [ ! -e "$STAGE/.oneos_update" ] || refuse "the installed system update did not finish: retry the update"
@@ -1472,7 +1472,7 @@ do_launch() {
     grep -q '^ONEOS_SHARE_FILES=' "$STAGE/session.env" || echo "ONEOS_SHARE_FILES=0" >> "$STAGE/session.env" || die "could not write session.env for this launch"
     grep -q '^ONEOS_GUEST_PERF=' "$STAGE/session.env" || echo "ONEOS_GUEST_PERF=1" >> "$STAGE/session.env" || die "could not write session.env for this launch"
     grep -q '^ONEOS_GUEST_BEAST=' "$STAGE/session.env" || echo "ONEOS_GUEST_BEAST=0" >> "$STAGE/session.env" || die "could not write session.env for this launch"
-    grep -q '^ONEOS_GUEST_REFRESH=' "$STAGE/session.env" || echo "ONEOS_GUEST_REFRESH=auto" >> "$STAGE/session.env" || die "could not write session.env for this launch"
+    grep -q '^ONEOS_GUEST_REFRESH=' "$STAGE/session.env" || echo "ONEOS_GUEST_REFRESH=off" >> "$STAGE/session.env" || die "could not write session.env for this launch"
     sed -e "s/^ONEOS_GUEST_HIDE_GMS=.*/ONEOS_GUEST_HIDE_GMS=$gms/" -e "s/^ONEOS_HEAT_CAP=.*/ONEOS_HEAT_CAP=$heat/" \
         -e "s/^ONEOS_GUEST_SEC_IMS=.*/ONEOS_GUEST_SEC_IMS=$secims/" \
         -e "s/^ONEOS_VERBOSE_BOOT=.*/ONEOS_VERBOSE_BOOT=$verbose/" \
@@ -2645,6 +2645,114 @@ do_bring_media() {
     fi
 }
 
+
+# OneOS A54 0.5.27: export One UI contacts as a vCard into the stage. Host and
+# guest contacts are never deleted. The switcher imports the file on the next
+# guest boot (insert only; existing numbers are skipped).
+do_bring_contacts() {
+    read_marker || refuse "no system is set up (prepare one first)"
+    [ ! -L "$STAGE/data" ] || refuse "${STAGE#$T}/data is a link"
+    mkdir_mine "$STAGE/data" || die "could not make $STAGE/data"
+    F="$STAGE/data/oneos_host_contacts.vcf"
+    RAW="$STAGE/data/oneos_host_contacts.raw"
+    printf 'BEGIN_DUMP\n' > "$RAW" || die "could not write $RAW"
+    content query --uri content://com.android.contacts/raw_contacts --projection _id:deleted:display_name >> "$RAW" 2>/dev/null || true
+    count=0
+    printf '' > "$F" || die "could not write $F"
+    while IFS= read -r line || [ -n "$line" ]; do
+        case "$line" in
+            Row:*) ;;
+            *) continue ;;
+        esac
+        id=$(printf '%s' "$line" | sed -n 's/.*_id=\([0-9][0-9]*\).*/\1/p')
+        [ -n "$id" ] || continue
+        case "$line" in
+            *deleted=1*|*,\ deleted=1*) continue ;;
+        esac
+        name=${line#*display_name=}
+        name=$(printf '%s' "$name" | tr -d '\r')
+        [ "$count" -lt 2000 ] || break
+        PH="$STAGE/data/oneos_host_contacts.ph"
+        EM="$STAGE/data/oneos_host_contacts.em"
+        content query --uri content://com.android.contacts/data --projection mimetype:data1 --where "raw_contact_id=$id AND mimetype='vnd.android.cursor.item/phone_v2'" > "$PH" 2>/dev/null || true
+        content query --uri content://com.android.contacts/data --projection mimetype:data1 --where "raw_contact_id=$id AND mimetype='vnd.android.cursor.item/email_v2'" > "$EM" 2>/dev/null || true
+        tels=""
+        while IFS= read -r pl || [ -n "$pl" ]; do
+            case "$pl" in
+                *data1=*)
+                    tel=${pl#*data1=}
+                    tel=$(printf '%s' "$tel" | tr -d '\r')
+                    [ -n "$tel" ] && tels="$tels
+$tel"
+                    ;;
+            esac
+        done < "$PH"
+        emails=""
+        while IFS= read -r el || [ -n "$el" ]; do
+            case "$el" in
+                *data1=*)
+                    em=${el#*data1=}
+                    em=$(printf '%s' "$em" | tr -d '\r')
+                    [ -n "$em" ] && emails="$emails
+$em"
+                    ;;
+            esac
+        done < "$EM"
+        [ -n "$name" ] || [ -n "$tels" ] || [ -n "$emails" ] || continue
+        printf 'BEGIN:VCARD\nVERSION:3.0\n' >> "$F"
+        [ -n "$name" ] && printf 'FN:%s\n' "$name" >> "$F"
+        printf '%s\n' "$tels" | while IFS= read -r tel || [ -n "$tel" ]; do
+            [ -n "$tel" ] && printf 'TEL:%s\n' "$tel" >> "$F"
+        done
+        printf '%s\n' "$emails" | while IFS= read -r em || [ -n "$em" ]; do
+            [ -n "$em" ] && printf 'EMAIL:%s\n' "$em" >> "$F"
+        done
+        printf 'END:VCARD\n' >> "$F"
+        count=$((count + 1))
+    done < "$RAW"
+    rm -f "$RAW" "$STAGE/data/oneos_host_contacts.ph" "$STAGE/data/oneos_host_contacts.em"
+    own "$F" 0644
+    rm -f "$STAGE/data/oneos_host_contacts.imported"
+    if [ "$count" = 0 ]; then
+        say "@@OK bring-contacts count=0"
+    else
+        say "@@OK bring-contacts count=$count"
+    fi
+}
+
+# OneOS A54 0.5.27: short logcat + dmesg excerpt for a display blank, written
+# under the stage and streamed back so the app can save it to Download.
+do_bug_log() {
+    mkdir_mine "$STAGE" || die "could not make $STAGE"
+    F="$STAGE/oneos_buglog.txt"
+    {
+        echo "OneOS A54 problem log"
+        date
+        echo "model=$(getprop ro.product.model) build=$(getprop ro.build.display.id) fingerprint=$(getprop ro.build.fingerprint)"
+        echo "display=$(getprop ro.sf.lcd_density) vendor.display=$(getprop persist.vendor.display.supports_adaptive)"
+        echo
+        echo "==== logcat display ===="
+        logcat -d -t 8000 2>/dev/null | grep -iE 'SurfaceFlinger|HWComposer|HWC|DisplayModeDirector|refresh_rate|min_refresh|peak_refresh|Exynos|decon|dsim|blank|underrun|ColorDisplay|graphics.composer|PanelService|setActiveConfig|hwc2|PowerManagerService' | tail -n 1500
+        echo
+        echo "==== logcat tail ===="
+        logcat -d -t 250 2>/dev/null
+        echo
+        echo "==== dmesg display ===="
+        dmesg 2>/dev/null | grep -iE 'decon|dsim|exynos|drm_|display|blank|underrun|hwc|refresh|crtc|panel|panic|vsync' | tail -n 800
+        echo
+        echo "==== dumpsys display (head) ===="
+        dumpsys display 2>/dev/null | head -n 80
+    } > "$F" || die "could not write $F"
+    own "$F" 0644
+    n=0
+    while IFS= read -r line || [ -n "$line" ]; do
+        n=$((n + 1))
+        [ "$n" -le 4000 ] || break
+        say "@@RESULT buglog $line"
+    done < "$F"
+    say "@@OK bug-log lines=$n"
+}
+
 # OneOS A54: reversibly freeze already-vetted host third-party apps while a
 # guest session runs (`pm suspend`), and thaw them from a persistent list.
 # The list is stored at $STAGE/oneos_host_suspended.list (outside guest
@@ -2839,7 +2947,7 @@ esac
 [ -d "$STAGE" ] && mine "$STAGE" || refuse "$STAGE is not root's folder"
 [ -d "$STAGE/bin" ] && mine "$STAGE/bin" || refuse "$STAGE/bin is not root's folder"
 case "$verb" in
-    begin|receive|keep-raw|keep-files|table|env|finish|launch|recover|restore|remove|remove-system|reset-data|tool-app|purge|selfupdate|guest-module|guest-module-state|bring-collect|bring-clear|bring-forget|bring-catalog|bring-add|bring-media|host-suspend|host-unsuspend) take_lock ;;
+    begin|receive|keep-raw|keep-files|table|env|finish|launch|recover|restore|remove|remove-system|reset-data|tool-app|purge|selfupdate|guest-module|guest-module-state|bring-collect|bring-clear|bring-forget|bring-catalog|bring-add|bring-media|host-suspend|host-unsuspend|bring-contacts|bug-log) take_lock ;;
 esac
 [ $# -gt 0 ] && shift
 case "$verb" in
@@ -2872,5 +2980,7 @@ case "$verb" in
     bring-media) do_bring_media "$@" ;;
     host-suspend) do_host_suspend "$@" ;;
     host-unsuspend) do_host_unsuspend "$@" ;;
+    bring-contacts) do_bring_contacts "$@" ;;
+    bug-log) do_bug_log "$@" ;;
     *) usage "unknown verb '$verb'" ;;
 esac

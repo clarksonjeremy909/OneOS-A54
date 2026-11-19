@@ -1,6 +1,13 @@
 # OneOS A54 (0.5.24 tabanlı özel derleme)
 
+## 0.5.27 (versionCode 172)
+
+- **Siyah ekran (konukta kalıp geri gelen):** En olası sebep, 0.5.26’daki (ve daha eski UI activator’daki) `min_refresh_rate = peak_refresh_rate` sabitlemesi; Exynos panelde kip değişimi / SurfaceFlinger kısa boşalması. Softdog değil (OxygenOS’ta kalınıyor). Varsayılan artık **Sistem varsayılanı**: yenileme yazılmaz, eski min=peak pin temizlenir. İsteğe bağlı hız yalnızca `peak_refresh_rate` yazar (`min` yazılmaz). 0.5.26’nın varsayılan “auto” tercihi bir kez “off”e taşınır. Isınma ayarı eklenmedi.
+- **Hata kaydı oluştur:** Ayarlar → Yardım. Root ile kısa logcat/dmesg özetini İndirilenler klasörüne kaydeder (SMS/fotoğraf yok).
+- **Kişileri aktar:** “Dosyaları aktar”ın yanında ve her sistem kartında. One UI kişileri konuk sisteme vCard olarak kopyalanır; iki tarafta da silme yok; konuktaki aynı numaralar atlanır. İçeri alma bir sonraki geçişte olur.
+
 ## 0.5.26 (versionCode 171)
+
 
 - **Yenileme hızı** her konuk ROM’da (yalnızca OxygenOS değil): sistem kartı / geçiş ekranı ve Ayarlar’da, “kasmayı azalt”ın altında. Seçenekler: Otomatik (panelin en yükseği) ve bu telefonun panelinin gerçekten bildirdiği hızlar (A54’te genelde 60 ve 120 Hz; 90 Hz yalnızca panelde varsa). Konukta `min_refresh_rate` ve `peak_refresh_rate` aynı değere sabitlenir (değişken yenilemenin takılmasını azaltır). One UI değiştirilmez; dönüşte konuk ayarları kalkar.
 - **Canavar modu** aynı yerde daha görünür: Ayarlar → Oturumlar, “Her konuk sistemde kasmayı azalt”ın hemen altı; ayrıca her sistemin ortam ekranında ve geçiş onayında (yalnızca kasmayı azalt açıkken uygulanır).
