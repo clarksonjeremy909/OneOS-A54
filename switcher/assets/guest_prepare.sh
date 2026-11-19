@@ -5662,6 +5662,52 @@ up=0
 while true; do
     sleep 10
     case "$(getprop sys.boot_completed)" in 1) ;; *) continue ;; esac
+    # OneOS A54: reversible userspace lag reductions for every guest ROM (not only
+    # OxygenOS). Flag is staged as /data/oneos_guest_perf.enable from session.env.
+    # Originals are saved in the guest /data and put back if the next session turns
+    # the option off. Nothing here disables a package or writes persist props.
+    if [ -f /data/oneos_guest_perf.enable ] && [ ! -f /data/oneos_guest_perf.applied ]; then
+        save=/data/oneos_guest_perf.saved
+        [ -f "$save" ] || : > "$save"
+        for k in window_animation_scale transition_animation_scale animator_duration_scale; do
+            if ! grep -q "^anim $k " "$save"; then
+                cur=$(settings get global "$k" 2>/dev/null || echo 1)
+                case "$cur" in null|'') cur=1 ;; esac
+                echo "anim $k $cur" >> "$save"
+            fi
+            settings put global "$k" 0.5 >/dev/null 2>&1 || true
+        done
+        if ! grep -q "^cached " "$save"; then
+            cur=$(cmd activity get-max-cached-processes 2>/dev/null | tr -dc '0-9')
+            case "$cur" in ''|*[!0-9]*) ;; *)
+                if [ "$cur" -gt 24 ]; then
+                    echo "cached $cur" >> "$save"
+                    cmd activity set-max-cached-processes 24 >/dev/null 2>&1 || true
+                fi
+                ;;
+            esac
+        fi
+        if ! grep -q "^log activity_starts_logging_enabled " "$save"; then
+            cur=$(settings get global activity_starts_logging_enabled 2>/dev/null || true)
+            case "$cur" in 1)
+                echo "log activity_starts_logging_enabled $cur" >> "$save"
+                settings put global activity_starts_logging_enabled 0 >/dev/null 2>&1 || true
+                ;;
+            esac
+        fi
+        : > /data/oneos_guest_perf.applied
+        echo "$(date) guest perf: applied (see $save)" >> /data/app_storage.log
+    elif [ ! -f /data/oneos_guest_perf.enable ] && [ -s /data/oneos_guest_perf.saved ]; then
+        while read -r typ a b; do
+            case "$typ" in
+                anim) settings put global "$a" "$b" >/dev/null 2>&1 || true ;;
+                cached) cmd activity set-max-cached-processes "$a" >/dev/null 2>&1 || true ;;
+                log) settings put global "$a" "$b" >/dev/null 2>&1 || true ;;
+            esac
+        done < /data/oneos_guest_perf.saved
+        rm -f /data/oneos_guest_perf.applied /data/oneos_guest_perf.saved
+        echo "$(date) guest perf: restored previous values" >> /data/app_storage.log
+    fi
     # 0.5.18 (owner, A36: Nothing OS sluggish, "on Nothing Phone 3a it's smooth"): 217 of 242 guest apps ran
     # uncompiled (dexopt status verify): a guest's apps are compiled by the background dexopt job, which waits for
     # an idle phone on its charger, rare in a session, and compiles only apps with a usage profile (22 of 242);
@@ -5731,6 +5777,12 @@ chmod 755 "$STAGE/data/local/tmp/app_storage_loop.sh" 2>/dev/null || true
 # /data/oneos_dexopt.enable once the guest is up (this is that file on the stage).
 mkdir -p "$STAGE/data"
 touch "$STAGE/data/oneos_dexopt.enable"
+# OneOS A54: optional lag reductions for every guest (ONEOS_GUEST_PERF, default on).
+if [ "${ONEOS_GUEST_PERF:-1}" = 1 ]; then
+    touch "$STAGE/data/oneos_guest_perf.enable"
+else
+    rm -f "$STAGE/data/oneos_guest_perf.enable"
+fi
 # OneOS A54: one-way copy of host *.apk (Download and Documents) into the
 # guest Download folder, when Bring apps asked for it. Host files are only read.
 if [ -f "$STAGE/data/oneos_copy_apks" ]; then

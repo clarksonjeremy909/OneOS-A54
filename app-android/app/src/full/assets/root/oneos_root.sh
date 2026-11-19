@@ -25,9 +25,10 @@
 #   env <bytes>                       stdin: session.env
 #   finish <profile> <image> <set> <versionCode>
 #   launch <session|dry> <versionCode> <sessionId> <hideGms> <heatCap> <secIms> <edmStub>
-#          [verboseBoot [fullLogs [shareFiles]]]   (0|1 each; defaults 0, 1 and 0:
+#          [verboseBoot [fullLogs [shareFiles [guestPerf]]]]   (0|1 each; defaults 0, 1, 0 and 1:
 #                                     fullLogs is ONEOS_FULL_LOGS, the session's whole
-#                                     logcat capture; shareFiles is ONEOS_SHARE_FILES,
+#                                     logcat capture; shareFiles is ONEOS_SHARE_FILES;
+#                                     guestPerf is ONEOS_GUEST_PERF, safe lag reductions in every guest.
 #                                     One UI's DCIM, Pictures... shown in the guest)
 #                                     secIms 0|1: this launch's
 #                                     ONEOS_GUEST_SEC_IMS (this phone's
@@ -176,7 +177,7 @@ SET_OXYGENOS="services_patched.jar oplus-services_patched.jar vold_patched servi
 SET_ORIGINOS="BBKLauncher2_patched.apk BBKLauncher2_patched.apk.src_sha256 OneOSFoldCutout.apk OneOSGuest.apk OneOSPhoneInjection.apk adservices_payload.img appsearch_payload.img art_payload.img bt_payload.img configinfrastructure_payload.img conscrypt_payload.img crashrecovery_payload.img extservices_payload.img framework-adapter_patched.jar framework-wifi_patched.jar framework_patched.jar gmssystem_payload.img guards.txt healthfitness_payload.img i18n_payload.img libandroid_servers_patched.so libbluetooth_jni_patched.so libcamera_client_patched.so libcomposer_ext_patched.so libinputflinger_patched.so libinputservice_patched.so libsensorservice_patched.so mediaprovider_payload.img ondevicepersonalization_payload.img oneos-apex-requires.txt oneos-telephony.jar oneos-telephony.sha256 oneos-vivo-features.txt permission_payload.img profiling_payload.img rkpd_payload.img runtime_payload.img sdkext_payload.img service.incremental_patched.so services_patched.jar surfaceflinger_patched telephony-common_patched.jar telephonycore_payload.img tethering_payload.img vivo-framework_patched.jar vivo-service-wifi-ex-impl_patched.jar vivo-service-wifi_patched.jar vivo-services_patched.jar vivo-telephony-common-platform-ex_patched.jar vold_patched wifi_payload.img"
 # Host /data trees of switcher/assets/bridges.sh (relative to /data).
 BRIDGE_HOSTS="app app-staging user user_de dalvik-cache misc/profiles data media misc/user misc_ce/0/sdksandbox misc_de/0/sdksandbox misc_ce/0/rollback misc_de/0/rollback resource-cache"
-ENV_KEYS="ONEOS_APP ONEOS_PROFILE ONEOS_SPLASH_COMPONENT ONEOS_WALLPAPER_PROBE ONEOS_RECORD ONEOS_LOGCAT ONEOS_GUEST_FORM ONEOS_GUEST_FOLD ONEOS_COVER_TSP ONEOS_GUEST_FOLD_CONTINUE ONEOS_GUEST_UNFOLD_PORTRAIT ONEOS_GUEST_COMPACT_WINDOW ONEOS_GUEST_WALLPAPER_GRID ONEOS_GUEST_HIDE_GMS ONEOS_HEAT_CAP ONEOS_GUEST_SEC_IMS ONEOS_GUEST_EDM_STUB ONEOS_VERBOSE_BOOT ONEOS_FULL_LOGS ONEOS_SHARE_FILES ONEOS_RETURN_MODE"
+ENV_KEYS="ONEOS_APP ONEOS_PROFILE ONEOS_SPLASH_COMPONENT ONEOS_WALLPAPER_PROBE ONEOS_RECORD ONEOS_LOGCAT ONEOS_GUEST_FORM ONEOS_GUEST_FOLD ONEOS_COVER_TSP ONEOS_GUEST_FOLD_CONTINUE ONEOS_GUEST_UNFOLD_PORTRAIT ONEOS_GUEST_COMPACT_WINDOW ONEOS_GUEST_WALLPAPER_GRID ONEOS_GUEST_HIDE_GMS ONEOS_HEAT_CAP ONEOS_GUEST_SEC_IMS ONEOS_GUEST_EDM_STUB ONEOS_VERBOSE_BOOT ONEOS_FULL_LOGS ONEOS_SHARE_FILES ONEOS_GUEST_PERF ONEOS_RETURN_MODE"
 # Images whose Google services a session may hide (ONEOS_GUEST_HIDE_GMS=1;
 # ImageRef.gmsHideable): the Find X9 Ultra IN build (again from 0.4.11) and
 # the Find N6 global build (0.4.38). The Pixel images have them too, but their
@@ -963,6 +964,8 @@ env_value() {
         ONEOS_FULL_LOGS) echo 1 ;;
         # 0.5.20: One UI's DCIM, Pictures, Download, Documents, Movies and Music shown in the guest, a launch's choice (Share my files); Prepare writes 0.
         ONEOS_SHARE_FILES) echo 0 ;;
+        # A54: safe reversible lag reductions in every guest; a launch's choice; Prepare writes 1.
+        ONEOS_GUEST_PERF) echo 1 ;;
         # 0.4.7: Back to One UI restarts One UI in place; a failed check reboots.
         ONEOS_RETURN_MODE) echo inplace ;;
         *) return 1 ;;
@@ -984,7 +987,7 @@ check_env() { # <file> <form> <profile> <image>
         case "$seen" in *" $key "*) refuse "session.env sets $key twice" ;; esac
         seen="$seen$key "
         want=$(env_value "$key" "$2" "$3") || refuse "session.env key $key is not allowed"
-        if [ "$key" = ONEOS_GUEST_SEC_IMS ] || [ "$key" = ONEOS_GUEST_EDM_STUB ] || [ "$key" = ONEOS_VERBOSE_BOOT ] || [ "$key" = ONEOS_FULL_LOGS ] || [ "$key" = ONEOS_SHARE_FILES ]; then
+        if [ "$key" = ONEOS_GUEST_SEC_IMS ] || [ "$key" = ONEOS_GUEST_EDM_STUB ] || [ "$key" = ONEOS_VERBOSE_BOOT ] || [ "$key" = ONEOS_FULL_LOGS ] || [ "$key" = ONEOS_SHARE_FILES ] || [ "$key" = ONEOS_GUEST_PERF ]; then
             case "$val" in 0|1) continue ;; *) refuse "session.env $key=$val is not 0 or 1" ;; esac
         fi
         if [ "$key" = ONEOS_GUEST_HIDE_GMS ] && [ "$val" = 1 ]; then
@@ -997,6 +1000,8 @@ check_env() { # <file> <form> <profile> <image>
     for k in $ENV_KEYS; do
         # A system prepared before 0.5.20 has no ONEOS_SHARE_FILES line: off; the launch adds it.
         [ "$k" = ONEOS_SHARE_FILES ] && continue
+        # A system prepared before this A54 build has no ONEOS_GUEST_PERF line: on; the launch adds it.
+        [ "$k" = ONEOS_GUEST_PERF ] && continue
         case "$seen" in *" $k "*) ;; *) refuse "session.env lacks $k" ;; esac
     done
 }
@@ -1377,8 +1382,8 @@ switch_verdict() {
 }
 
 do_launch() {
-    [ $# -ge 7 ] && [ $# -le 10 ] || usage "launch <session|dry> <versionCode> <sessionId> <hideGms> <heatCap> <secIms> <edmStub> [verboseBoot [fullLogs [shareFiles]]]"
-    mode=$1 code=$2 sid=$3 gms=$4 heat=$5 secims=$6 edmstub=$7 verbose=${8:-0} fulllogs=${9:-1} sharefiles=${10:-0}
+    [ $# -ge 7 ] && [ $# -le 11 ] || usage "launch <session|dry> <versionCode> <sessionId> <hideGms> <heatCap> <secIms> <edmStub> [verboseBoot [fullLogs [shareFiles [guestPerf]]]]"
+    mode=$1 code=$2 sid=$3 gms=$4 heat=$5 secims=$6 edmstub=$7 verbose=${8:-0} fulllogs=${9:-1} sharefiles=${10:-0} guestperf=${11:-1}
     case "$mode" in session|dry) ;; *) usage "launch mode $mode" ;; esac
     is_dec "$code" || usage "launch versionCode $code"
     case "$sid" in *[!0-9a-f]*|'') usage "launch session id" ;; esac
@@ -1390,6 +1395,7 @@ do_launch() {
     case "$verbose" in 0|1) ;; *) usage "launch verboseBoot $verbose" ;; esac
     case "$fulllogs" in 0|1) ;; *) usage "launch fullLogs $fulllogs" ;; esac
     case "$sharefiles" in 0|1) ;; *) usage "launch shareFiles $sharefiles" ;; esac
+    case "$guestperf" in 0|1) ;; *) usage "launch guestPerf $guestperf" ;; esac
     [ -n "$T" ] || [ "$(id -u)" = 0 ] || refuse "not root"
     step "checks"
     [ ! -e "$STAGE/.oneos_update" ] || refuse "the installed system update did not finish: retry the update"
@@ -1449,17 +1455,20 @@ do_launch() {
     # (0.5.20) Share my files (Prepare wrote 0) choices: the eight lines of session.env a launch changes, after every check. The next
     # launch writes its own. (Before the test root's stop, so the tests see it.)
     grep -q '^ONEOS_SHARE_FILES=' "$STAGE/session.env" || echo "ONEOS_SHARE_FILES=0" >> "$STAGE/session.env" || die "could not write session.env for this launch"
+    grep -q '^ONEOS_GUEST_PERF=' "$STAGE/session.env" || echo "ONEOS_GUEST_PERF=1" >> "$STAGE/session.env" || die "could not write session.env for this launch"
     sed -e "s/^ONEOS_GUEST_HIDE_GMS=.*/ONEOS_GUEST_HIDE_GMS=$gms/" -e "s/^ONEOS_HEAT_CAP=.*/ONEOS_HEAT_CAP=$heat/" \
         -e "s/^ONEOS_GUEST_SEC_IMS=.*/ONEOS_GUEST_SEC_IMS=$secims/" \
         -e "s/^ONEOS_VERBOSE_BOOT=.*/ONEOS_VERBOSE_BOOT=$verbose/" \
         -e "s/^ONEOS_FULL_LOGS=.*/ONEOS_FULL_LOGS=$fulllogs/" \
         -e "s/^ONEOS_SHARE_FILES=.*/ONEOS_SHARE_FILES=$sharefiles/" \
+        -e "s/^ONEOS_GUEST_PERF=.*/ONEOS_GUEST_PERF=$guestperf/" \
         -e "s/^ONEOS_GUEST_EDM_STUB=.*/ONEOS_GUEST_EDM_STUB=$edmstub/" "$STAGE/session.env" > "$STAGE/session.env.tmp" &&
         grep -q -x "ONEOS_GUEST_HIDE_GMS=$gms" "$STAGE/session.env.tmp" && grep -q -x "ONEOS_HEAT_CAP=$heat" "$STAGE/session.env.tmp" &&
         grep -q -x "ONEOS_GUEST_SEC_IMS=$secims" "$STAGE/session.env.tmp" &&
         grep -q -x "ONEOS_VERBOSE_BOOT=$verbose" "$STAGE/session.env.tmp" &&
         grep -q -x "ONEOS_FULL_LOGS=$fulllogs" "$STAGE/session.env.tmp" &&
         grep -q -x "ONEOS_SHARE_FILES=$sharefiles" "$STAGE/session.env.tmp" &&
+        grep -q -x "ONEOS_GUEST_PERF=$guestperf" "$STAGE/session.env.tmp" &&
         grep -q -x "ONEOS_GUEST_EDM_STUB=$edmstub" "$STAGE/session.env.tmp" &&
         own "$STAGE/session.env.tmp" 0644 &&
         mv -f "$STAGE/session.env.tmp" "$STAGE/session.env" || die "could not write session.env for this launch"

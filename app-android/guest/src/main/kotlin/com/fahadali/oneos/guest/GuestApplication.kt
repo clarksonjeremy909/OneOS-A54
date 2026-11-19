@@ -6,11 +6,11 @@ import java.util.Locale
 
 class GuestApplication : android.app.Application() {
     override fun attachBaseContext(base: Context) {
-        super.attachBaseContext(turkish(base))
+        super.attachBaseContext(if (BuildConfig.FORCE_TURKISH) turkish(base) else base)
     }
 
     override fun onCreate() {
-        Locale.setDefault(Locale.forLanguageTag("tr"))
+        if (BuildConfig.FORCE_TURKISH) Locale.setDefault(Locale.forLanguageTag("tr"))
         super.onCreate()
     }
 

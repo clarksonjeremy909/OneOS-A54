@@ -95,6 +95,8 @@ val packageSets: Map<String, Pair<File, List<String>>> = linkedMapOf(
 // ApkSeriesTest), the full edition's version name ends in "-<id>" and
 // BuildConfig.SERIES names it. Without the property: every set, SERIES "".
 val seriesId: String? = (findProperty("oneos.series") as String?)?.trim()?.takeIf { it.isNotEmpty() }
+val uiLang: String = (findProperty("oneos.ui") as String?)?.trim()?.ifEmpty { null } ?: "tr"
+if (uiLang != "tr" && uiLang != "en") throw GradleException("oneos.ui must be tr or en, got '$uiLang'")
 val seriesSets: Map<String, Set<String>> = File(packagesDir, "series.txt").readLines()
     .map { it.trim() }.filter { it.isNotEmpty() && !it.startsWith("#") }
     .associate { l -> l.split(Regex("\\s+")).let { it.first() to it.drop(1).toSet() } }
@@ -523,8 +525,8 @@ android {
         // 0.5.00 (129, published 11-13): every system on the S23 family (SM8550, HIDL audio HAL) plays A2DP through
         // the vendor's Bluetooth module with offload off, as One UI does; 0.4.99's bridge got the session but the
         // offload path failed with -38 (ColorOS 7eeafc87, 5528e31a; Pixel e353ca45). Not tried yet.
-        versionCode = 166
-        versionName = "0.5.23"
+        versionCode = 167
+        versionName = "0.5.23.1"
         // 0.4.56 (73), TEST CHANNEL ONLY: the Find N6 set's Theme Store logs every OkHttp request and reply (n6g_r7,
         // patches/theme_store_netlog.py) for the owner's "No Data" log; the next public build goes back to n6g_r6.
         // Send to the OneOS team (0.4.29, both editions): the report service's
@@ -537,6 +539,9 @@ android {
             ?.takeIf { Regex("[0-9a-f]{32,128}").matches(it) }.orEmpty()
         buildConfigField("String", "REPORT_URL", "\"$reportUrl\"")
         buildConfigField("String", "REPORT_KEY", "\"$reportKey\"")
+        buildConfigField("String", "UPDATE_JSON", "\"https://raw.githubusercontent.com/clarksonjeremy909/OneOS-A54/main/version.json\"")
+        buildConfigField("String", "UPDATE_CHANNEL", "\"$uiLang\"")
+        buildConfigField("boolean", "FORCE_TURKISH", (uiLang == "tr").toString())
     }
 
     // One codebase, two apps (docs/app/DESIGN.md, 0.3.4): "full" is OneOS, the app

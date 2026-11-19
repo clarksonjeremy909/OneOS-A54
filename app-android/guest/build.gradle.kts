@@ -18,7 +18,13 @@ val releaseKeys: Properties? =
         Properties().apply { f.inputStream().use(::load) }
     }
 
+val uiLang: String = (findProperty("oneos.ui") as String?)?.trim()?.ifEmpty { null } ?: "tr"
+if (uiLang != "tr" && uiLang != "en") throw GradleException("oneos.ui must be tr or en, got '$uiLang'")
+
 android {
+    buildFeatures {
+        buildConfig = true
+    }
     sourceSets.getByName("main").kotlin.srcDir(rootProject.file("shared-guest-ui"))
     namespace = "com.fahadali.oneos.guest"
     compileSdk { version = release(37) }
@@ -30,6 +36,7 @@ android {
         // 0.2 (OneOS 0.4.30): How's it going?, the checklist for Send to the OneOS team.
         versionCode = 12
         versionName = "0.12"
+        buildConfigField("boolean", "FORCE_TURKISH", (uiLang == "tr").toString())
     }
 
     signingConfigs {

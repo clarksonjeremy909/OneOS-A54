@@ -19,7 +19,7 @@ import java.net.URL
 /**
  * OneOS updates itself (0.4.41; owner: "include apk updater in OneOS rather than
  * shipping APK over and over ... all of them have root"). [check] reads the
- * latest GitHub release's update.json (at most every few hours, or when asked);
+ * OneOS A54 version.json on GitHub (at most every few hours, or when asked);
  * [install] downloads the APK it names into `files/oneos-update/OneOS.apk`,
  * checks its size and SHA-256, that it is this app (package name), signed with
  * the certificate this copy is signed with and a higher versionCode, and root
@@ -94,7 +94,7 @@ object AppUpdater : BackgroundJob<AppUpdater.State>(State(), "oneos-update") {
         executor.execute {
             val testUrl = AppUpdate.testUrl(testCode(app))
             val test = testUrl != null
-            val r = runCatching { AppUpdate.parse(fetchText(testUrl ?: AppUpdate.URL), test).getOrThrow() }
+            val r = runCatching { AppUpdate.parse(fetchText(testUrl ?: AppUpdate.URL), test, if (test) null else BuildConfig.UPDATE_CHANNEL).getOrThrow() }
             prefs.edit().putLong("checked", now).apply()
             val u = r.getOrNull()
             update(

@@ -2,17 +2,18 @@ package com.fahadali.oneos.ui
 
 import android.content.Context
 import android.content.res.Configuration
+import com.fahadali.oneos.BuildConfig
 import com.fahadali.oneos.session.HostSuspendActions
 import com.fahadali.oneos.session.Readiness
 import java.util.Locale
 
 class OneOsApplication : android.app.Application() {
     override fun attachBaseContext(base: Context) {
-        super.attachBaseContext(turkish(base))
+        super.attachBaseContext(if (BuildConfig.FORCE_TURKISH) turkish(base) else base)
     }
 
     override fun onCreate() {
-        Locale.setDefault(Locale.forLanguageTag("tr"))
+        if (BuildConfig.FORCE_TURKISH) Locale.setDefault(Locale.forLanguageTag("tr"))
         super.onCreate()
         androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         HostSuspendActions.restoreOnStart(this) { Readiness.tick(this) }

@@ -6,10 +6,17 @@ Paketi değiştirilmedi: `com.fahadali.oneos`. Resmi OneOS ile aynı imza olmad�
 - Uygulama adı: **OneOS A54**
 - Arayüz varsayılan olarak Türkçe (telefon dili İngilizce olsa bile). İngilizce metinler `values/` içinde yedek olarak durur.
 
-## Kasma azaltma (kodda var olan, güvenli seçenekler)
+## Kasma azaltma (her konuk ROM, güvenli ve geri alınabilir)
+Bu ayarlar yalnızca OxygenOS için değil, hazırlanan her konuk sistem için geçerlidir. Cihaz kapıları ve SDK eşleşmesi değiştirilmedi. Tahminle paket kapatılmaz.
 - İlk oturumda `oneos_dexopt.enable` açılır: sistem, uygulamaları `cmd package compile -m speed` ile derler (0.5.18’deki resmi seçenek; 0.5.22’de varsayılan kapalıydı). İlk 10–20 dakika telefon ısınabilir ve yavaş olabilir, sonra daha akıcı olması beklenir.
 - “Isınınca soğut” varsayılan olarak kapalı: 45 °C’den itibaren işlemciyi kısma kaldırıldı (Ayarlar’dan yeniden açılabilir). Telefon daha çok ısınabilir; geçişte uyarı çıkabilir.
-- Mali/Exynos RenderEngine (SkiaGL) değiştirilmedi. Cihaz kapıları ve SDK eşleşmesi değiştirilmedi. Sıfır kasma garanti edilemez.
+- “Her konuk sistemde kasmayı azalt” (`ONEOS_GUEST_PERF`, varsayılan açık, Ayarlar’dan kapanır):
+  - animasyon ölçekleri 0.5 (window / transition / animator);
+  - `get-max-cached-processes` 24’ten büyükse 24’e iner (daha düşük bir değer yükseltilmez);
+  - varsa `activity_starts_logging_enabled` kapatılır;
+  - I/O: gerçek disklerde (loop/ram/dm/zram değil) `read_ahead_kb` yalnızca 128’den büyükse 128 yapılır; zamanlayıcı yalnızca listede `none` varsa `none` yapılır.
+  - Kullanıcı alanı ayarları konuk `/data` içinde kaydedilir; I/O değerleri aşamada saklanır ve One UI’ye dönüşte geri yüklenir. Seçenek sonraki oturumda kapatılırsa konuk ayarları da geri alınır.
+- Mali/Exynos RenderEngine (SkiaGL) değiştirilmedi. Sıfır kasma garanti edilemez.
 
 ## Bring apps / veri aktarımı
 - Yeni “Dosyaları aktar” bölümü: Fotoğraflar, Videolar, İndirilenler, Belgeler, Müzik/Ses (resmi klasör paylaşımı / bind; canlıdır, diğer sistemdeki değişiklik One UI dosyalarını etkileyebilir), APK’ler (One UI İndirilenler ve Belgeler’den `*.apk` dosyalarının konuk İndirilenler’e tek yönlü kopyası; buradan yüklenmez).
@@ -29,6 +36,13 @@ Paketi değiştirilmedi: `com.fahadali.oneos`. Resmi OneOS ile aynı imza olmad�
 - Bu sürümde yeni Android string kaynağı yok; Türkçe çeviri eklenmedi.
 - A54 değişiklikleri (Türkçe arayüz, OneOS A54 adı, dexopt, ısı freni varsayılan kapalı, Dosyaları aktar, host-suspend) korundu. `guest_prepare.sh` içinde 0.5.23 IMS kontrolü ile A54 dexopt/APK kopyası birlikte duruyor (çakışma yok, farklı yerler).
 - `versionName` 0.5.23, `versionCode` 166; s25 derlemesinde resmi `-s25` soneki duruyor.
+
+## 0.5.23.1 (güncelleme kanalı ve İngilizce APK)
+- `versionCode` 167, `versionName` 0.5.23.1 (s25 derlemesinde görünen ad `0.5.23.1-s25`).
+- Güncelleme adresi resmi OneOS `update.json` değil, bu çatalın `version.json` dosyasıdır.
+- Türkçe (`-Poneos.ui=tr`, arayüz zorlanır) ve İngilizce (`-Poneos.ui=en`, telefon diline göre `values-tr`) APK’lar aynı paket adını kullanır.
+- Kasma azaltma (dexopt, ısı freni seçeneği, host-suspend, yeni `ONEOS_GUEST_PERF` ayarları) her konuk ROM için geçerlidir, yalnızca OxygenOS için değil.
+- Cihaz kapıları değişmedi. README, yapımın Galaxy A54 5G için olduğunu ve başka telefonlarda garanti edilmediğini belirtir.
 
 ## Derleme
 - Seri: s25, `packSets` kapalı (set dosyaları çalışma anında indirilir).

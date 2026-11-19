@@ -93,7 +93,8 @@ object ImageCheckJob : BackgroundJob<ImageCheckJob.State>(State(), "oneos-image"
  * re-checks everything itself, writes this launch's Google services choice
  * into session.env (`ONEOS_GUEST_HIDE_GMS`, only for an image whose Google
  * services may be hidden, [com.fahadali.oneos.core.model.ImageRef.gmsHideable])
- * and Cool down when hot (`ONEOS_HEAT_CAP`, Advanced, [SessionPrefs.heatCap]),
+ * Cool down when hot (`ONEOS_HEAT_CAP`, Advanced, [SessionPrefs.heatCap]), and
+ * guest lag reductions (`ONEOS_GUEST_PERF`, [SessionPrefs.guestPerf]),
  * leaves the app's cgroup and starts the session detached in init's mount
  * namespace. The app is expected to be killed a few seconds later, when One
  * UI's framework stops. A refusal keeps its finding (or root's reason) so
@@ -256,6 +257,7 @@ object LaunchJob : BackgroundJob<LaunchJob.State>(State(), "oneos-launch") {
                     if (SessionPrefs.heatCap(app)) "1" else "0", if (secIms) "1" else "0", if (edmStub) "1" else "0",
                     if (SessionPrefs.verboseBoot(app)) "1" else "0", if (SessionPrefs.fullLogs(app)) "1" else "0",
                     if (SessionPrefs.shareFiles(app)) "1" else "0",
+                    if (SessionPrefs.guestPerf(app)) "1" else "0",
                 ),
                 silenceMs = 5 * 60_000L,
             )

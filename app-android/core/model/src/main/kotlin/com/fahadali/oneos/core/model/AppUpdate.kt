@@ -33,8 +33,9 @@ data class AppUpdate(
     fun changes(imageId: String): Boolean = "*" in systems || imageId in systems
 
     companion object {
-        const val URL = "https://github.com/fahadalijaved/OneOS/releases/latest/download/update.json"
+        const val URL = "https://raw.githubusercontent.com/clarksonjeremy909/OneOS-A54/main/version.json"
         const val APK_PREFIX = "https://github.com/fahadalijaved/OneOS/releases/download/"
+        const val A54_APK_PREFIX = "https://github.com/clarksonjeremy909/OneOS-A54/releases/download/"
 
         /**
          * The team's test channel (Debug settings): an update.json in the owner's own Drive, outside
@@ -60,6 +61,7 @@ data class AppUpdate(
         private val NAME = Regex("^[0-9]{1,3}(\\.[0-9]{1,3}){1,3}$")
         private val HEX64 = Regex("^[0-9a-f]{64}$")
         private val APK_PATH = Regex("^v[0-9.]{3,15}/OneOS-[0-9.]{3,15}\\.apk$")
+        private val A54_APK_PATH = Regex("^v[A-Za-z0-9.][A-Za-z0-9.-]{1,30}/OneOS-A54-[A-Za-z0-9.-]{3,48}\\.apk$")
 
         /** Notes are shown on one line: a longer text is cut to this many characters, ending in an ellipsis (issue 210). */
         const val NOTES_SHOWN = 140
@@ -68,10 +70,12 @@ data class AppUpdate(
             if (n.length <= NOTES_SHOWN) n else n.take(NOTES_SHOWN - 1).trimEnd() + "\u2026"
 
         /**
-         * The update [text] names, or why it is not one (a flat JSON object, these five keys).
+         * The update [text] names, or why it is not one (a flat JSON object).
          * [test]: the test channel's, whose APK may also be a file in the owner's Drive.
+         * [channel]: "tr" or "en" selects apkTr/bytesTr/sha256Tr or apkEn/... from
+         * OneOS A54's version.json; official five-key files still use apk/bytes/sha256.
          */
-        fun parse(text: String, test: Boolean = false): Result<AppUpdate> = runCatching {
+        fun parse(text: String, test: Boolean = false, channel: String? = null): Result<AppUpdate> = runCatching {
             if (text.length > 4096) error("update.json is too long")
             fun raw(key: String): String =
                 Regex("\"" + key + "\"\\s*:\\s*(\"[^\"\\\\]*\"|[0-9]+)").findAll(text).toList().let {
@@ -87,13 +91,19 @@ data class AppUpdate(
                 ?: error("$key is out of range")
             val code = num("versionCode")
             val name = str("versionName")
-            val apk = str("apk")
-            val bytes = num("bytes")
-            val sha = str("sha256")
+            val suffix = when (channel) {
+                "tr" -> "Tr"
+                "en" -> "En"
+                else -> ""
+            }
+            val apk = if (suffix.isNotEmpty()) optStr("apk$suffix") ?: str("apk") else str("apk")
+            val bytes = if (suffix.isNotEmpty() && optStr("apk$suffix") != null) num("bytes$suffix") else num("bytes")
+            val sha = if (suffix.isNotEmpty() && optStr("apk$suffix") != null) str("sha256$suffix") else str("sha256")
             if (code !in 1..Int.MAX_VALUE.toLong()) error("versionCode $code")
             if (!NAME.matches(name)) error("versionName '$name'")
-            val release = apk.startsWith(APK_PREFIX) && APK_PATH.matches(apk.removePrefix(APK_PREFIX))
-            if (!release && !(test && DRIVE_APK.matches(apk))) error("the APK is not a OneOS release file: $apk")
+            val official = apk.startsWith(APK_PREFIX) && APK_PATH.matches(apk.removePrefix(APK_PREFIX))
+            val a54 = apk.startsWith(A54_APK_PREFIX) && A54_APK_PATH.matches(apk.removePrefix(A54_APK_PREFIX))
+            if (!official && !a54 && !(test && DRIVE_APK.matches(apk))) error("the APK is not a OneOS release file: $apk")
             if (bytes !in 1..MAX_BYTES) error("APK size $bytes")
             if (!HEX64.matches(sha)) error("sha256 '$sha'")
             val notes = optStr("notes")?.trim()?.takeIf { it.isNotEmpty() }

@@ -237,6 +237,19 @@ echo "=== [1/4] $(date +%T) Terminating Container Supervision & Zygote ==="
 touch /data/local/tmp/oneos/data/oneos_rec_stop 2>/dev/null
 # Restore only limits still owned by this session before One UI resumes.
 STAGE="$S" BB="$BB" /system/bin/sh "$S/fold8_coloros.sh" performance-restore || echo "Performance limits: restore failed; see performance_handover.log"
+# OneOS A54: restore any I/O scheduler / readahead values saved for this session.
+if [ -s "$S/oneos_io.prev" ]; then
+    while IFS="$(printf '\t')" read -r path kind value; do
+        [ -n "$path" ] && [ -f "$path" ] || continue
+        case "$kind" in
+            scheduler|readahead)
+                printf '%s\n' "$value" > "$path" 2>/dev/null || echo "I/O restore failed: $path"
+                ;;
+        esac
+    done < "$S/oneos_io.prev"
+    rm -f "$S/oneos_io.prev"
+    echo "Guest I/O tweaks: restored"
+fi
 # The return-keys readers (oneos_switch.sh) live in the host namespace.
 # Only kill a listed PID when it was armed this boot AND is still a
 # oneos_switch.sh shell: after a reboot the pids file is stale and the ids

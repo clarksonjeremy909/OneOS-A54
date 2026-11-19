@@ -500,6 +500,8 @@
     <string name="advanced_host_suspend_allow_card">Leave these running</string>
     <string name="advanced_host_suspend_allow_summary">Ticked apps are never frozen. System, phone, SMS, keyboard and similar apps are already excluded.</string>
     <string name="advanced_host_suspend_allow_empty">No third-party apps to add.</string>
+    <string name="advanced_guest_perf_title">Reduce lag in every guest system</string>
+    <string name="advanced_guest_perf_summary">Applies to every guest ROM, not only OxygenOS. Animations run at half speed, cached background processes are capped moderately, a little guest activity logging is turned down, flash readahead is limited, and the I/O scheduler is set to none when the kernel offers it. Original values are saved and restored when you return to One UI. First-session app compile and the optional One UI freeze stay separate. Turn this off if something feels wrong. No guest apps are disabled.</string>
     <!-- 0.5.17 (owner): the warning before "Switch with a screen lock set" (LockRiskDialog). -->
     <string name="lock_risk_title">Switch with a screen lock: you take the risk</string>
     <string name="lock_risk_message">Recent Samsung firmware blocks Download Mode while a PIN, pattern, password, fingerprint or face lock is set. If a switch goes wrong with your lock on, your phone may not start and may not reach Download Mode either: then the only way back is a factory reset, which erases everything on it. This has happened to a tester.\n\nA Download Mode module (such as backdownload) lowers this risk but does not remove it. Back up first. You alone are responsible for what happens to your phone and its data.</string>

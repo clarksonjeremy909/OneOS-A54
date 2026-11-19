@@ -7,7 +7,8 @@ case "${1:-release}" in
   --debug|debug) variant=Debug; folder=debug ;;
   *) echo 'Usage: scripts/build-guest-manager.sh [release|--debug]' >&2; exit 2 ;;
 esac
-(cd "$ROOT/app-android" && ./gradlew ":guest:assemble$variant")
+shift || true
+(cd "$ROOT/app-android" && ./gradlew ":guest:assemble$variant" "$@")
 apk="$ROOT/app-android/guest/build/outputs/apk/$folder/guest-$folder.apk"
 [ -s "$apk" ] || { echo "Missing signed APK: $apk" >&2; exit 1; }
 cp "$apk" "$ROOT/switcher/assets/guest_manager.apk.tmp"

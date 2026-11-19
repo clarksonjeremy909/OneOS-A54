@@ -101,6 +101,9 @@ class AdvancedFragment : CardsFragment() {
             }
         }
         Cards.row(sessions, OuiIcons.drawable.ic_oui_apps, getString(R.string.advanced_host_suspend_allow_title), getString(R.string.advanced_host_suspend_allow_row_summary), open(HostSuspendAllowActivity::class.java))
+        CardRows.toggle(sessions, getString(R.string.advanced_guest_perf_title), getString(R.string.advanced_guest_perf_summary), SessionPrefs.guestPerf(ctx)) { on ->
+            SessionPrefs.setGuestPerf(ctx, on)
+        }
         CardRows.toggle(sessions, getString(R.string.advanced_full_logs_title), getString(R.string.advanced_full_logs_summary), SessionPrefs.fullLogs(ctx)) { on ->
             SessionPrefs.setFullLogs(ctx, on)
         }

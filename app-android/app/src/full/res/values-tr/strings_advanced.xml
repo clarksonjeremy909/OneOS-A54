@@ -507,6 +507,8 @@ OneOS, One UI ile birlikte kapanır.</string>
     <string name="advanced_host_suspend_allow_card">Bunlar çalışmaya devam etsin</string>
     <string name="advanced_host_suspend_allow_summary">İşaretli uygulamalar dondurulmaz. Sistem, telefon, SMS, klavye ve benzerleri zaten dışarıdadır.</string>
     <string name="advanced_host_suspend_allow_empty">Eklenecek üçüncü taraf uygulama yok.</string>
+    <string name="advanced_guest_perf_title">Her konuk sistemde kasmayı azalt</string>
+    <string name="advanced_guest_perf_summary">Yalnızca OxygenOS için değil, her konuk ROM\'da geçerlidir. Animasyonlar yarı hızda çalışır, arka planda bekleyen süreçler makul ölçüde sınırlanır, konuk etkinlik günlüklerinin bir kısmı kısılır, flash okuma önbelleği sınırlanır ve çekirdek izin veriyorsa I/O zamanlayıcı none yapılır. Özgün değerler kaydedilir ve One UI\'ye dönünce geri yüklenir. İlk oturumdaki uygulama derlemesi ve isteğe bağlı One UI dondurma ayrı durur. Bir şey ters giderse kapatın. Konuk uygulamalar kapatılmaz.</string>
     <!-- 0.5.17 (owner): the warning before "Switch with a screen lock set" (LockRiskDialog). -->
     <string name="lock_risk_title">Ekran kilidi varken geçiş: riski siz üstlenirsiniz</string>
     <string name="lock_risk_message">Yeni Samsung yazılımları, PIN, desen, parola, parmak izi veya yüz kilidi varken Download Mode\'u engeller. Kilidiniz açıkken bir geçiş ters giderse telefonunuz açılmayabilir ve Download Mode\'a da ulaşamayabilir: o zaman tek dönüş yolu her şeyi silen fabrika sıfırlamasıdır. Bu bir testçiye oldu.

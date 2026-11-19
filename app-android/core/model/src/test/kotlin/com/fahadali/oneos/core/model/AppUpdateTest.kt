@@ -66,4 +66,28 @@ class AppUpdateTest {
         )
         for (b in bad) assertTrue(b, AppUpdate.parse(b).isFailure)
     }
+
+    @Test
+    fun readsTheA54VersionJsonPerChannel() {
+        val trApk = "https://github.com/clarksonjeremy909/OneOS-A54/releases/download/v0.5.23-a54.1/OneOS-A54-0.5.23-tr.apk"
+        val enApk = "https://github.com/clarksonjeremy909/OneOS-A54/releases/download/v0.5.23-a54.1/OneOS-A54-0.5.23-en.apk"
+        val text = """{"versionCode": 167, "versionName": "0.5.23.1", "notes": "A54 updater", "apkTr": "$trApk", "bytesTr": 81562844, "sha256Tr": "$sha", "apkEn": "$enApk", "bytesEn": 81562845, "sha256En": "$sha"}"""
+        val tr = AppUpdate.parse(text, channel = "tr").getOrThrow()
+        assertEquals(167, tr.versionCode)
+        assertEquals("0.5.23.1", tr.versionName)
+        assertEquals(trApk, tr.apk)
+        assertEquals(81562844L, tr.bytes)
+        assertEquals("A54 updater", tr.notes)
+        val en = AppUpdate.parse(text, channel = "en").getOrThrow()
+        assertEquals(enApk, en.apk)
+        assertEquals(81562845L, en.bytes)
+        assertTrue(tr.newerThan(166))
+        assertTrue(!tr.newerThan(167))
+    }
+
+    @Test
+    fun refusesA54ApksFromAnotherRepo() {
+        val apk = "\"https://github.com/someone/OneOS-A54/releases/download/v0.5.23-a54.1/OneOS-A54-0.5.23-tr.apk\""
+        assertTrue(AppUpdate.parse(json(apk = apk)).isFailure)
+    }
 }
