@@ -1,11 +1,11 @@
 {
-  "versionCode": 167,
-  "versionName": "0.5.23.1",
-  "notes": "TR+EN APKs, own update channel, lag reductions for every guest ROM (not only OxygenOS).",
-  "apkTr": "https://github.com/clarksonjeremy909/OneOS-A54/releases/download/v0.5.23-a54.1/OneOS-A54-0.5.23-tr.apk",
-  "bytesTr": 81571036,
-  "sha256Tr": "c3527510a7d42005bab442dee532755b4de72000524bb5f0ed87461741ef4771",
-  "apkEn": "https://github.com/clarksonjeremy909/OneOS-A54/releases/download/v0.5.23-a54.1/OneOS-A54-0.5.23-en.apk",
-  "bytesEn": 81566940,
-  "sha256En": "5953b573d5ad5d86da9b6070eb31de36caea73c2d6e62a69232633d86e0442df"
+  "versionCode": 168,
+  "versionName": "0.5.24.1",
+  "notes": "Based on official 0.5.24. Own update channel only; lag reductions for every guest ROM.",
+  "apkTr": "https://github.com/clarksonjeremy909/OneOS-A54/releases/download/v0.5.24-a54.1/OneOS-A54-0.5.24-tr.apk",
+  "bytesTr": 81591516,
+  "sha256Tr": "69806ab4f7a847167b5b7c2050a633937a1c4c481e73ee38dcd5cf13d00edc2f",
+  "apkEn": "https://github.com/clarksonjeremy909/OneOS-A54/releases/download/v0.5.24-a54.1/OneOS-A54-0.5.24-en.apk",
+  "bytesEn": 81591516,
+  "sha256En": "dcea72a476bd021a73dee6adf1c29dbfdc30590a69dc98dd0904a3730bd654f8"
 }
