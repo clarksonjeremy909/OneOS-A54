@@ -161,6 +161,27 @@ object RootScript {
          * Refused when no session is running.
          */
         BRING_ADD("bring-add", Stdin.NONE),
+
+        /**
+         * OneOS A54: write the optional per-folder share list (`oneos_share.dirs`)
+         * and/or copy host `*.apk` files from Download/Documents into the guest
+         * Download folder. Args are category tokens (photos, videos, downloads,
+         * documents, music, apks); none clears the list. Host files are only read.
+         */
+        BRING_MEDIA("bring-media", Stdin.NONE),
+
+        /**
+         * OneOS A54: reversibly freeze already-vetted host packages with
+         * `pm suspend --user 0`. stdin is the package list (one name per line).
+         */
+        HOST_SUSPEND("host-suspend", Stdin.DATA),
+
+        /**
+         * OneOS A54: `pm unsuspend --user 0` exactly the packages recorded in
+         * the stage list, plus any names on stdin (the app's crash-recovery backup).
+         * Zero args uses only the stage list.
+         */
+        HOST_UNSUSPEND("host-unsuspend", Stdin.DATA),
     }
 
     /**
@@ -272,6 +293,15 @@ object RootScript {
             Verb.BRING_FORGET, Verb.BRING_ADD -> {
                 need(1)
                 arg(0, PACKAGE, "a package name")
+            }
+            Verb.BRING_MEDIA -> {
+                if (args.size > 8) p += "bring-media takes at most 8 arguments, got ${args.size}"
+                val known = setOf("photos", "videos", "downloads", "documents", "music", "apks")
+                args.forEach { if (it !in known) p += "bring-media: '$it' is not a known category" }
+            }
+            Verb.HOST_SUSPEND, Verb.HOST_UNSUSPEND -> {
+                need(1)
+                arg(0, DEC, "a size")
             }
             Verb.SELFUPDATE -> {
                 need(3)

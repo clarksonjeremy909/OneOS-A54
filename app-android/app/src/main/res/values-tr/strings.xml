@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Strings both editions use (OneOS and OneOS Probe). Each edition's own
+     texts, app_name among them, are in src/full and src/probe; src/probe also
+     overrides the root prompts and the texts that say where the results are
+     kept, so they name OneOS Probe (EditionsTest checks it). -->
+<resources>
+    <string name="tested_scope">Z Fold (F8U), S26 Ultra, S25 Ultra ve S25 üzerinde test edildi.</string>
+
+    <!-- Before you start (first launch until acknowledged; again from Home and About) -->
+    <string name="before_title">Başlamadan önce</string>
+    <string name="before_continue">Devam</string>
+
+    <!-- Home -->
+    <string name="home_cat_phone">Bu telefon</string>
+    <string name="home_check_title">Bu telefonu kontrol et</string>
+    <string name="home_check_summary">Model, yonga, One UI, ekranlar, root ve boş alan ve OneOS\'un burada çalışıp çalışamayacağı</string>
+    <string name="home_tests_title">Testleri çalıştır</string>
+    <string name="home_tests_summary">OneOS ekibi için root olarak salt okunur testler. Telefonda hiçbir şey değişmez.</string>
+    <string name="home_send_title">Bulguları OneOS ekibine gönder</string>
+    <string name="home_send_summary">Testleri çalıştırdıktan sonra bulgular zip\'ini ekiple paylaşın; OneOS\'un bu telefonda çalışıp çalışamayacağını kontrol etsinler.</string>
+    <string name="home_cat_app">OneOS A54</string>
+    <string name="home_about_summary">Bu sürümün yaptıkları, güvenlik ve emeği geçenler</string>
+
+    <!-- Device report -->
+    <string name="report_title">Bu telefon</string>
+    <string name="report_reading">Bu telefon okunuyor…</string>
+    <string name="report_failed">Bu telefon okunamadı</string>
+    <string name="report_cat_summary">Özet</string>
+    <string name="report_cat_phone">Telefon</string>
+    <string name="report_cat_chip">Yonga</string>
+    <string name="report_cat_software">Yazılım</string>
+    <string name="report_cat_root">Root</string>
+    <string name="report_cat_storage">Depolama ve pil</string>
+    <string name="report_cat_boot">Önyükleme ve ekran kilidi</string>
+    <string name="report_readonly_title">Salt okunur kontrol</string>
+    <string name="report_readonly_summary">Bu bilgiler Android API\'lerinden ve sistem özelliklerinden gelir. OneOS, Root\'u kontrol et\'e dokunursanız su -c id dışında hiçbir şey yazmadı ve root olarak hiçbir şey çalıştırmadı.</string>
+    <string name="check_root_title">Root\'u kontrol et</string>
+    <string name="check_root_summary">Root\'un yanıt verip vermediğini görmek için bir kez su -c id çalıştırır. Root olarak başka bir şey çalışmaz.</string>
+    <string name="check_root_running">Root bekleniyor… root yöneticiniz sorarsa OneOS\'a izin verin.</string>
+    <string name="check_root_dialog_title">Root kontrol edilsin mi?</string>
+    <string name="check_root_dialog_message">OneOS bir kez "su -c id" çalıştırır. Yalnızca hangi kullanıcı olarak çalıştığını yazdırır, hiçbir şeyi değiştirmez.
+
+Magisk, OneOS\'a izin vermenizi isteyebilir. KernelSU veya APatch\'te önce süper kullanıcı listesinde OneOS\'a izin verin.</string>
+    <string name="check_root_run">Çalıştır</string>
+
+    <!-- Run tests (Friend build 1, probe) -->
+    <string name="tests_title">Testleri çalıştır</string>
+    <string name="tests_subtitle">Salt okunur, root olarak</string>
+    <string name="tests_cat_about">Bu testler hakkında</string>
+    <string name="tests_what_title">Bu ne yapar</string>
+    <string name="tests_what_summary">Bu telefon hakkında bilgileri root olarak okur: derleme özellikleri, CPU özellikleri, One UI installd arayüzü, ekranlar, dokunma, arka ışık, hizmetler, SELinux ilkesi, depolama ve root yöneticisi. OneOS ekibi, geçiş yapabilen herhangi bir derleme paylaşılmadan önce bulguları kontrol eder.</string>
+    <string name="tests_readonly_title">Telefonda hiçbir şey değişmez</string>
+    <string name="tests_readonly_summary">Her komut yalnızca okur. Root dosya yazmaz, özellik veya ayar değiştirmez, hiçbir şeyi başlatmaz veya durdurmaz. Sonuçlar bir boru üzerinden OneOS\'a gider ve siz paylaşana kadar kendi depolamasında kalır. Tam komutu görmek için aşağıdaki bir teste dokunun.</string>
+    <string name="tests_privacy_title">Önce kişisel veriler kaldırılır</string>
+    <string name="tests_privacy_summary">Paylaşılmadan önce OneOS IMEI ve MEID, seri numaraları ve cihaz kimlikleri, MAC adresleri, SIM numaraları (ICCID, IMSI), telefon numaraları, e-postalar, Wi-Fi adları, hesap adları ve konumları kaldırır. Günlük, ileti, kişi, fotoğraf veya dosya okunmaz. Paylaşmadan önce her dosyayı açabilirsiniz.</string>
+    <string name="tests_cat_run">Çalıştır</string>
+    <string name="tests_run_summary">Root gerekir (KernelSU, Magisk veya APatch). Yaklaşık bir dakika sürer.</string>
+    <string name="tests_run_again">Yeniden çalıştır</string>
+    <string name="tests_stop_title">Durdur</string>
+    <string name="tests_stop_summary">Testleri durdurur. Bitmemiş bir çalıştırmadan hiçbir şey saklanmaz.</string>
+    <string name="tests_view_title">Bulguları görüntüle ve paylaş</string>
+    <string name="tests_view_summary">Bulguları OneOS ekibine gönder</string>
+    <string name="tests_view_none">Henüz bulgu yok. Önce testleri çalıştırın.</string>
+    <string name="tests_checking_root">Root kontrol ediliyor… root yöneticiniz sorarsa OneOS\'a izin verin.</string>
+    <string name="tests_building">Kişisel veriler kaldırılıyor ve bulgular paketleniyor…</string>
+    <string name="tests_dialog_title">Salt okunur testler root olarak çalıştırılsın mı?</string>
+    <string name="tests_dialog_message">OneOS, "su -c id" komutunu ve ardından bu ekranda listelenen salt okunur komutları çalıştırır. Telefonda hiçbir şey değiştirilmez. Sonuçlar siz paylaşana kadar OneOS\'ta kalır ve ondan önce kişisel veriler kaldırılır.
+
+Magisk, OneOS\'a izin vermenizi isteyebilir. KernelSU veya APatch\'te önce süper kullanıcı listesinde OneOS\'a izin verin.</string>
+    <string name="tests_run">Çalıştır</string>
+    <string name="tests_list_broken_title">Testler çalıştırılamaz</string>
+
+    <!-- Findings preview -->
+    <string name="findings_title">Bulgular</string>
+    <string name="findings_share">Paylaş</string>
+    <string name="findings_save">İndirilenler\'e kaydet</string>
+    <string name="findings_share_chooser">Bulguları OneOS ekibine gönder</string>
+    <string name="findings_share_subject">OneOS bulguları</string>
+    <string name="findings_cat_bundle">Bulgular</string>
+    <string name="findings_send_title">Bulguları OneOS ekibine gönder</string>
+    <string name="findings_send_summary">Paylaş, aşağıdaki zip\'i gönderir. Kişisel veriler kaldırıldı; tam olarak ne olduğunu görmek için herhangi bir dosyaya dokunun.</string>
+    <string name="findings_cat_summary">Özet</string>
+    <string name="findings_cat_privacy">Kişisel veriler kaldırıldı</string>
+    <string name="findings_cat_files">Dosyalar</string>
+    <string name="findings_delete_title">Bulguları bu telefondan sil</string>
+    <string name="findings_delete_summary">Zip\'i ve bulgular klasörünü OneOS depolamasından kaldırır.</string>
+    <string name="findings_delete_confirm">Bulgular silinsin mi?</string>
+    <string name="findings_none">Henüz bulgu yok. Önce testleri çalıştırın.</string>
+    <string name="findings_saved">Kaydedildi</string>
+    <string name="findings_save_failed">Bulgular kaydedilemedi</string>
+    <string name="findings_no_share_app">Bulguları paylaşacak uygulama bulunamadı</string>
+    <string name="findings_binary">Sistem dosyası, değiştirilmeden kopyalandı (kişisel veri yok)</string>
+    <string name="delete">Sil</string>
+
+    <!-- Session logs (the findings preview with a log bundle) -->
+    <string name="logs_title">Oturum günlükleri</string>
+    <string name="logs_share_subject">OneOS oturum günlükleri</string>
+    <string name="logs_share_chooser">Oturum günlüklerini OneOS ekibine gönder</string>
+    <string name="logs_cat_bundle">Oturum günlükleri</string>
+    <string name="logs_send_title">Günlükleri OneOS ekibine gönder</string>
+    <string name="logs_send_summary">Paylaş, aşağıdaki zip\'i gönderir. Günlükler okunurken kişisel veriler kaldırıldı; tam olarak ne olduğunu görmek için herhangi bir dosyaya dokunun.</string>
+    <string name="logs_delete_title">Bu günlükleri bu telefondan sil</string>
+    <string name="logs_delete_summary">Zip\'i ve klasörünü OneOS depolamasından kaldırır. Telefonun hazırlık klasöründeki kendi kopyaları kalır.</string>
+    <string name="logs_delete_confirm">Oturum günlükleri silinsin mi?</string>
+
+    <!-- About -->
+    <string name="about_cat_app">OneOS A54</string>
+    <string name="about_version_title">Sürüm</string>
+    <string name="about_what_title">OneOS nedir</string>
+    <string name="about_what_summary">Köklü bir Samsung amiral gemisinde, OneOS sunucusunda bir üretici güncellemesinden oluşturulan başka bir Android sistemini One UI\'nin yanında çalıştırır ve genellikle yeniden başlatmadan One UI\'ye döner. Hiçbir şey yazılmaz.</string>
+    <string name="about_version_scope_title">Bu sürüm</string>
+    <string name="about_tested_title">Test edildi</string>
+    <string name="about_tested_summary">Z Fold (F8U), S26 Ultra, S25 Ultra ve S25 üzerinde test edildi. Diğer telefonlar denenmedi.</string>
+    <string name="about_safety_title">Güvenlik</string>
+    <string name="about_cat_credits">Emeği geçenler</string>
+    <string name="about_credit_oneos_title">OneOS A54</string>
+    <string name="about_credit_oneos_summary">Uygulama, çerçeve yamaları ve sunucu derlemesi. Oturum betikleri aşağıda anılan projeden başladı.</string>
+    <string name="about_credit_onelineage_title">OneLineage</string>
+    <string name="about_credit_onelineage_url" translatable="false">https://github.com/WeWaffles/OneLineage</string>
+    <string name="about_credit_fold8_title">Galaxy Z Fold8 desteği</string>
+    <string name="about_credit_fold8_summary">Josh Skinner (thatjoshguy67): Fold8 setleri ve menteşe; Fold8 ve Fold8 Ultra\'da ColorOS ve Pixel için yarı katlı uygulamalar ve katlama animasyonları.</string>
+    <string name="about_credit_fold8_url" translatable="false">https://github.com/fahadalijaved/OneOS/pull/1</string>
+    <string name="about_no_browser">Bağlantıyı açacak tarayıcı bulunamadı</string>
+    <string name="about_credit_infinityx_title">Project Infinity-X</string>
+    <string name="about_credit_infinityx_summary">Infinity-X sistemi ve Find X9 Ultra derlemesi (X9UInfinityX); OneOS bunu kendi çerçeve yamalarıyla çalıştırır.</string>
+    <string name="about_credit_infinityx_url" translatable="false">https://github.com/ProjectInfinity-X</string>
+    <string name="about_credit_lineageos_title">LineageOS</string>
+    <string name="about_credit_lineageos_summary">LineageOS 24 sistemi ve OnePlus 15 derlemesi (infiniti); OneOS bunu kendi çerçeve yamalarıyla çalıştırır.</string>
+    <string name="about_credit_lineageos_url" translatable="false">https://lineageos.org</string>
+    <string name="about_credit_oneui_title">One UI Design ve SESL kitaplıkları</string>
+    <string name="about_credit_oneui_summary">OneUIProject, MIT Lisansı.</string>
+    <string name="about_cat_legal">Yasal</string>
+    <string name="about_legal_title">Bağlı değil</string>
+    <string name="about_legal_summary">Samsung, OPPO, Google, Project Infinity-X veya LineageOS ile bağlantılı değildir. Galaxy, One UI, ColorOS, Pixel ve Android, sahiplerinin ticari markalarıdır.</string>
+
+    <!-- Send to the OneOS team (0.4.29): SendReportActivity. -->
+    <string name="send_title">OneOS ekibine gönder</string>
+    <string name="send_unavailable">Bu derlemede gönderme yok. Bunun yerine Paylaş\'ı kullanın.</string>
+    <string name="send_cat_session">Oturum raporu</string>
+    <string name="send_cat_probe">Telefon raporu</string>
+    <string name="send_session_summary">Oturum %1$s</string>
+    <string name="send_session_summary_full">%1$s · OneOS %2$s üzerinde çalıştı · oturum %3$s</string>
+    <string name="send_session_old_title">Bu daha eski bir oturum</string>
+    <string name="send_session_old_summary">OneOS %1$s üzerinde çalıştı, bu telefonda şimdi %2$s var. Göndermeniz sorun değil ama şu anki sürümünüz hakkında bir şey söylemez. Bunun için yeniden geçiş yapıp yeni oturumu gönderin.</string>
+    <string name="send_full_logs_off_title">Tam oturum günlükleri kapalıydı</string>
+    <string name="send_full_logs_off_summary">Bu oturumda tam oturum günlükleri kapalıydı; raporda yalnızca kısa günlükler var.</string>
+    <string name="send_probe_summary">OneOS Probe bulguları</string>
+    <string name="send_cat_how">Nasıl geçti?</string>
+    <string name="send_start_title">Başladı mı?</string>
+    <string name="send_choose">Birini seçin</string>
+    <string name="send_works_title">Çalışanlar</string>
+    <string name="send_problems_title">Sorun çıkanlar</string>
+    <string name="send_none_ticked">Hiçbir şey işaretlenmedi (denenmedi)</string>
+    <string name="send_cat_more">Başka bir şey</string>
+    <string name="send_note_title">Ekibe not</string>
+    <string name="send_note_hint">İsteğe bağlı: ne olduğu, birkaç sözcükle</string>
+    <string name="send_contact_title">Telegram adınız</string>
+    <string name="send_contact_hint">Gerekli: Telegram @kullaniciadi adınız, ekip size daha fazla sorabilsin</string>
+    <string name="send_contact_invalid">%1$s bir Telegram kullanıcı adı değil. Telegram Ayarları\'ndaki @kullaniciadi adınızı yazın (5 ile 32 harf, rakam veya _).</string>
+    <string name="send_contact_needed">Önce Telegram @kullaniciadi adınızı ekleyin; ekip bu rapor için size ulaşabilsin.</string>
+    <string name="send_cat_what">Neler gönderilir</string>
+    <string name="send_attach_logs">Günlükleri ekle</string>
+    <string name="send_attach_findings">Bulguları ekle</string>
+    <string name="send_attach_findings_summary">Bulgular zip\'i, %1$s</string>
+    <string name="send_short_summary">Kısa günlük: geçişten sonraki ilk dakikalar ve bitmeden önceki son 2, genellikle 2 MB\'ın altında</string>
+    <string name="send_full_summary">Tüm oturum günlüğü, %1$s</string>
+    <string name="send_full_title">Tüm oturum günlüğünü gönder</string>
+    <string name="send_full_auto">Açık, çünkü bir sorun işaretli: ekibin onu bulmak için tüm oturuma ihtiyacı var</string>
+    <string name="send_full_hint">Bunu açmazsanız yalnızca kısa günlük gönderilir</string>
+    <string name="usage_count_title">Anonim kullanım sayısı</string>
+    <string name="usage_count_summary">Günde bir kez, rastgele bir kimlik, telefon modeliniz, OneOS sürümü ve kurduğunuz sistemler; böylece etkin telefonları sayabiliriz. Hesap, numara, konum veya dosya yok.</string>
+    <string name="send_privacy_title">Ekibin gördükleri</string>
+    <string name="send_privacy_summary">Paylaş\'ın gönderdiği aynı dosya, kişisel veriler zaten kaldırılmış halde ve yanıtlarınız. Raporlar 30 gün saklanır. Genel uyumluluk tablosu yalnızca yanıtları sayar: notunuz, adınız veya telefon ayrıntıları asla sayılmaz.</string>
+    <string name="send_button">OneOS ekibine gönder</string>
+    <string name="send_button_summary">Mobil veri veya Wi-Fi kullanır</string>
+    <string name="send_preparing">Hazırlanıyor…</string>
+    <string name="send_progress">Gönderiliyor… %2$s içinde %1$d%%</string>
+    <string name="send_sending">Gönderiliyor</string>
+    <string name="send_from_guest">Nasıl gidiyor? bölümünden dolduruldu</string>
+    <string name="send_from_guest_summary">Diğer sistemde işaretledikleriniz. Göndermeden önce aşağıdakileri değiştirebilirsiniz.</string>
+    <string name="send_need_start">Önce başlayıp başlamadığını seçin</string>
+    <string name="send_too_big">Dosya gönderilemeyecek kadar büyük (%1$s). Bunun yerine Paylaş\'ı kullanın.</string>
+    <string name="send_done_title">Gönderildi. Teşekkürler!</string>
+    <string name="send_done_summary">Rapor kodu %1$s. Kopyalamak için dokunun ve yazarsanız Telefon raporlarında bundan bahsedin.</string>
+    <string name="send_copied">Rapor kodu kopyalandı</string>
+    <string name="send_again">Yeniden gönder</string>
+    <string name="send_failed_title">Gönderilemedi</string>
+    <string name="send_share_instead">Bunun yerine paylaş</string>
+    <string name="send_share_instead_summary">Dosyayı kendiniz gönderin, örneğin Telegram grubunda</string>
+    <string name="findings_send_team">OneOS ekibine gönder</string>
+    <string name="last_send_summary">Nasıl geçtiği ve günlükler, doğrudan ekibe</string>
+    <string name="last_send_sent">Gönderildi, rapor kodu %1$s. Yeniden göndermek için dokunun.</string>
+    <!-- 0.5.16 (owner): reports only from group members -->
+    <string name="send_cat_telegram">Telegram</string>
+    <string name="send_tg_sign_in">Telegram ile oturum aç</string>
+    <string name="send_tg_sign_in_summary">Raporlar OneOS grubu üyeleri içindir</string>
+    <string name="send_tg_waiting_title">Telegram bekleniyor</string>
+    <string name="send_tg_waiting_summary">Açılan Telegram sohbetinde Başlat\'a dokunun, sonra buraya dönün. Yeniden açmak için dokunun.</string>
+    <string name="send_tg_signed_in_as">@%1$s olarak oturum açıldı</string>
+    <string name="send_tg_signed_in">Telegram ile oturum açıldı</string>
+    <string name="send_tg_sign_out">Oturumu kapat</string>
+    <string name="send_tg_expired">Oturum açmanın süresi doldu. Yeniden deneyin.</string>
+    <string name="send_tg_join_title">OneOS grubuna katıl</string>
+    <string name="send_tg_join_summary">Raporlar OneOS grubu üyeleri içindir. Katılın, sonra yeniden gönderin.</string>
+    <string name="send_tg_no_app">Bağlantıyı açacak uygulama yok</string>
+</resources>

@@ -1,0 +1,10 @@
+<resources>
+<string name="catalog_settings">Ayarlar</string><string name="catalog_set_up">Kur</string><string name="catalog_boot">Önyükleme</string><string name="catalog_more">Sistem seçenekleri</string><string name="catalog_details">Sistem ayrıntıları</string><string name="catalog_optimised">İyileştirilmiş</string><string name="catalog_experimental">Deneysel</string>
+<string name="catalog_unsupported">Desteklenmiyor</string>
+<string name="catalog_unsupported_message">OneOS henüz %2$s cihazınız için %1$s sunmuyor. İyileştirilmiş veya Deneysel işaretli diğer sistemler onda çalışır.</string><string name="catalog_not_available">Kullanılamıyor</string><string name="catalog_this_phone">telefon</string>
+<string name="settings_load_gsi">Özel GSI yükle</string><string name="settings_storage">OneOS depolamasını yönet</string><string name="settings_repair">OneOS yamalarını onar</string><string name="settings_help">Yardım ve hakkında</string><string name="settings_onboarding">Başlamadan önce</string><string name="settings_debug">Hata ayıklama</string>
+<string name="settings_thermal">OneOS ısı yöneticisini aç</string><string name="settings_experimental">Deneysel</string><string name="settings_camera">Kamera düzeltmesini aç</string><string name="settings_allow_lock">Ekran kilidi varken geçişe izin ver</string>
+<string name="catalog_open_checks">%1$s için önyükleme öncesi kontrolleri aç</string>
+<string name="catalog_update">Güncelle</string>
+<string name="catalog_switch">Geç</string>
+</resources>

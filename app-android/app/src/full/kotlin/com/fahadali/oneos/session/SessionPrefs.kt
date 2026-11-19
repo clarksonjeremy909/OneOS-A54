@@ -223,8 +223,9 @@ object SessionPrefs {
 
     /**
      * Cool down when hot (Advanced; owner 2026-10-27), `ONEOS_HEAT_CAP` for every
-     * launch. On by default: One UI's heat control (SSRM) does not run in the
-     * other system, so the session caps the CPU from 45 °C skin (oneos_switch.sh).
+     * launch. Off by default in the OneOS A54 build: the 45 °C cap (oneos_switch.sh)
+     * is a known source of lag on mid-range Exynos. The Settings toggle remains;
+     * turning this off can let the phone get very hot (confirm_heat_cap_off).
      */
     fun verboseBoot(ctx: Context): Boolean = p(ctx).getBoolean("verbose_boot", false)
     fun setVerboseBoot(ctx: Context, enabled: Boolean) { p(ctx).edit().putBoolean("verbose_boot", enabled).apply() }
@@ -243,10 +244,31 @@ object SessionPrefs {
     fun shareFiles(ctx: Context): Boolean = p(ctx).getBoolean("share_files", false)
     fun setShareFiles(ctx: Context, enabled: Boolean) { p(ctx).edit().putBoolean("share_files", enabled).apply() }
 
-    fun heatCap(ctx: Context): Boolean = p(ctx).getBoolean("heat_cap", true)
+    fun heatCap(ctx: Context): Boolean = p(ctx).getBoolean("heat_cap", false)
 
     fun setHeatCap(ctx: Context, on: Boolean) {
         p(ctx).edit().putBoolean("heat_cap", on).apply()
+    }
+
+    /** Freeze non-essential One UI apps while the guest session is open. On by default. */
+    fun hostSuspend(ctx: Context): Boolean = p(ctx).getBoolean("host_suspend", true)
+    fun setHostSuspend(ctx: Context, on: Boolean) {
+        p(ctx).edit().putBoolean("host_suspend", on).apply()
+    }
+
+    fun hostSuspendAllowlist(ctx: Context): Set<String> =
+        p(ctx).getStringSet("host_suspend_allow", emptySet()).orEmpty().toSet()
+
+    fun setHostSuspendAllowlist(ctx: Context, packages: Set<String>) {
+        p(ctx).edit().putStringSet("host_suspend_allow", packages).apply()
+    }
+
+    /** Backup of the exact packages the last host-suspend verb froze (crash recovery). */
+    fun hostSuspendedList(ctx: Context): List<String> =
+        com.fahadali.oneos.core.model.HostSuspend.parseList(p(ctx).getString("host_suspended_list", "") ?: "")
+
+    fun setHostSuspendedList(ctx: Context, packages: Collection<String>) {
+        p(ctx).edit().putString("host_suspended_list", com.fahadali.oneos.core.model.HostSuspend.formatList(packages)).apply()
     }
 
     /**

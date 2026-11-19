@@ -407,7 +407,7 @@ object ShellScan {
  * phone's user data, reboots, settings, package wipes or mounts.
  */
 object StageAudit {
-    val VERBS = listOf("guest-runtime", "guest-module", "guest-module-state", "begin", "receive", "keep-raw", "keep-files", "table", "env", "finish", "launch", "recover", "old-list", "purge", "restore", "remove", "remove-system", "tool-app", "reset-data", "selfupdate", "bring-collect", "bring-clear", "bring-status", "bring-forget", "bring-catalog", "bring-add")
+    val VERBS = listOf("guest-runtime", "guest-module", "guest-module-state", "begin", "receive", "keep-raw", "keep-files", "table", "env", "finish", "launch", "recover", "old-list", "purge", "restore", "remove", "remove-system", "tool-app", "reset-data", "selfupdate", "bring-collect", "bring-clear", "bring-status", "bring-forget", "bring-catalog", "bring-add", "bring-media", "host-suspend", "host-unsuspend")
 
     val ALLOWED: Set<String> = setOf(
         "umask", "[", "echo", "printf", "id", "stat", "awk", "sed", "grep", "sort", "head", "tail", "cut", "tr", "wc",
@@ -477,6 +477,14 @@ object StageAudit {
     private val TOOL_APP_PM = setOf(
         listOf("disable-user", "--user", "0", "\"\$2\""),
         listOf("enable", "--user", "0", "\"\$2\""),
+    )
+    private const val HOST_SUSPEND_FUNCTION = "do_host_suspend"
+    private const val HOST_UNSUSPEND_FUNCTION = "host_unsuspend_list"
+    private val HOST_SUSPEND_PM = setOf(
+        listOf("suspend", "--user", "0", "\"\$pkg\""),
+    )
+    private val HOST_UNSUSPEND_PM = setOf(
+        listOf("unsuspend", "--user", "0", "\"\$pkg\""),
     )
 
     /**
@@ -651,7 +659,9 @@ object StageAudit {
                     if (!purge) args.filter { it.startsWith("-") }.forEach { if (it != "-f") p += "line ${c.line}: rm $it" }
                 }
                 "pm" -> if (!(args.firstOrNull() == "path" && args.size == 2) && !(args == SELFUPDATE_PM && c.function == SELFUPDATE_FUNCTION) &&
-                    !(args in TOOL_APP_PM && c.function == TOOL_APP_FUNCTION)) {
+                    !(args in TOOL_APP_PM && c.function == TOOL_APP_FUNCTION) &&
+                    !(args in HOST_SUSPEND_PM && c.function == HOST_SUSPEND_FUNCTION) &&
+                    !(args in HOST_UNSUSPEND_PM && c.function == HOST_UNSUSPEND_FUNCTION)) {
                     p += "line ${c.line}: pm ${args.joinToString(" ")}"
                 }
                 "am" -> if (args != SELFUPDATE_AM || c.function != SELFUPDATE_FUNCTION) p += "line ${c.line}: am ${args.joinToString(" ")}"

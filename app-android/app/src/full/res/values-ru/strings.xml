@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">OneOS</string>
+    <string name="app_name">OneOS A54</string>
     <string name="before_link_summary">Что может сломаться, резервные копии и блокировка экрана</string>
     <string name="before_experimental_title">OneOS экспериментальная</string>
     <string name="before_backup_title">Сначала сделайте резервную копию</string>

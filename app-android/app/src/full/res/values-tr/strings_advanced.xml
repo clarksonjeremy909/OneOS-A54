@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Advanced and the screens it opens (the redesign's card look). Every
+         row is named like the screen it opens. Plain words, short summaries;
+         the technical words stay under Details and For the OneOS team. Fixed
+         text never names a system: %1$s is ImageRef.name at runtime
+         (StringsNeutralTest reads every string here). -->
+
+    <!-- Shared -->
+    <string name="advanced_details">Ayrıntılar</string>
+
+    <!-- Advanced -->
+    <string name="advanced_title">Ayarlar</string>
+    <string name="advanced_card_system">Kurulum ve yer</string>
+    <string name="advanced_setup_summary">Yeniden kurun; uygulama ve verilerini tutarak veya sıfırdan başlayarak</string>
+    <string name="advanced_file_summary">İndirdiğiniz dosyayı seçin ve kontrol edin</string>
+    <string name="advanced_space_summary">Daha önce kurduğunuz sistemlerin eski kopyaları</string>
+    <string name="advanced_space_free">%1$s boş</string>
+    <string name="advanced_space_none">%1$s boş · eski kopya yok</string>
+    <string name="advanced_space_old">%1$s boş · %2$s silinirse %3$s boşalır</string>
+    <string name="advanced_space_count">%1$s boş · silebileceğiniz %2$s</string>
+    <plurals name="advanced_space_copies">
+        <item quantity="one">%d eski kopya</item>
+        <item quantity="other">%d eski kopya</item>
+    </plurals>
+    <string name="advanced_card_sessions">Oturumlar</string>
+    <string name="advanced_last_none">Henüz oturum yok</string>
+    <string name="advanced_last_outcome">%1$s · %2$s</string>
+    <string name="advanced_last_test">%1$s · test çalışması</string>
+    <string name="advanced_logs_summary">Onları OneOS ekibiyle paylaşın. Önce kişisel bilgiler kaldırılır.</string>
+    <string name="advanced_restore_summary">Yalnızca bir oturum sırasında zorla yeniden başlatmadan sonra gerekir</string>
+    <string name="advanced_heat_cap_title">Isınınca soğut</string>
+    <string name="advanced_heat_cap_summary">One UI ısı kontrolü diğer sistemde çalışmaz. 45 °C\'den itibaren OneOS, telefon soğuyana kadar işlemciyi yavaşlatır.</string>
+    <string name="advanced_full_logs_title">Tam oturum günlükleri</string>
+    <string name="advanced_full_logs_summary">Hata raporları için sistemlerin yaptığı her şeyi kaydeder. Varsayılan olarak kapalıdır: ısı ekler ve depolama kullanır. Bir şey ters gidince açın, sonra rapor gönderin.</string>
+    <string name="advanced_share_files_title">Dosyalarımı diğer sistemlerle paylaş</string>
+    <string name="advanced_share_files_summary">One UI\'nin DCIM, Pictures, Download, Documents, Movies ve Music klasörlerini diğer sistemin içinde gösterir. Oradaki uygulamalar, One UI\'de olduğu gibi bu dosyaları değiştirebilir ve silebilir. Kapalı: her sistem kendi boş depolamasını tutar.</string>
+    <string name="advanced_card_help">Yardım</string>
+    <string name="advanced_before_summary">Neler bozulabilir, yedekler ve ekran kilidi</string>
+    <string name="advanced_about_summary">Sürüm, güvenlik ve emeği geçenler</string>
+    <string name="advanced_team_summary">Teknik ekranlar, OneOS ekibi sorduğunda</string>
+    <string name="remove_title">OneOS verilerini kaldır</string>
+    <string name="remove_summary">OneOS\'un bu telefona koyduğu her sistemi, eski kopyayı ve günlüğü kaldırır. Yalnızca bir sistemi kaldırmak için onun kartını kullanın.</string>
+    <string name="remove_running">OneOS verileri kaldırılıyor…</string>
+    <string name="remove_busy">OneOS telefonunuzla meşgul. Biraz sonra tekrar deneyin.</string>
+    <string name="remove_confirm_title">Tüm OneOS verileri kaldırılsın mı?</string>
+    <string name="remove_confirm_message">Bu, OneOS\'un bu telefona koyduğu her şeyi siler: kurduğunuz sistem, içindeki uygulamalar ve hesaplar, her eski kopya ve oturum günlükleri. One UI ile uygulama ve verileri dokunulmaz. OneOS yüklü kalır ve indirdiğiniz sistem dosyaları kaydettiğiniz yerde kalır. Bu geri alınamaz.</string>
+    <string name="remove_confirm_run">Kaldır</string>
+    <string name="manage_start_fresh">Sıfırdan başla</string>
+    <string name="manage_start_fresh_summary">Uygulamalarını ve verilerini sil; kurulu kalır</string>
+    <string name="manage_start_fresh_title">%1$s sıfırdan başlatılsın mı?</string>
+    <string name="manage_start_fresh_message">Bu, %1$s içindeki uygulama, hesap ve ayarları siler. %1$s kurulu kalır ve sonraki sefer yeni gibi başlar. One UI ile uygulama ve verileri dokunulmaz.</string>
+    <string name="manage_start_fresh_run">Sil</string>
+    <string name="manage_remove">%1$s kaldır</string>
+    <string name="manage_remove_summary">Bu telefondan sil ve yerini boşalt</string>
+    <string name="manage_remove_title">%1$s kaldırılsın mı?</string>
+    <string name="manage_remove_message">Bu, %1$s sistemini uygulama, hesap ve ayarlarıyla bu telefondan siler ve yerini boşaltır. Diğer sistemlerin kayıtlı kopyaları kalır. One UI dokunulmaz. Daha sonra yeniden kurabilirsiniz.</string>
+    <string name="manage_delete_saved">Kaydedilmiş %1$s öğesini sil</string>
+    <string name="manage_delete_saved_message">Bu, %1$s sisteminin kayıtlı kopyasını uygulama, hesap ve ayarlarıyla birlikte siler. Geri alınamaz. One UI ve şu an kurulu sistem dokunulmaz.</string>
+    <string name="environment_manage_failed">Hiçbir şey kaldırılmadı</string>
+    <string name="manage_section">%1$s yönet</string>
+    <string name="manage_progress_removing">%1$s kaldırılıyor</string>
+    <string name="manage_progress_erasing">%1$s uygulamaları ve verileri siliniyor</string>
+    <string name="manage_progress_deleting_saved">Kaydedilmiş %1$s siliniyor</string>
+    <string name="manage_progress_starting">Başlatılıyor…</string>
+    <string name="manage_progress_time">%1$s · OneOS\'u açık tutun veya istediğiniz zaman geri gelin</string>
+    <string name="manage_progress_took">%1$s sürdü</string>
+    <string name="manage_progress_done">Bitti</string>
+    <string name="manage_card_removing">Kaldırılıyor…</string>
+    <string name="manage_card_erasing">Siliniyor…</string>
+    <string name="manage_card_deleting">Siliniyor…</string>
+    <string name="manage_progress_deleting_copy">%1$s siliniyor</string>
+    <string name="manage_progress_deleting_all">Tüm eski kopyalar siliniyor</string>
+    <string name="manage_progress_hide">Gizle</string>
+    <string name="tool_app_unknown">OneOS hangi uygulama olduğunu anlayamadı. Sistemin sayfasından bir rapor gönderin.</string>
+    <string name="tool_app_off_title">%1$s kapatılsın mı?</string>
+    <string name="tool_app_off_message">%1$s, telefonun çekirdeğinde OneOS oturumları sırasında Galaxy S24 telefonların kilitlenmesine yol açan bir araç çalıştırır. OneOS uygulamayı kapatır (yüklü kalır, verileri durur) ve istediğiniz zaman buradan yeniden açabilirsiniz. Aracını durdurmak telefonu bir kez yeniden başlatabilir.</string>
+    <string name="tool_app_off_run">Kapat</string>
+    <string name="tool_app_off_running">%1$s kapatılıyor. Telefon yeniden başlarsa OneOS\'u açın ve yeniden geçiş yapın.</string>
+    <string name="tool_app_section">OneOS için kapatıldı</string>
+    <string name="tool_app_on_title">%1$s yeniden aç</string>
+    <string name="tool_app_on_summary">Aracı yeniden başlar; sonraki geçiş kapatmayı ister ve telefon o zaman yeniden başlayabilir</string>
+    <string name="tool_app_on_confirm">%1$s yeniden açılsın mı? Sonraki geçiş tekrar kapatmayı ister ve aracını durdurmak o zaman telefonu bir kez yeniden başlatabilir.</string>
+    <string name="tool_app_on_run">Aç</string>
+    <string name="manage_busy">OneOS telefonunuzla meşgul. Biraz sonra tekrar deneyin.</string>
+
+    <!-- For the OneOS team -->
+    <string name="team_title">OneOS ekibi için</string>
+    <string name="team_note">Teknik ekranlar. OneOS ekibi istediğinde onları açın.</string>
+    <string name="team_card_checks">Kontroller ve testler</string>
+    <string name="team_switch_summary">Her kontrol ayrıntılı, sonra bir test çalışması veya geçiş</string>
+    <string name="team_phone_summary">Model, yonga, yazılım ve root</string>
+    <string name="team_tests_summary">Salt okunur. OneOS ekibinin telefonunuz için destek eklemesine yardımcı olur.</string>
+    <!-- Run tests' screen, in this edition: "Phone tests", so it is not read as the Test run (the probe keeps "Run tests"). -->
+    <string name="tests_title">Telefon testleri</string>
+    <string name="team_card_setup">Kurulum ve dosyalar</string>
+    <string name="team_setup_summary">Her kontrolü, klasörü ve her adımı içeren kurulum sayfası</string>
+    <string name="team_file_summary">Dosya adları ve boyutları, dosya kontrolü ve bu telefondaki sistem</string>
+
+    <!-- Free up space (OldStagesActivity) -->
+    <string name="space_title">Yer aç</string>
+    <string name="space_card_storage">Depolama</string>
+    <string name="space_free_line">%2$s içinde %1$s boş</string>
+    <string name="space_bar_desc">Depolama %1$d%% kullanıldı</string>
+    <string name="space_system_label">Şu an kurulu: %1$s</string>
+    <string name="space_old_label">eski kopyalar</string>
+    <string name="space_value_unknown">Okunmadı</string>
+    <string name="space_value_none">Hiçbiri</string>
+    <string name="space_frees">Tüm eski kopyaları silmek %1$s boşaltır.</string>
+    <string name="space_card_old">Eski kopyalar</string>
+    <string name="space_old_line">Kurulum bir sistemi sıfırdan başlattığında, öncekini eski kopya olarak saklar. Yerini boşaltmak için birini silin.</string>
+    <string name="space_listing">Eski kopyalar aranıyor…</string>
+    <string name="space_not_read">Eski kopyalar okunamadı</string>
+    <string name="space_not_read_line">Tekrar kontrol et\'i deneyin. Neden Ayrıntılar\'ın altında.</string>
+    <string name="space_none">Eski kopya yok</string>
+    <string name="space_none_summary">Silinecek bir şey yok. One UI ve şu an kurulu sistem burada asla silinmez.</string>
+    <string name="space_old_of">%1$s eski kopyası</string>
+    <string name="space_old_unknown">Eski kopya</string>
+    <string name="space_old_trash">Bitmemiş bir silmenin artıkları</string>
+    <string name="space_old_kept_since">%1$s tarihinden beri saklanıyor</string>
+    <string name="space_old_stopped_since">%1$s üzerinde kaldı</string>
+    <string name="space_old_has_data">uygulama ve verileriyle</string>
+    <string name="space_old_in_use">kullanımda: önce telefonu yeniden başlatın</string>
+    <string name="space_deleting">Siliniyor…</string>
+    <string name="space_deleted">Silindi · %1$s boşaldı</string>
+    <string name="space_not_deleted">Silinmedi</string>
+    <string name="space_not_deleted_line">Hâlâ kullanımda olabilir. Telefonu yeniden başlatın, sonra tekrar deneyin.</string>
+    <string name="space_check_again">Tekrar kontrol et</string>
+    <string name="space_delete_title">Bu eski kopya silinsin mi?</string>
+    <string name="space_delete_what_of">%1$s eski kopyası</string>
+    <string name="space_delete_what">bu eski kopya</string>
+    <string name="space_delete_message">Bu, %1$s sistemini uygulama, hesap ve ayarlarıyla birlikte siler (%2$s). Geri alınamaz. One UI ve şu an kurulu sistem dokunulmaz.</string>
+    <string name="space_delete_run">Sil</string>
+    <string name="space_delete_all">Tüm eski kopyaları sil</string>
+    <string name="space_delete_all_summary">%1$s boşaltır</string>
+    <string name="space_delete_all_title">Tüm eski kopyalar silinsin mi?</string>
+    <string name="space_delete_all_message">Bu, %1$s öğelerini uygulama, hesap ve ayarlarıyla birlikte siler (%2$s). Geri alınamaz. One UI ve şu an kurulu sistem dokunulmaz.</string>
+    <plurals name="space_delete_all_count">
+        <item quantity="one">%d eski kopya</item>
+        <item quantity="other">%d eski kopya</item>
+    </plurals>
+    <string name="space_deleting_n">%2$d içinden %1$d siliniyor…</string>
+    <plurals name="space_deleted_n">
+        <item quantity="one">%1$d eski kopya silindi · %2$s boşaldı</item>
+        <item quantity="other">%1$d eski kopya silindi · %2$s boşaldı</item>
+    </plurals>
+    <string name="space_restore_title">Bu kopya yeniden kullanılsın mı?</string>
+    <string name="space_restore_message">%1$s (%2$s), uygulamaları ve ayarlarıyla birlikte şu an kurulu sistem olur. Şu an kurulu sistem eski kopya olarak saklanır; aynı şekilde geri dönebilirsiniz.</string>
+    <string name="space_restore_run">Yeniden kullan</string>
+    <string name="space_restoring">Geri yükleniyor…</string>
+    <string name="space_restored">Geri yüklendi. Ana ekranı açın: Şimdi güncelle diyorsa, geçişten önce ona dokunun.</string>
+    <string name="space_not_restored">Geri yüklenmedi</string>
+    <string name="space_not_restored_line">Bir şey hâlâ kullanımda. Neden Ayrıntılar\'ın altında.</string>
+    <string name="space_choose_title">%1$s</string>
+    <string name="space_choose_use">Bu sistemi yeniden kullan</string>
+    <string name="space_choose_delete">Sil</string>
+    <string name="space_details_summary">Klasör adları ve OneOS\'un önce kontrol ettikleri</string>
+    <string name="space_details_rules">Root yalnızca OneOS\'un sakladığı eski bir kopyayı siler (oneos.old-&lt;time&gt; adlı bir klasör) ve kullanımdayken silmez: içinde hâlâ açık bir şey vardır, içindeki bir oturum hâlâ çalışıyor veya hiç geri dönmemiştir ya da hâlâ One UI klasörlerine bağlıdır. Yeniden başlatmak bunu bitirir.</string>
+    <string name="space_details_folder">%1$s · kalıp %2$s</string>
+
+    <!-- Last session -->
+    <string name="last_none">Henüz oturum yok</string>
+    <string name="last_none_line">Geçiş yaptığınızda, nasıl geçtiği burada görünür.</string>
+    <string name="last_dry">Test çalışması</string>
+    <string name="last_time_in">%1$s içindeki süreniz</string>
+    <string name="last_switched_to">%1$s sistemine geçildi</string>
+    <string name="last_test_line">Bu bir testti: %1$s kuruldu ve kontrol edildi ama başlatılmadı.</string>
+    <string name="last_rebooted_summary">Oturum bitti. Nasıl geçtiğini görmek için aşağıdaki günlükleri toplayın; sonraki geçişiniz onları değiştirir.</string>
+    <string name="last_not_rebooted_summary">Bu oturum henüz bitmedi veya geçiş başlamadı; günlükler nedenini söyler.</string>
+    <string name="last_collect_title">Günlükleri topla</string>
+    <string name="last_collect_again">Yeniden topla</string>
+    <string name="last_collect_summary">Bir iki dakika sürer. Telefonda hiçbir şey değişmez.</string>
+    <string name="last_collecting">Günlükler toplanıyor…</string>
+    <string name="last_collecting_summary">Okunurken kişisel bilgiler kaldırılır.</string>
+    <string name="last_collect_failed">Günlükler toplanamadı</string>
+    <string name="last_collect_failed_line">Yeniden deneyin; root uygulamanız sorarsa OneOS\'a izin verin. Neden Ayrıntılar\'ın altında.</string>
+    <string name="last_collected">Günlükler toplandı</string>
+    <string name="last_collected_summary">Numaralar, Wi-Fi adları ve hesaplar kaldırıldı.</string>
+    <string name="last_view_summary">Onlara bakın veya OneOS ekibine gönderin</string>
+    <string name="last_privacy_summary">Geçiş ve dönüş günlükleri, diğer sistemin başlangıç günlükleri ve telefonun durumu üzerine metin raporları. İleti, kişi, Wi-Fi ve yerlerle ilgili satırlar düşülür; numaralar, kimlikler, e-postalar, Wi-Fi adları, hesaplar ve dosya adları okunurken kaldırılır. Ekran görüntüsü veya kayıt asla alınmaz.</string>
+    <string name="last_collect_dialog_message">OneOS yalnızca okur. Kayıtlı Wi-Fi adları, yalnızca günlüklerden kaldırmak için okunur; asla kaydedilmez veya paylaşılmaz. Kişisel bilgiler yazılmadan önce kaldırılır.</string>
+    <string name="last_collect_run">Topla</string>
+    <string name="last_restore_summary">Son oturum normal dönmedi. Bu, One UI\'nin ondan önceki ayarlarını geri koyar.</string>
+    <string name="last_restore_maybe">Yalnızca oturum sırasında zorla yeniden başlatmadan sonra gerekir. Normal döndüyse hiçbir şey değişmez.</string>
+    <string name="last_restore_dialog_message">OneOS, oturum başladığında One UI\'nin sahip olduğu ayarları (örneğin dilini) o zaman kaydettiği kopyadan geri koyar. Yalnızca o oturumun kendi kopyası kullanılır.</string>
+    <string name="last_restored">One UI ayarları geri geldi</string>
+    <string name="last_restore_failed">One UI ayarları geri yüklenemedi</string>
+    <string name="last_restore_failed_line">Yeniden deneyin veya günlükleri OneOS ekibine gönderin. Neden Ayrıntılar\'ın altında.</string>
+    <string name="last_forget_summary">Bu özeti buradan ve Ana ekrandan bir sonraki geçişe kadar temizler. Günlükler telefonda kalır.</string>
+    <string name="last_details_summary">Oturum kimliği, nasıl bittiğinin ayrıntısı, günlüklerin söyledikleri</string>
+    <string name="last_details_image">Kalıp %1$s</string>
+
+    <!-- Use a downloaded file (ImageActivity); "File details and checks" from the OneOS team's entry -->
+    <string name="image_title">İndirilmiş bir dosya kullan</string>
+    <string name="image_title_team">Dosya ayrıntıları ve kontroller</string>
+    <string name="image_no_profile_title">Bu telefon için henüz sistem yok</string>
+    <string name="image_no_profile_summary">Bu OneOS sürümünün bu telefon için hiçbiri yok. Nedenini Ayarlar › OneOS ekibi için içindeki Telefon ayrıntıları gösterir.</string>
+    <string name="image_cat_file">Dosyanız</string>
+    <string name="image_pick_summary">Dosyalarınızı açar. OneOS yalnızca seçtiğiniz dosyayı okur.</string>
+    <string name="image_not_used">%1$s · kullanılmıyor: kurulum bu telefondaki sistemi yeniden kullanır</string>
+    <string name="image_file_ok">Bu telefon için bu %1$s</string>
+    <string name="image_check_title">Dosyayı kontrol et</string>
+    <string name="image_check_summary">Dosyanın bozulmadığından emin olmak için tümünü okur. Bir iki dakika sürer.</string>
+    <string name="image_checking">Dosya kontrol ediliyor… %1$d%%</string>
+    <string name="image_checking_bytes">%1$s / %2$s</string>
+    <string name="image_use_gz_title">Bunun yerine bu dosyayı kullan</string>
+    <string name="image_use_gz_summary">Kurulum o zaman bu dosyayı kullanır, bu telefondaki sistemi değil</string>
+    <string name="image_forget_summary">OneOS onu kullanmayı bırakır. Dosya dosyalarınızda kalır.</string>
+    <string name="image_cat_on_phone">Zaten bu telefonda</string>
+    <string name="image_look_summary">Bu telefonda zaten bir sistem varsa kurulum onu yeniden kullanabilir ve indirmeyi atlayabilir. Telefonda hiçbir şey değişmez.</string>
+    <string name="image_look_failed">O bitmedi. Yeniden deneyin; neden Ayrıntılar\'ın altında.</string>
+    <string name="image_look_dialog_title">Root olarak bakılsın mı?</string>
+    <string name="image_look_dialog_message">OneOS yalnızca kendi klasöründekileri okur. Telefonda hiçbir şey değişmez.</string>
+    <string name="image_look_run">Bak</string>
+    <string name="image_on_phone_ok">%1$s bu telefonda</string>
+    <string name="image_on_phone_none">Bu telefonda henüz sistem yok</string>
+    <string name="image_use_on_phone_title">Yeniden kullan</string>
+    <string name="image_use_on_phone_summary">İndirmeyi atlar. Kurulum uygulama ve verilerini tutar.</string>
+    <string name="image_on_phone_chosen">Kurulum onu yeniden kullanır</string>
+    <string name="image_on_phone_replaced">Kurulum, onu seçtiğiniz dosyayla değiştirir.</string>
+    <string name="image_on_phone_aside">Yeniden kullanılamaz</string>
+    <string name="image_on_phone_aside_summary">Uygulama ve verileri başka bir sistemden veya daha eski bir sürümden, bu yüzden kurulum onları eski kopya olarak saklar ve indirme gerekir. Yukarıdaki dosyayı seçin.</string>
+    <string name="image_takes_title">%1$s cihazınız için sistemler</string>
+    <string name="image_takes_summary">Bir sistem seçin (İndir) bölümünden bir tane alın, sonra yukarıdaki dosyayı seçin.</string>
+    <string name="image_choice_sizes">%1$s indirmesi · kurulunca %2$s</string>
+    <string name="image_details_summary">Dosya adları, boyutları ve kontrollerin buldukları</string>
+    <string name="image_details_file">%1$s
+%2$s, açılınca %3$s. %4$s.</string>
+    <string name="image_details_check">Dosyayı kontrol et, dosyanın tümünün SHA-256 değerini OneOS\'un içindekiyle karşılaştırır. Bu telefondaki bir sistemi ara, OneOS klasörünü root olarak, salt okunur okur.</string>
+    <string name="image_details_sha">Seçilen dosyanın SHA-256 değeri</string>
+    <string name="image_details_look">Son bakışın dediği</string>
+
+    <!-- Repair or start fresh (PrepareActivity); "Setup details" from the OneOS team's entry -->
+    <string name="prepare_title">Onar veya sıfırdan başla</string>
+    <string name="prepare_title_team">Kurulum ayrıntıları</string>
+    <string name="prepare_intro">Sistemi OneOS\'un kendi klasöründe yeniden kurar. Yaklaşık 15 dakika sürer; bu sırada One UI çalışmaya devam eder.</string>
+    <string name="prepare_intro_safe">O klasörün dışında hiçbir şey değişmez. Şu an kurulu olan tutulur veya eski kopya olarak saklanır: asla silinmez.</string>
+    <string name="prepare_check_summary">Root, boş alan, ekran kilidi ve şu an kurulu olan. Telefonda hiçbir şey değişmez.</string>
+    <string name="prepare_check_failed">Kontrol bitmedi. Yeniden deneyin; neden Ayrıntılar\'ın altında.</string>
+    <string name="prepare_checks_ok">Her şey yerinde</string>
+    <string name="prepare_check_dialog_message">OneOS yalnızca okur; telefonda hiçbir şey değişmez.
+
+Root uygulamanız sormazsa önce ona OneOS\'a izin verin.</string>
+    <string name="prepare_check_run">Kontrol et</string>
+    <string name="prepare_need_full">Kurulumdan önce Tekrar kontrol et\'e dokunun</string>
+    <string name="prepare_on_phone_needs_keep">Bu telefondaki sistemi yeniden kullanmak için Uygulama ve verilerini tut\'u seçin</string>
+    <string name="prepare_cat_stage">Şu an kurulu olan</string>
+    <string name="prepare_stage_none">Henüz bir şey kurulmadı</string>
+    <string name="prepare_stage_empty">OneOS klasörü boş</string>
+    <string name="prepare_stage_ours">%1$s kuruldu</string>
+    <string name="prepare_stage_partial">Bitmemiş bir kurulum</string>
+    <string name="prepare_stage_foreign">OneOS\'un koymadığı dosyalar</string>
+    <string name="prepare_stage_odd">OneOS klasörünün yerinde başka bir şey var</string>
+    <string name="prepare_stage_not_folder">Önce kaldırılması gerekir. Nasıl yapılacağını OneOS ekibine sorun.</string>
+    <string name="prepare_mode_new">Sıfırdan başla</string>
+    <string name="prepare_mode_new_summary">%1$s yeni uygulamalar ve verilerle başlar.</string>
+    <string name="prepare_mode_keep_summary">Sistemi onarır; uygulama, hesap ve ayarlarını tutar.</string>
+    <string name="prepare_mode_aside">Eski kopya olarak sakla, sıfırdan başla</string>
+    <string name="prepare_mode_aside_summary">Hiçbir şey silinmez. %1$s yeni uygulamalar ve verilerle başlar; eski kopyayı sonra Yer aç bölümünden silebilirsiniz.</string>
+    <string name="prepare_mode_aside_other_image">Uygulama ve verileri %1$s sisteminden ve başka bir sistemde bozulabilir, bu yüzden eski kopya olarak saklanır. %2$s sıfırdan başlar.</string>
+    <string name="prepare_mode_aside_other_system">Başka bir sistemin uygulama ve verilerini tutuyor, %1$s bunları kullanamaz. Eski kopya olarak saklanır ve %1$s sıfırdan başlar.</string>
+    <string name="prepare_mode_aside_older">Daha eski bir sistemin uygulama ve verilerini tutuyor, %1$s bunları kullanamaz. Eski kopya olarak saklanır ve %1$s sıfırdan başlar.</string>
+    <string name="prepare_cat_run">Başlat</string>
+    <string name="prepare_run_title">Kurulumu başlat</string>
+    <string name="prepare_run_title_system">%1$s kur</string>
+    <string name="prepare_other_system_title">Bu, %2$s değil %1$s kurar</string>
+    <string name="prepare_other_system_summary">İndirdiğiniz dosya %1$s. %2$s sistemini güncellemek veya onarmak için onun kendi sayfasındaki düğmeyi kullanın.</string>
+    <string name="prepare_dialog_other_system">Şu an kurulu sistem %2$s. Bu işlem, indirdiğiniz dosyadan bunun yerine %1$s kurar.</string>
+    <string name="prepare_run_summary">Yaklaşık %1$s boş alan gerekir. Önce siz onaylarsınız.</string>
+    <string name="prepare_needs_unknown">yaklaşık 22 GB</string>
+    <string name="prepare_running">Kuruluyor… OneOS\'u açık tutun</string>
+    <string name="prepare_running_title">Kuruluyor · %1$d%%</string>
+    <string name="prepare_stop_summary">Geçerli dosyadan sonra durur. Sistem o zaman kurulmamış olur ve siz yeniden kurana kadar geçiş kapalı kalır.</string>
+    <string name="prepare_done">Tamamlandı</string>
+    <string name="prepare_first_session_title">İlk oturum: uygulamalar en iyi duruma getiriliyor</string>
+    <string name="prepare_first_session_summary">Bu güncellemeden sonraki ilk oturum, yeni sistem için her uygulamayı yaklaşık 10–20 dakika derler. “Uygulamalar en iyi duruma getirildi” bildirimi görünene kadar telefon ılık ve daha yavaş olabilir.</string>
+    <string name="prepare_not_done">Bitmedi</string>
+    <string name="prepare_moved_title">Eski kopya olarak saklandı</string>
+    <string name="prepare_delete_gz_summary">%1$s şu an gerekmiyor. Daha sonra yeniden kurarsanız bir kez daha indirmeniz gerekir.</string>
+    <string name="prepare_delete_gz_message">%1$s silinsin mi? Ondan kurulan sistem kalır.</string>
+    <string name="prepare_dialog_title">Kurulum başlatılsın mı?</string>
+    <string name="prepare_dialog_message">Yaklaşık 15 dakika sürer; OneOS\'u açık tutun ve telefonu şarza takılı bırakın. OneOS yalnızca kendi klasörüne yazar ve her dosyayı kullanmadan önce kontrol eder.</string>
+    <string name="prepare_dialog_gz">%1$s için indirdiğiniz dosyayı kullanır.</string>
+    <string name="prepare_dialog_on_phone">Bu telefondaki %1$s yeniden kullanılır; önce kontrol edilir (yaklaşık bir dakika).</string>
+    <string name="prepare_dialog_team">Root olarak, kendi root betiğiyle, yalnızca /data/local/tmp/oneos içinde: sistem kalıbı, OneOS dosyaları, installd tablosu ve oturum ayarları. Root, her dosyanın boyutunu ve SHA-256 değerini kullanmadan önce kontrol eder. OneOS 0.3.6 veya daha eskisinin eski adıyla yaptığı bir klasör önce yeniden adlandırılır; içindeki hiçbir şey değişmez.</string>
+    <string name="prepare_details_summary">Her kontrol, klasörün root olarak okuduğu hali, her adım</string>
+    <string name="prepare_what_summary">OneOS, root olarak kalıbı /data/local/tmp/oneos içine açar (5 ile 11 GB) ve OneOS dosyaları ile oturum betiklerini yanına koyar; her birinin SHA-256 değerini kontrol eder. Yaklaşık 15 dakika sürer.</string>
+    <string name="prepare_safe_summary">Kurulum yalnızca OneOS klasörüne yazar ve onun dışında hiçbir şeyi silmez. Daha önce kurulan eski kopya olarak saklanır, artan dosyalar OneOS klasörünün içindeki bir klasöre taşınır. One UI çalışmaya devam eder.</string>
+
+    <!-- All checks and Test run (SwitchActivity, For the OneOS team and Home's Details) -->
+    <string name="switch_title">Tüm kontroller ve Test çalışması</string>
+    <string name="switch_cat_back">One UI\'ye dönme yolları</string>
+    <string name="switch_back_keys_title">Ses Aç + Ses Kıs tuşlarını 3 saniye basılı tutun</string>
+    <string name="switch_back_keys_summary">%1$s başladığında çalışır: One UI genellikle yeniden başlatmadan geri gelir. OneOS logosu hâlâ görünüyorsa Zorla yeniden başlat\'ı kullanın.</string>
+    <string name="switch_back_auto_title">OneOS sizi kendiliğinden geri getirir</string>
+    <string name="switch_back_auto_summary">Eğer %1$s açılmayı bitirmezse, durursa veya ekran siyah kalırsa, One UI birkaç dakika sonra kendiliğinden geri gelir.</string>
+    <string name="switch_back_force_summary">One UI\'ye yeniden başlayana kadar Güç + Ses Kıs tuşlarını basılı tutun. Sonra Ayarlar › Son oturum içinde One UI ayarlarını geri yükle\'ye dokunun.</string>
+    <string name="switch_back_root_summary">Yeniden başlattıktan sonra root\'un yeniden açılması gerekiyorsa onu açın, sonra OneOS\'u açın. Son oturum, nasıl geçtiğini gösterir.</string>
+    <string name="switch_check_summary">Her kontrol yeniden: root, kurulu sistem, ekran kilidi, pil ve boş alan. Telefonda hiçbir şey değişmez.</string>
+    <string name="switch_need_full">Önce Tekrar kontrol et\'e dokunun</string>
+    <string name="switch_cat_go">Test çalışması ve geçiş</string>
+    <string name="switch_dry_title">Test çalışması</string>
+    <string name="switch_dry_summary">One UI, %1$s kurulup kontrol edilirken kapanır, sonra One UI geri gelir. %1$s başlamaz.</string>
+    <string name="switch_go_summary">Her kontrol yeniden çalışır, sonra One UI kapanır ve %1$s başlar</string>
+    <string name="advanced_card_calls">Aramalar</string>
+    <string name="advanced_sec_ims_title">One UI arama hizmetini kullan (VoLTE)</string>
+    <string name="advanced_sec_ims_summary">Varsayılan olarak açık. Bu telefonun kendi Samsung arama hizmetini (IMS) diğer sisteme alır; böylece 2G veya 3G olmayan ağlarda aramalar ve iletiler VoLTE kullanabilir. Kimseye bir şey gönderilmez; One UI dosyaları yalnızca okunur. Aramalar olmadan daha iyiyse kapatın.</string>
+    <string name="advanced_edm_stub_title">Knox beklemesi olmadan kamera</string>
+    <string name="advanced_edm_stub_summary">Varsayılan olarak açık. One UI kamera hizmeti her kamera açılışında Knox\'a sorar ve diğer sistemde olmayan bir hizmeti 5 saniye bekler, bu yüzden çoğu kamera uygulaması önce vazgeçer. Bu, onun yerine yanıt verir. Bununla kameranız durursa kapatın.</string>
+    <string name="advanced_card_risky">Riskli</string>
+    <string name="advanced_card_risky_tag">Telefonu silebilir</string>
+    <string name="advanced_allow_lock_title">Ekran kilidi varken geç</string>
+    <string name="advanced_allow_lock_summary">Normalde OneOS, PIN, desen, parola, parmak izi veya yüz kilidi açıkken geçiş yapmaz. One UI uygulamalarınız ve fotoğraflarınız bu kilidin arkasında şifrelidir: bir oturum telefonun bu kilidi kabul edemez hale getirmesi durumunda tek dönüş yolu her şeyi silen fabrika sıfırlamasıdır. Bu bir testçiye oldu. Yalnızca bu riski kabul ediyorsanız bunu açın.</string>
+    <string name="switch_hide_gms_title">Google uygulamalarını bu sefer gizle</string>
+    <string name="switch_hide_gms_summary">Yalnızca bu sefer Play hizmetlerini ve Play Store\'u %1$s dışında bırakır. Başka bir şey değişmez.</string>
+    <string name="switch_dialog_gms_hidden">Google uygulamaları bu sefer gizlendi.</string>
+    <string name="switch_dry_dialog_title">Test çalışması yapılsın mı?</string>
+    <string name="switch_go_dialog_message">One UI kapanır ve %1$s yaklaşık bir dakika içinde başlar. %2$s
+
+%1$s içinde yüklediğiniz uygulamalar root alırlarsa One UI verisine ulaşabilir: yalnızca güvendiklerinizi yükleyin.
+
+OneOS, One UI ile birlikte kapanır.</string>
+    <string name="switch_go_dialog_back_keys">Geri dönmek için, başladığında Ses Aç + Ses Kıs tuşlarını 3 saniye basılı tutun. OneOS logosunda mı kaldı? Güç + Ses Kıs tuşlarını basılı tutun.</string>
+    <string name="switch_go_dialog_back_app">Geri dönmek için %1$s içinde One UI\'ye dön\'e dokunun veya Ses Aç + Ses Kıs tuşlarını 3 saniye basılı tutun. OneOS logosunda mı kaldı? Güç + Ses Kıs tuşlarını basılı tutun.</string>
+
+    <!-- Before you start (read again from Advanced › Help) -->
+    <string name="before_experimental_summary">Telefonu, yazılım yüklemeden başka bir sisteme geçirir. İşler bozulabilir.</string>
+    <string name="before_lock_summary">Geçişten önce PIN, desen, parola, parmak izi ve yüz kilitlerini kaldırın. Telefon yeniden başlarken takılırsa kilitli bir telefon kurtarmanıza izin vermeyebilir.</string>
+    <string name="before_apps_summary">Diğer sistemdeki uygulamalar One UI ile aynı root\'u alabilir. Bunu yapan bir uygulama One UI verisine ulaşabilir: yalnızca güvendiğiniz uygulamaları yükleyin, tanımadıklarınıza asla root vermeyin.</string>
+
+    <!-- About OneOS and Phone details (main's texts, in plain words and naming no system, for this edition) -->
+    <string name="tested_scope">Z Fold (F8U), S26 Ultra, S25 Ultra ve S25 üzerinde test edildi.</string>
+    <string name="about_what_summary">Köklü bir telefonda One UI\'nin yanında başka bir Android sistemi çalıştırır ve genellikle yeniden başlatmadan One UI\'ye döner. Hiçbir şey yazılmaz.</string>
+    <string name="about_version_scope_summary">İndirdiğiniz bir sistemi kendi klasörüne kurar ve ona geçer. One UI\'ye dön veya Ses Aç + Kıs sizi geri getirir. OneOS kendisi bir şey indirmez ve sormadan klasörünün dışında hiçbir şeyi silmez.</string>
+    <string name="about_tested_summary">Z Fold (F8U), S26 Ultra, S25 Ultra ve S25 üzerinde test edildi. Diğer telefonlar denenmedi.</string>
+    <string name="about_safety_summary">OneOS\'un root olarak yaptığı her değişiklik önce uygulama ve root tarafından kontrol edilir. OneOS klasörünün dışında hiçbir şey silinmez ve diğer sistem One UI verisinden uzak tutulur.</string>
+    <string name="report_title">Telefon ayrıntıları</string>
+    <string name="report_warning_next">Kurulum ve geçiş kendi kontrollerini çalıştırır ve bu telefonun çalıştıramayacağı şeyleri durdurur.</string>
+
+    <!-- Session logs and the credits (main's texts, in plain words, for this edition) -->
+    <string name="logs_delete_summary">Bu günlükleri OneOS\'tan kaldırır. Telefon, bir sonraki geçişinize kadar kendi kopyasını OneOS klasöründe tutar.</string>
+    <string name="about_credit_oneos_summary">Uygulama ve OneOS\'un her sistemde yaptığı değişiklikler. Oturum betikleri aşağıda anılan projeden başladı.</string>
+    <!-- The team's test channel for the app's own update (0.4.41, AppUpdater). -->
+    <string name="team_update_test">Test güncellemeleri</string>
+    <string name="team_update_test_summary">Kapalı. Resmi yayından önce OneOS güncellemelerini almak için ekibin test kanalı kodunu girin</string>
+    <string name="team_update_test_on">Açık: OneOS güncellemeleri ekibin test kanalından gelir</string>
+    <string name="team_update_test_dialog">OneOS ekibinden test kanalı kodu. Yayınlanan güncellemelere dönmek için boş bırakın.</string>
+    <string name="team_update_test_invalid">Bu bir test kanalı kodu değil</string>
+
+    <!-- Bring apps (0.4.75): take user apps, with their data and logins, from One UI into the system set up now. -->
+    <string name="bring_title">Uygulamaları getir</string>
+    <string name="bring_card_about">Nasıl çalışır</string>
+    <string name="bring_about_body">Götürmek istediğiniz uygulamaları işaretleyin. Verileri ve oturumlarıyla birlikte One UI\'den %1$s içine, onu başlattığınızda veya Şimdi getir ile hemen kopyalanırlar. %1$s, ana ekranı göründükten yaklaşık bir dakika sonra onları yükler ve orada oturum açık halde açılırlar.</string>
+    <string name="bring_about_one_way">Tek yönlü: One UI kopyası yalnızca okunur ve %1$s\'ten ona hiçbir şey geri gelmez.</string>
+    <string name="bring_card_apps">One UI\'deki uygulamalar</string>
+    <plurals name="bring_ticked_n">
+        <item quantity="one">%d işaretli</item>
+        <item quantity="other">%d işaretli</item>
+    </plurals>
+    <string name="bring_loading">Uygulamalarınız aranıyor…</string>
+    <string name="bring_not_read">Uygulamalarınız okunamadı</string>
+    <string name="bring_look_again">Yeniden bak</string>
+    <string name="bring_none">Getirilecek uygulama yok</string>
+    <string name="bring_none_summary">Yalnızca sizin yüklediğiniz uygulamalar gelebilir. One UI\'nin kendi uygulamaları One UI\'de kalır; %1$s\'in kendine ait olanları vardır.</string>
+    <string name="bring_app_summary">%1$s · %2$s</string>
+    <string name="bring_stage_checking">Şu an kurulu sistem kontrol ediliyor…</string>
+    <string name="bring_stage_not_read">Şu an kurulu sistem kontrol edilemedi</string>
+    <string name="bring_stage_not_read_summary">Getirme, hangi sistemin kurulu olduğunu bilmeli. Tekrar kontrol et\'i deneyin.</string>
+    <string name="bring_stage_check_again">Tekrar kontrol et</string>
+    <string name="bring_no_stage">Önce bir sistem kurun</string>
+    <string name="bring_no_stage_summary">Getirme, uygulamaları şu an kurulu sisteme koyar ve henüz bir sistem yok. Ana ekrandan birini kurun, sonra geri gelin.</string>
+    <string name="bring_other_system">%1$s şu an kurulu sistem değil</string>
+    <string name="bring_other_system_summary">Kurulu olan %1$s. %2$s içine uygulama getirmek için önce Ana ekrandan ona geçin, sonra geri dönün.</string>
+    <string name="bring_do_none">Uygulamaları getir</string>
+    <string name="bring_do_none_summary">Yukarıdan uygulamaları işaretleyin. %1$s başladığınızda kopyalanırlar.</string>
+    <plurals name="bring_do_n">
+        <item quantity="one">%d uygulamayı şimdi getir</item>
+        <item quantity="other">%d uygulamayı şimdi getir</item>
+    </plurals>
+    <string name="bring_do_summary">Veya yalnızca %1$s sistemini başlatın: işaretli uygulamalar yolda kopyalanır. Büyük uygulamalar biraz zaman alır.</string>
+    <plurals name="bring_working_n">
+        <item quantity="one">%d uygulama getiriliyor…</item>
+        <item quantity="other">%d uygulama getiriliyor…</item>
+    </plurals>
+    <string name="bring_working_summary">%1$s içine kopyalanıyor. Büyük uygulamalar birkaç dakika sürebilir; telefonu kilitli bırakmayın. Bu ekrandan ayrılabilirsiniz.</string>
+    <string name="bring_remove">Getirilen uygulamaları kaldır</string>
+    <string name="bring_remove_summary">Kopyaları %1$s içinden siler. Zaten yüklediği uygulamalar orada kalır; One UI\'de hiçbir şey değişmez.</string>
+    <string name="bring_removing">Getirilen uygulamalar kaldırılıyor…</string>
+    <string name="bring_done_summary">%1$s, ana ekranı göründükten yaklaşık bir dakika sonra bunları yükler.</string>
+    <string name="bring_done_skipped">İşaretli bazı uygulamalar gelmedi. Hangileri olduğunu Ayrıntılar söyler.</string>
+    <string name="bring_confirm_title">Bu uygulamalar %1$s içine getirilsin mi?</string>
+    <plurals name="bring_confirm_body">
+        <item quantity="one">%1$d uygulamayı, verisi ve oturumlarıyla birlikte One UI\'den %2$s içine kopyalar. Büyük bir uygulama birkaç dakika sürebilir ve bir o kadar daha yer kullanır. One UI değişmez. %2$s, ana ekranı göründükten yaklaşık bir dakika sonra onu yükler.</item>
+        <item quantity="other">%1$d uygulamayı, verileri ve oturumlarıyla birlikte One UI\'den %2$s içine kopyalar. Büyük uygulamalar birkaç dakika sürebilir ve bir o kadar daha yer kullanır. One UI değişmez. %2$s, ana ekranı göründükten yaklaşık bir dakika sonra onları yükler.</item>
+    </plurals>
+    <string name="bring_confirm_do">Getir</string>
+    <string name="bring_remove_title">Getirilen uygulamalar kaldırılsın mı?</string>
+    <string name="bring_remove_confirm">Kopyaları %1$s içinden siler. Zaten yüklediği uygulamalar orada kalır; One UI\'de hiçbir şey değişmez.</string>
+    <string name="bring_remove_do">Kaldır</string>
+    <string name="bring_card_brought">Getirilen bir uygulamayı kaldır</string>
+    <string name="bring_forget_row">%1$s kaldır</string>
+    <string name="bring_forget_row_summary">Kopyasını siler ve sonraki açılışta %1$s içinden kaldırır. One UI onu tutar.</string>
+    <string name="bring_forget_title">%1$s kaldırılsın mı?</string>
+    <string name="bring_forget_confirm">%1$s, %2$s içinden kaldırılsın mı? Sonraki açılışta oradan kaldırılır; One UI onu tutar.</string>
+    <string name="bring_details_summary">Hangi uygulamaların geldiği ve %1$s içinde ne olduğu</string>
+    <string name="bring_details_how">Ana ekranı göründükten yaklaşık bir dakika sonra %1$s, getirilen her uygulamayı yükler ve kopyalanan veriyi altına koyar; böylece oturum açılmış halde açılır. Yeniden getirdiğiniz bir uygulama orada güncellenir ve %1$s içindeki verisi One UI\'nin daha yeni kopyasıyla değiştirilir; %1$s\'in zaten yüklediği bir uygulama yalnızca onu yeniden işaretleyip Şimdi getir\'de onayladığınızda değiştirilir (%1$s başlarken bir daha kopyalanmaz). Kopyalar şu an kurulu sistemin içindedir: sistemi sıfırdan kurmak onlarsız başlar, Getirilen uygulamaları kaldır ise onları siler.</string>
+    <string name="bring_details_brought">Getirildi</string>
+    <string name="bring_details_none">Henüz hiçbir şey getirilmedi.</string>
+    <string name="bring_details_skipped">İşaretlendi ama getirilmedi (kullanıcı uygulaması olarak yüklü değil, yeterli boş alan yok veya verisi okunamadı: telefonun kilidini açıp yeniden deneyin)</string>
+    <!-- Build 104: Select all, what became of each copy, and what is newer on One UI. -->
+    <string name="bring_select_all">Tümünü seç</string>
+    <plurals name="bring_select_all_n">
+        <item quantity="one">%d uygulama</item>
+        <item quantity="other">%d uygulama</item>
+    </plurals>
+    <plurals name="bring_newer_n">
+        <item quantity="one">Getirilen %d uygulama One UI\'de değişti</item>
+        <item quantity="other">Getirilen %d uygulama One UI\'de değişti</item>
+    </plurals>
+    <string name="bring_newer_summary">Yalnızca One UI\'nin daha yeni kopyasını %1$s içinde istiyorsanız: işaretlemek için dokunun. Şimdi getir, bir şeyi değiştirmeden önce sorar.</string>
+    <string name="bring_row_again">İşaretli · Şimdi getir, %1$s içinde değiştirmeden önce sorar</string>
+    <string name="bring_row_ticked">İşaretli · %1$s başladığında yeniden kopyalanır</string>
+    <string name="bring_row_waiting">Kopyalandı · %1$s sonraki açılışında yükler</string>
+    <string name="bring_row_failed">%1$s içinde yüklü değil · nedenini Ayrıntılar söyler</string>
+    <string name="bring_row_newer_app">%1$s içinde · o zamandan beri One UI\'de güncellendi: yeniden getirmek için işaretleyin</string>
+    <string name="bring_row_newer_data">%1$s içinde · One UI\'de daha yeni veri: yeniden getirmek için işaretleyin</string>
+    <string name="bring_row_installed_on">%1$s içinde · getirildi %2$s</string>
+    <string name="bring_row_installed">%1$s içinde</string>
+    <string name="bring_update_first">Önce %1$s güncelleyin</string>
+    <string name="bring_update_first_summary">Bu OneOS sürümü uygulamaları yeni bir yolla getirir. %1$s sayfasında Güncelle\'ye dokunun, sonra geri gelin.</string>
+    <string name="bring_working_at">%1$s kopyalanıyor. Büyük uygulamalar birkaç dakika sürebilir; bu ekrandan ayrılabilirsiniz.</string>
+    <string name="bring_count_installed">%1$d, %2$s içinde</string>
+    <string name="bring_count_waiting">%1$d bekliyor</string>
+    <string name="bring_count_failed">%1$d yüklü değil</string>
+    <string name="bring_count_failed_summary">Ayrıntılar, %1$s\'in bildirdiklerini gösterir.</string>
+    <string name="bring_count_waiting_summary">%1$s, ana ekranı göründükten yaklaşık bir dakika sonra bunları yükler.</string>
+    <plurals name="bring_brought_n">
+        <item quantity="one">%d uygulama getirildi</item>
+        <item quantity="other">%d uygulama getirildi</item>
+    </plurals>
+    <!-- Build 109: an app the system has already is brought again only when the owner says so. -->
+    <plurals name="bring_again_n">
+        <item quantity="one">%d uygulamayı yeniden getir</item>
+        <item quantity="other">%d uygulamayı yeniden getir</item>
+    </plurals>
+    <string name="bring_again_summary">Zaten %1$s içinde: başlarken yeniden kopyalanmaz, yalnızca burada, sorulduktan sonra.</string>
+    <plurals name="bring_do_there_summary">
+        <item quantity="one">İşaretli diğer uygulama zaten %2$s içinde: yeniden getirilmeden önce size sorulur.</item>
+        <item quantity="other">İşaretli diğer %1$d uygulama zaten %2$s içinde: yeniden getirilmeden önce size sorulur.</item>
+    </plurals>
+    <plurals name="bring_confirm_there">
+        <item quantity="one">%2$s, işaretli diğer uygulamaya zaten sahip. Onu da yeniden getirelim mi? One UI kopyası %2$s içindeki verisini değiştirir. Yalnızca yeniler ile orada olduğu gibi kalır ve işareti kalkar.</item>
+        <item quantity="other">%2$s, işaretli diğer %1$d uygulamaya zaten sahip. Onları da yeniden getirelim mi? One UI kopyaları %2$s içindeki verilerini değiştirir. Yalnızca yeniler ile orada oldukları gibi kalır ve işaretleri kalkar.</item>
+    </plurals>
+    <string name="bring_confirm_new">Yalnızca yeniler</string>
+    <string name="bring_confirm_all">Tümü (%1$d)</string>
+    <plurals name="bring_again_title">
+        <item quantity="one">Bu uygulama yeniden getirilsin mi?</item>
+        <item quantity="other">Bu uygulamalar yeniden getirilsin mi?</item>
+    </plurals>
+    <plurals name="bring_again_body">
+        <item quantity="one">%2$s zaten buna sahip. Yeniden getirmek, %2$s içindeki verisini One UI kopyasıyla değiştirir: orada o zamandan beri yaptıklarınız kaybolur. One UI değişmez.</item>
+        <item quantity="other">%2$s zaten hepsine sahip (%1$d). Yeniden getirmek, %2$s içindeki verilerini One UI kopyalarıyla değiştirir: orada o zamandan beri yaptıklarınız kaybolur. One UI değişmez.</item>
+    </plurals>
+    <string name="bring_again_do">Yeniden getir</string>
+    <string name="bring_details_said">Kopyadan notlar</string>
+    <string name="bring_details_log">%1$s yükleme günlüğü</string>
+    <string name="bring_state_waiting_on">Kopyalandı %1$s · yüklenmeyi bekliyor</string>
+    <string name="bring_state_waiting">Kopyalandı · yüklenmeyi bekliyor</string>
+    <string name="bring_state_installed_on">%1$s içinde yüklü · kopya tarihi: %2$s</string>
+    <string name="bring_state_installed">%1$s içinde yüklü</string>
+    <string name="bring_state_failed">%1$s içinde yüklü değil: %2$s</string>
+    <string name="bring_state_no_reason">neden belirtilmedi</string>
+    <string name="bring_change_data">One UI\'de daha yeni veri var</string>
+    <string name="bring_change_app">O zamandan beri One UI\'de güncellendi</string>
+    <string name="bring_change_gone">Artık One UI\'de yüklü değil</string>
+    <string name="bring_media_card">Dosyaları aktar</string>
+    <string name="bring_media_body">Seçilen One UI klasörlerini %1$s ile paylaşın veya APK dosyalarını onun İndirilenler klasörüne kopyalayın. Klasör paylaşımı OneOS\'un resmi bağını kullanır: aynı klasörler iki sistemde de görünür, bu yüzden %1$s içindeki bir değişiklik One UI\'deki dosyaları değiştirebilir. APK dosyaları yalnızca tek yönde kopyalanır, burada yüklenmez — uygulamaları aşağıdaki listeden yükleyin. One UI dosyaları asla taşınmaz veya silinmez.</string>
+    <string name="bring_media_apps_note">Uygulamalar</string>
+    <string name="bring_media_apps_summary">Uygulamaları ve verilerini aşağıdaki listeden seçin. Bu kopyalama tek yönlüdür: One UI yalnızca okunur.</string>
+    <string name="bring_media_photos">Fotoğraflar</string>
+    <string name="bring_media_photos_summary">DCIM ve Pictures (paylaşılır, kopyalanmaz)</string>
+    <string name="bring_media_videos">Videolar</string>
+    <string name="bring_media_videos_summary">Movies (paylaşılır, kopyalanmaz)</string>
+    <string name="bring_media_downloads">İndirilenler</string>
+    <string name="bring_media_downloads_summary">İndirilenler (paylaşılır, kopyalanmaz)</string>
+    <string name="bring_media_documents">Belgeler</string>
+    <string name="bring_media_documents_summary">Belgeler (paylaşılır, kopyalanmaz)</string>
+    <string name="bring_media_music">Müzik / Ses</string>
+    <string name="bring_media_music_summary">Music (paylaşılır, kopyalanmaz)</string>
+    <string name="bring_media_apks">APK\'ler</string>
+    <string name="bring_media_apks_summary">One UI İndirilenler ve Belgeler klasörlerindeki *.apk dosyalarını %1$s İndirilenler klasörüne kopyalar. Yüklenmez.</string>
+    <string name="bring_media_select_all">Tümünü seç</string>
+    <string name="bring_media_apply">Aktarımı uygula</string>
+    <string name="bring_media_apply_summary">Klasör listesini sonraki geçiş için kaydeder. Seçilen APK\'ler, o sistem bir sonraki hazırlanışında veya başlatılışında diğer sistemin İndirilenler klasörüne kopyalanır. Hazırlanmış bir sistem gerekir.</string>
+    <string name="bring_media_working">Aktarım uygulanıyor…</string>
+    <string name="bring_media_none">En az bir öğe işaretleyin veya önceki listeyi temizlemek için uygulayın.</string>
+    <string name="advanced_host_suspend_title">Konuk açıkken One UI uygulamalarını dondur</string>
+    <string name="advanced_host_suspend_summary">Diğer sistem açılınca OneOS, One UI\'deki gerekli olmayan uygulamaları geri alınabilir şekilde dondurur (pm suspend) ki telefon daha rahat kalsın. Sistem, telefon, SMS, klavye, erişilebilirlik, VPN, kök yöneticisi ve sizin dokunulmasın dediğiniz uygulamalara dokunulmaz. One UI\'ye dönünce, veya bir çökmeden sonra OneOS yine açılırsa, dondurulanlar geri açılır.</string>
+    <string name="advanced_host_suspend_unsuspend">Dondurulanları şimdi geri aç</string>
+    <string name="advanced_host_suspend_unsuspend_summary">Son oturum için dondurulan One UI uygulamalarını şimdi geri açar.</string>
+    <string name="advanced_host_suspend_working">One UI uygulamaları donduruluyor veya geri açılıyor…</string>
+    <string name="advanced_host_suspend_unsuspend_done">Dondurulan One UI uygulamaları yeniden çalışıyor.</string>
+    <string name="advanced_host_suspend_unsuspend_fail">Bazı uygulamalar geri açılamadı. Yeniden deneyin veya telefonu yeniden başlatın.</string>
+    <string name="advanced_host_suspend_allow_title">Çalışır halde bırakılacaklar</string>
+    <string name="advanced_host_suspend_allow_row_summary">Diğer sistem açıkken One UI\'de çalışmaya devam etmesini istediğiniz uygulamaları işaretleyin.</string>
+    <string name="advanced_host_suspend_allow_card">Bunlar çalışmaya devam etsin</string>
+    <string name="advanced_host_suspend_allow_summary">İşaretli uygulamalar dondurulmaz. Sistem, telefon, SMS, klavye ve benzerleri zaten dışarıdadır.</string>
+    <string name="advanced_host_suspend_allow_empty">Eklenecek üçüncü taraf uygulama yok.</string>
+    <!-- 0.5.17 (owner): the warning before "Switch with a screen lock set" (LockRiskDialog). -->
+    <string name="lock_risk_title">Ekran kilidi varken geçiş: riski siz üstlenirsiniz</string>
+    <string name="lock_risk_message">Yeni Samsung yazılımları, PIN, desen, parola, parmak izi veya yüz kilidi varken Download Mode\'u engeller. Kilidiniz açıkken bir geçiş ters giderse telefonunuz açılmayabilir ve Download Mode\'a da ulaşamayabilir: o zaman tek dönüş yolu her şeyi silen fabrika sıfırlamasıdır. Bu bir testçiye oldu.
+
+Bir Download Mode modülü (örneğin backdownload) bu riski azaltır ama kaldırmaz. Önce yedek alın. Telefonunuza ve verilerinize ne olacağının sorumluluğu yalnızca size aittir.</string>
+    <string name="lock_risk_accept_wait">Riski anlıyorum (%1$d)</string>
+    <string name="lock_risk_accept">Riski anlıyorum</string>
+</resources>

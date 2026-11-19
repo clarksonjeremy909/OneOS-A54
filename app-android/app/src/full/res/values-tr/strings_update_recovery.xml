@@ -1,0 +1,5 @@
+<resources>
+    <string name="retry_update">Güncellemeyi yeniden dene</string>
+    <string name="update_interrupted_title">%1$s güncellemesini bitir</string>
+    <string name="update_interrupted_summary">Güncelleme bitmedi. Uygulama ve verileriniz saklanır. Mevcut sistem kalıbını doğrulamak ve OneOS dosyalarının güncellenmesini bitirmek için yeniden deneyin.</string>
+</resources>

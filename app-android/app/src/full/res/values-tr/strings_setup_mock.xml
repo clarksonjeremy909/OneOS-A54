@@ -1,0 +1,33 @@
+<resources>
+    <string name="setup_mock_title">%1$s kur</string>
+    <string name="setup_installing">Yükleniyor</string>
+    <string name="setup_preview_badge">Önizleme · benzetilmiş kurulum</string>
+    <string name="setup_check_phone">Telefonunuzu kontrol edin</string>
+    <string name="setup_check_files">İndirmeyi kontrol et</string>
+    <string name="setup_image">Sistemi kur</string>
+    <string name="setup_files_patches">OneOS düzeltmelerini yükle</string>
+    <string name="setup_download_files">OneOS düzeltmelerini indir</string>
+    <string name="setup_table">Uygulama kurulumlarını hazırla</string>
+    <string name="setup_session">Geçiş ayarlarını kaydet</string>
+    <string name="setup_cleanup">Topla</string>
+    <string name="setup_download_question">Dosyayı indirdiniz mi?</string>
+    <string name="setup_preview_setting">Önizleme kipi</string>
+    <string name="setup_preview_setting_summary">Kurulum ve önyükleme ekranlarını benzetir. Bir sistem kartında Kur\'a, sonra dosya seçimini atlamak için Evet\'e dokunun. Dosyalar değişmez ve hiçbir işletim sistemi başlamaz.</string>
+    <string name="setup_download_yes">Evet</string>
+    <string name="setup_download_no">Hayır</string>
+    <string name="setup_preview_cancelled_title">Önizleme iptal edildi</string>
+    <string name="setup_update_title">%1$s güncelle</string>
+    <string name="setup_updating">Güncelleniyor</string>
+    <string name="setup_check_update">Güncelleme için telefonunuzu kontrol edin</string>
+    <string name="setup_verify_existing_image">Bu telefondaki sistemi kontrol et</string>
+    <!-- 0.4.41: the setup notification (PrepareService) while setup runs. -->
+    <string name="setup_notification_title">%1$s kuruluyor</string>
+    <string name="setup_notification_channel">Bir sistem kuruluyor</string>
+    <!-- 0.4.43 (UX audit): Stop asks first. -->
+    <string name="setup_stop_setup">Kurulumu durdur</string>
+    <string name="setup_stop_title">%1$s kurulumu durdurulsun mu?</string>
+    <string name="setup_keep_going">Devam et</string>
+    <!-- 0.4.49: Set up tapped before the phone check finished, or on a phone OneOS has no profile for. -->
+    <string name="setup_wait_check">Önce telefonunuz kontrol ediliyor. Birazdan Kur\'a tekrar dokunun.</string>
+    <string name="setup_no_profile">OneOS\'un bu telefon için sistemi yok, bu yüzden birini kuramaz.</string>
+</resources>

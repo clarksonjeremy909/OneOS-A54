@@ -5726,6 +5726,33 @@ while true; do
 done
 APPLOOP
 chmod 755 "$STAGE/data/local/tmp/app_storage_loop.sh" 2>/dev/null || true
+# OneOS A54: opt into the 0.5.18 full compile (cmd package compile -m speed),
+# which is off by default since 0.5.22. The hook in app_storage_loop.sh reads
+# /data/oneos_dexopt.enable once the guest is up (this is that file on the stage).
+mkdir -p "$STAGE/data"
+touch "$STAGE/data/oneos_dexopt.enable"
+# OneOS A54: one-way copy of host *.apk (Download and Documents) into the
+# guest Download folder, when Bring apps asked for it. Host files are only read.
+if [ -f "$STAGE/data/oneos_copy_apks" ]; then
+    host="/data/media/0"
+    dest="$STAGE/data/media/0/Download"
+    mkdir -p "$dest"
+    uidgid=$(stat -c %u:%g "$dest" 2>/dev/null || echo "1023:1023")
+    apk_copied=0
+    for dir in Download Documents; do
+        [ -d "$host/$dir" ] && [ ! -L "$host/$dir" ] || continue
+        for f in "$host/$dir"/*.apk; do
+            [ -f "$f" ] && [ ! -L "$f" ] || continue
+            base=${f##*/}
+            if cp -f "$f" "$dest/$base"; then
+                chown "$uidgid" "$dest/$base" 2>/dev/null || true
+                chmod 0644 "$dest/$base" 2>/dev/null || true
+                apk_copied=$((apk_copied + 1))
+            fi
+        done
+    done
+    echo "=== OneOS A54: copied $apk_copied host APK(s) into guest Download ==="
+fi
 
 echo "=== 6. $(date +%T) Setting up /system/xbin/su (KernelSU Bridge) ==="
 if ! mount | grep -q "$ROOTFS/system/xbin "; then

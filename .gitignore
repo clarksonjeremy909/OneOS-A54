@@ -16,3 +16,21 @@ __pycache__/
 # Generated guest manager APK; build with scripts/build-guest-manager.sh.
 switcher/assets/guest_manager.apk
 /out
+
+# OneOS A54: keep secrets and local/build artifacts out of the fork
+*.apk
+*.idsig
+*.apks
+.env
+.env.*
+!.env.example
+github.properties
+*.pem
+*.p12
+local.properties
+.gradle/
+**/.gradle/
+.kotlin/
+*.iml
+.idea/
+.DS_Store

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- OneOS inside the guest (GuestReturn.dc.html). Fixed text names no guest
+     system: %1$s in title_in is the guest image's own name (GuestName). -->
+<resources>
+    <string name="app_name">OneOS A54</string>
+
+    <string name="title_in">%1$s içindesiniz</string>
+    <!-- No friendly name in the guest's own build.prop files. -->
+    <string name="title_in_other">Diğer sistemdesiniz</string>
+    <string name="body">OneOS üzerinden. One UI sizi, değişmeden bekliyor.</string>
+
+    <string name="back">One UI\'ye dön</string>
+    <!-- True for the reboot return (ONEOS_RETURN_MODE=reboot, the only mode the session takes today). -->
+    <string name="back_caption">One UI yaklaşık bir dakika içinde, genellikle yeniden başlatmadan geri gelir. Burada açık uygulamalar kapanır, önce işinizi kaydedin.</string>
+
+    <string name="confirm_title">One UI\'ye dön</string>
+    <string name="confirm_message">Şimdi One UI\'ye dönülsün mü? Uygulamalardaki kaydedilmemiş işler kaybolur.</string>
+    <string name="confirm_return">Dön</string>
+
+    <string name="status_returning">One UI\'ye dönülüyor…</string>
+    <string name="status_no_answer">OneOS henüz yanıt vermedi. Bir dakika içinde bir şey olmazsa Ses Aç ve Ses Kıs tuşlarını birlikte 3 saniye basılı tutun.</string>
+    <string name="status_failed">OneOS\'tan geri dönmesi istenemedi (%1$s). Ses Aç ve Ses Kıs tuşlarını birlikte 3 saniye basılı tutun.</string>
+
+    <string name="ways_title">Geri dönmenin diğer yolları</string>
+    <string name="way_tile_title">Hızlı ayarlar kısayolu</string>
+    <string name="way_tile_summary">Her yerden One UI\'ye dön</string>
+    <string name="add_tile">Ekle</string>
+    <string name="add_tile_description">One UI\'ye dön kısayolunu Hızlı ayarlar\'a ekle</string>
+    <string name="tile_added">Eklendi</string>
+    <string name="tile_added_description">One UI\'ye dön kısayolu Hızlı ayarlar\'da</string>
+    <string name="way_keys_title">Ses Aç + Ses Kıs</string>
+    <string name="way_keys_summary">İkisini 3 saniye basılı tutun</string>
+
+    <!-- How's it going? (0.4.30): the checklist kept for Send to the OneOS team. -->
+    <string name="checklist_open">Nasıl gidiyor?</string>
+    <string name="checklist_open_caption">Denerken neyin çalıştığını işaretleyin. OneOS, One UI\'ye döndüğünüzde bunu günlüklerle gönderir.</string>
+    <string name="checklist_title">Nasıl gidiyor?</string>
+    <string name="checklist_intro">Denerken neyin çalıştığını ve neyin sorunlu olduğunu işaretleyin. Buradan hiçbir şey gönderilmez: One UI\'ye dönünce OneOS Hoş geldiniz ile açılır; orada Rapor gönder\'e dokunun (veya Ayarlar › Son oturum). Yanıtlarınız orada doldurulur.</string>
+    <string name="checklist_note">Ekibe not</string>
+    <string name="checklist_note_hint">İsteğe bağlı: ne olduğu, birkaç sözcükle</string>
+    <string name="checklist_saved">İlerledikçe kaydedildi.</string>
+    <string name="checklist_not_saved">Kaydedilemedi (%1$s)</string>
+    <string name="answer_works">Çalışıyor</string>
+    <string name="answer_problem">Sorun</string>
+    <string name="answer_not_tried">Denenmedi</string>
+    <string name="item_screen">Ekran ve dokunma</string>
+    <string name="item_wifi">Wi-Fi</string>
+    <string name="item_data">Mobil veri</string>
+    <string name="item_calls">Aramalar</string>
+    <string name="item_sms">SMS</string>
+    <string name="item_bluetooth">Bluetooth</string>
+    <string name="item_sound">Ses</string>
+    <string name="item_camera">Kamera</string>
+    <string name="item_google">Google oturumu ve Play Store</string>
+    <string name="item_location">Konum</string>
+    <string name="item_heat">Isı ve pil</string>
+    <string name="item_fold">İki ekran, katlama ve açma</string>
+
+    <!-- Bring apps from One UI, from inside this system (the apps One UI offered at this start). -->
+    <string name="bring_entry_title">One UI\'den uygulamaları getir</string>
+    <string name="bring_entry_summary">One UI\'de kullandığınız bir uygulamayı, oturum açık halde kopyalayın</string>
+    <string name="bring_title">One UI\'den uygulamaları getir</string>
+    <string name="bring_intro">Bir uygulamayı, oturumuyla birlikte One UI\'den kopyalamak için ona dokunun. One UI değişmez.</string>
+    <string name="bring_no_catalog">Uygulamalarınızı burada görmek için bu sistemi One UI\'deki OneOS uygulamasından başlatın.</string>
+    <string name="bring_none">OneOS\'un One UI\'den sunduğu her uygulama zaten burada yüklü.</string>
+    <string name="bring_not_writable">Bu sistem şu anda istek alamıyor: /data/oneos_bring_requests yazılabilir değil.</string>
+    <string name="bring_reading">Uygulama listesi okunuyor…</string>
+    <string name="bring_sent">OneOS\'tan kopyalaması istendi…</string>
+    <string name="bring_copying">One UI\'den kopyalanıyor…</string>
+    <string name="bring_installing">Yükleniyor…</string>
+    <string name="bring_ready">Hazır</string>
+    <string name="bring_failed">Başarısız: %1$s</string>
+    <string name="bring_failed_tap">Başarısız: %1$s. Yeniden denemek için dokunun.</string>
+    <string name="bring_open">Aç</string>
+
+    <string name="tile_label">One UI\'ye dön</string>
+    <string name="tile_subtitle">OneOS A54</string>
+    <!-- 0.5.17 (owner): Record full logs from now, in the session (FullLogs). -->
+    <string name="logs_title">Günlükler</string>
+    <string name="full_logs_title">Şu andan itibaren tam günlükleri kaydet</string>
+    <string name="full_logs_off">Bir sorun mu var? Bunu açın, sorunu yeniden oluşturun, sonra One UI\'ye dönüp bir rapor gönderin</string>
+    <string name="full_logs_starting">Başlatılıyor…</string>
+    <string name="full_logs_on">Tam günlükler kaydediliyor. İşiniz bitince One UI\'ye dönün ve bir rapor gönderin</string>
+    <string name="full_logs_confirm">One UI\'ye dönene kadar her şey kaydedilsin mi? Tam günlükler daha fazla pil ve depolama kullanabilir. Raporunuz bunları içerir.</string>
+    <string name="full_logs_start">Kaydet</string>
+    <string name="full_logs_failed">Tam günlükler istenemedi: %1$s</string>
+</resources>

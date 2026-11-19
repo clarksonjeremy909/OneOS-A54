@@ -1,0 +1,10 @@
+<resources>
+<string name="onboarding_welcome">OneOS A54\'e hoş geldiniz</string><string name="onboarding_start">Başla</string>
+<string name="onboarding_prerequisites">Ön koşullar</string><string name="onboarding_root">Root sağlayıcı</string><string name="onboarding_no_root">Root algılanmadı. Kullanılabilir sistemlere bakabilirsiniz.</string>
+<string name="onboarding_nearby">Yakındaki cihazlar</string><string name="onboarding_nearby_summary">Yerel geçiş için gerekli değil</string>
+<string name="onboarding_lock">Ekran kilidi</string><string name="onboarding_lock_summary">Geçiş için ekran kilidinin kapalı olması gerekir (PIN, desen, parola, parmak izi ve yüz). Bir şey ters giderse One UI verisini korur.</string>
+<string name="onboarding_lock_on">Açık · geçişten önce kapatın</string><string name="onboarding_lock_off">Kapalı · hazır</string><string name="onboarding_root_found">%1$s bulundu · OneOS kurulumda erişim ister</string>
+<string name="onboarding_experimental">OneOS deneyseldir</string><string name="onboarding_experimental_summary">Uygulama, cihazı yazılım yüklemeden One UI\'den başka bir sisteme geçirir. İşler bozulabilir.</string>
+<string name="onboarding_backup">Verilerinizi yedekleyin</string><string name="onboarding_backup_summary">Önce hesaplarınızı ve kritik verilerinizi yedekleyin.</string>
+<string name="onboarding_data">Veriler ve uygulamalar</string><string name="onboarding_data_summary">Diğer sistemdeki uygulamalar One UI ile aynı root yetkilerini alır. Veriler paylaşılmaz ama sisteme dokunan her şey tam erişime sahip olur. Dikkatli olun.</string>
+</resources>

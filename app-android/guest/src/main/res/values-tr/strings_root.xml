@@ -1,0 +1,22 @@
+<resources>
+    <string name="root_filters">Uygulamaları filtrele</string>
+    <string name="root_permissions_title">Root izinleri</string>
+    <string name="root_search_hint">Ara</string>
+    <string name="root_access_filter">Root erişimi filtresi</string>
+    <string name="root_kind_filter">Uygulama türü filtresi</string>
+    <string name="root_retry">Yeniden dene</string>
+    <string name="root_loading">Konuk uygulamalar okunuyor…</string>
+    <string name="root_no_matches">Aramanıza veya filtrelere uyan uygulama yok.</string>
+    <string name="root_none">Root erişimi için uygulama yok.</string>
+    <string name="root_allowed">Root izinli</string>
+    <string name="root_denied">Root reddedildi</string>
+    <string name="root_saving">Kaydediliyor…</string>
+    <string name="root_toggle">%1$s için root erişimi</string>
+    <string name="root_counts">%1$d gösteriliyor · bu konuk sistemde %2$d izinli</string>
+    <string name="root_shared">Paylaşılan UID · %1$d uygulama</string>
+    <string name="root_shared_details">Bu uygulamalar UID %1$d değerini paylaşır. Root erişimi hepsine uygulanır.</string>
+    <string-array name="root_access_options"><item>Tüm erişim</item><item>İzinli</item><item>Reddedildi</item></string-array>
+    <string-array name="root_kind_options"><item>Kullanıcı uygulamaları</item><item>Tüm uygulamalar</item><item>Sistem uygulamaları</item></string-array>
+    <string name="restart_splash_title">%1$s yeniden başlatılıyor</string>
+    <string name="restart_request_failed">Konuk yeniden başlatma istenemedi (%1$s).</string>
+</resources>

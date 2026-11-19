@@ -2,7 +2,7 @@
 <!-- OneOS inside the guest (GuestReturn.dc.html). Fixed text names no guest
      system: %1$s in title_in is the guest image's own name (GuestName). -->
 <resources>
-    <string name="app_name">OneOS</string>
+    <string name="app_name">OneOS A54</string>
 
     <string name="title_in">You\'re in %1$s</string>
     <!-- No friendly name in the guest's own build.prop files. -->

@@ -1169,4 +1169,21 @@ fi
 "$BB" rm -rf $NODES
 echo "$(cat /proc/sys/kernel/random/boot_id 2>/dev/null) $(date +%s)" > $S/return_inplace.done
 echo oneos_return > /sys/power/wake_unlock 2>/dev/null
+# OneOS A54: thaw host apps frozen for the guest session. If package
+# manager is not ready yet, the list is left for the app to restore.
+LIST="$S/data/oneos_host_suspended.list"
+if [ -f "$LIST" ] && [ ! -L "$LIST" ]; then
+    if pm path android >/dev/null 2>&1; then
+        while read -r pkg rest; do
+            [ -n "$pkg" ] || continue
+            case "$pkg" in ''|.*|*.|*[!A-Za-z0-9._]*|*..*) continue ;; esac
+            case "$pkg" in *.*) ;; *) continue ;; esac
+            [ -z "$rest" ] || continue
+            pm unsuspend --user 0 "$pkg" >/dev/null 2>&1 || true
+        done < "$LIST"
+        rm -f "$LIST"
+    else
+        echo "host apps still frozen: package manager not ready (list left at $LIST)"
+    fi
+fi
 say "One UI restored in place ($(getenforce))."

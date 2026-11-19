@@ -1088,6 +1088,7 @@ do_begin() {
     [ "$4" = "$pset" ] || refuse "$4 is not the file set of $3 on $2 ($pset)"
     B_PROFILE=$2 B_IMAGE=$3 B_SET=$4 B_CODE=$5
     idle_or_refuse
+    host_unsuspend_list || true
     ours=0
     read_marker && ours=1
     E=$(date +%s)
@@ -1692,6 +1693,7 @@ do_purge() {
 # runs on from its open file once its folder is gone.
 do_remove() {
     [ $# -eq 0 ] || usage "remove"
+    host_unsuspend_list || true
     mountinfo_ok
     restore_checks "$STAGE"
     b=$(bridged | head -n 3 | tr '\n' ' ')
@@ -1755,6 +1757,7 @@ one_system_checks() {
 }
 do_remove_system() {
     [ $# -eq 0 ] || usage "remove-system"
+    host_unsuspend_list || true
     one_system_checks
     self_sum=$(sha "$SELF")
     OLD="$STAGE.old-$(date +%s)"
@@ -1908,6 +1911,7 @@ restore_checks() { # <path>
 }
 do_restore() {
     [ $# -eq 1 ] || usage "restore <name>"
+    host_unsuspend_list || true
     case "$1" in oneos.old-*) ;; *) usage "restore: '$1' is not a set-aside stage (oneos.old-<time>)" ;; esac
     old_name_ok "$1" || usage "restore: '$1' is not an old stage name"
     mountinfo_ok
@@ -2561,6 +2565,166 @@ do_bring_clear() {
     say "@@OK bring-clear"
 }
 
+
+# OneOS A54: write the optional per-folder share list and/or mark host APKs
+# to be copied at prepare time. Host files are only read; never moved or deleted.
+# Categories (args): photos videos downloads documents music apks
+# Zero args clears the share list and the APK-copy flag. The root script itself
+# never names host shared storage (StageAudit): guest_prepare.sh does the APK copy when
+# $STAGE/data/oneos_copy_apks is present.
+do_bring_media() {
+    read_marker || refuse "no system is set up (prepare one first)"
+    [ ! -L "$STAGE/data" ] || refuse "${STAGE#$T}/data is a link"
+    mkdir_mine "$STAGE/data" || die "could not make $STAGE/data"
+    allowed="photos videos downloads documents music apks"
+    dirs=""
+    copy_apks=0
+    for a in "$@"; do
+        in_list "$a" "$allowed" || usage "bring-media '$a'"
+        case "$a" in
+            photos) in_list DCIM "$dirs" || dirs="$dirs DCIM"; in_list Pictures "$dirs" || dirs="$dirs Pictures" ;;
+            videos) in_list Movies "$dirs" || dirs="$dirs Movies" ;;
+            downloads) in_list Download "$dirs" || dirs="$dirs Download" ;;
+            documents) in_list Documents "$dirs" || dirs="$dirs Documents" ;;
+            music) in_list Music "$dirs" || dirs="$dirs Music" ;;
+            apks) copy_apks=1 ;;
+        esac
+    done
+    part="$STAGE/data/oneos_share.dirs"
+    if [ -n "$dirs" ]; then
+        printf '%s\n' $dirs > "$part" || die "could not write $part"
+        own "$part" 0644
+    else
+        rm -f "$part"
+    fi
+    F="$STAGE/data/oneos_copy_apks"
+    if [ "$copy_apks" = 1 ]; then
+        printf '1\n' > "$F" || die "could not write $F"
+        own "$F" 0644
+    else
+        rm -f "$F"
+    fi
+    if [ "$copy_apks" = 1 ]; then
+        say "@@OK bring-media dirs=${dirs:-none} apks=pending-prepare"
+    else
+        say "@@OK bring-media dirs=${dirs:-none}"
+    fi
+}
+
+# OneOS A54: reversibly freeze already-vetted host third-party apps while a
+# guest session runs (`pm suspend`), and thaw exactly the names recorded in
+# $STAGE/data/oneos_host_suspended.list. Never disable or uninstall.
+host_unsuspend_list() {
+    extra="${1:-}"
+    part="$STAGE/data/oneos_host_suspended.list"
+    names=""
+    if [ -f "$part" ] && [ ! -L "$part" ]; then
+        while read -r pkg rest; do
+            [ -n "$pkg" ] || continue
+            is_package "$pkg" && [ -z "$rest" ] || continue
+            in_list "$pkg" "$names" || names="$names $pkg"
+        done < "$part"
+    fi
+    if [ -n "$extra" ] && [ -f "$extra" ] && [ ! -L "$extra" ]; then
+        while read -r pkg rest; do
+            [ -n "$pkg" ] || continue
+            is_package "$pkg" && [ -z "$rest" ] || continue
+            in_list "$pkg" "$names" || names="$names $pkg"
+        done < "$extra"
+    fi
+    HOST_UNSUSPEND_COUNT=0
+    [ -n "$names" ] || { rm -f "$part"; return 0; }
+    pm path android >/dev/null 2>&1 || return 1
+    for pkg in $names; do
+        if pm unsuspend --user 0 "$pkg" >/dev/null 2>&1; then
+            HOST_UNSUSPEND_COUNT=$((HOST_UNSUSPEND_COUNT + 1))
+        fi
+    done
+    rm -f "$part"
+    return 0
+}
+
+do_host_unsuspend() {
+    [ $# -eq 1 ] || usage "host-unsuspend <bytes>"
+    is_dec "$1" && ge 65536 "$1" || usage "host-unsuspend size $1"
+    part=""
+    if [ "$1" != 0 ]; then
+        mkdir_mine "$STAGE/incoming" || die "could not make $STAGE/incoming"
+        part="$STAGE/incoming/host_unsuspend.part"
+        rm -f "$part"
+        head -c "$1" > "$part" || { rm -f "$part"; die "could not read the list"; }
+        [ "$(stat -c %s "$part")" = "$1" ] || { rm -f "$part"; refuse "the list arrived incomplete"; }
+    fi
+    [ ! -L "$STAGE/data" ] || refuse "${STAGE#$T}/data is a link"
+    mkdir_mine "$STAGE/data" || die "could not make $STAGE/data"
+    if [ -n "$part" ]; then
+        host_unsuspend_list "$part" || { rm -f "$part"; refuse "package manager is not ready; frozen apps were left as they were"; }
+        rm -f "$part"
+    else
+        host_unsuspend_list || refuse "package manager is not ready; frozen apps were left as they were"
+    fi
+    say "@@OK host-unsuspend $HOST_UNSUSPEND_COUNT"
+}
+
+do_host_suspend() {
+    [ $# -eq 1 ] || usage "host-suspend <bytes>"
+    is_dec "$1" && ge 65536 "$1" || usage "host-suspend size $1"
+    idle_or_refuse
+    [ ! -L "$STAGE/data" ] || refuse "${STAGE#$T}/data is a link"
+    mkdir_mine "$STAGE/incoming" || die "could not make $STAGE/incoming"
+    mkdir_mine "$STAGE/data" || die "could not make $STAGE/data"
+    part="$STAGE/incoming/host_suspend.part"
+    rm -f "$part"
+    head -c "$1" > "$part" || { rm -f "$part"; die "could not read the list"; }
+    [ "$(stat -c %s "$part")" = "$1" ] || { rm -f "$part"; refuse "the list arrived incomplete"; }
+    list=""
+    while read -r pkg rest; do
+        [ -n "$pkg" ] || continue
+        { is_package "$pkg" && [ -z "$rest" ]; } || { rm -f "$part"; refuse "the list names '$pkg'"; }
+        in_list "$pkg" "$list" || list="$list $pkg"
+    done < "$part"
+    rm -f "$part"
+    F="$STAGE/data/oneos_host_suspended.list"
+    exist=""
+    if [ -f "$F" ] && [ ! -L "$F" ]; then
+        while read -r pkg rest; do
+            [ -n "$pkg" ] || continue
+            is_package "$pkg" && [ -z "$rest" ] || continue
+            in_list "$pkg" "$exist" || exist="$exist $pkg"
+        done < "$F"
+    fi
+    n=0
+    for pkg in $list; do
+        case "$pkg" in
+            com.samsung.*|com.sec.*|com.android.*) continue ;;
+            com.google.android.gms|com.google.android.gsf|com.google.android.gms.*|com.google.android.gsf.*) continue ;;
+            com.fahadali.oneos|com.fahadali.oneos.*) continue ;;
+            me.weishu.kernelsu|com.rifsxd.ksunext|com.sukisu.ultra|app.kitsusu.manager) continue ;;
+            com.topjohnwu.magisk|io.github.vvb2060.magisk|io.github.huskydg.magisk|me.bmax.apatch|me.garfieldhan.apatch.next) continue ;;
+        esac
+        if in_list "$pkg" "$exist"; then
+            n=$((n + 1))
+            say "@@RESULT host_suspend $pkg"
+            continue
+        fi
+        if pm suspend --user 0 "$pkg" >/dev/null 2>&1; then
+            exist="$exist $pkg"
+            n=$((n + 1))
+            say "@@RESULT host_suspend $pkg"
+        fi
+    done
+    if [ -n "$exist" ]; then
+        printf '' > "$F" || die "could not write $F"
+        for pkg in $exist; do
+            printf '%s\n' "$pkg" >> "$F"
+        done
+        own "$F" 0644
+    else
+        rm -f "$F"
+    fi
+    say "@@OK host-suspend $n"
+}
+
 # --- Main ---------------------------------------------------------------------
 [ -n "$T" ] || [ "$(id -u)" = 0 ] || refuse "not root"
 verb=$1
@@ -2571,7 +2735,7 @@ esac
 [ -d "$STAGE" ] && mine "$STAGE" || refuse "$STAGE is not root's folder"
 [ -d "$STAGE/bin" ] && mine "$STAGE/bin" || refuse "$STAGE/bin is not root's folder"
 case "$verb" in
-    begin|receive|keep-raw|keep-files|table|env|finish|launch|recover|restore|remove|remove-system|reset-data|tool-app|purge|selfupdate|guest-module|guest-module-state|bring-collect|bring-clear|bring-forget|bring-catalog|bring-add) take_lock ;;
+    begin|receive|keep-raw|keep-files|table|env|finish|launch|recover|restore|remove|remove-system|reset-data|tool-app|purge|selfupdate|guest-module|guest-module-state|bring-collect|bring-clear|bring-forget|bring-catalog|bring-add|bring-media|host-suspend|host-unsuspend) take_lock ;;
 esac
 [ $# -gt 0 ] && shift
 case "$verb" in
@@ -2601,5 +2765,8 @@ case "$verb" in
     bring-forget) do_bring_forget "$@" ;;
     bring-catalog) do_bring_catalog "$@" ;;
     bring-add) do_bring_add "$@" ;;
+    bring-media) do_bring_media "$@" ;;
+    host-suspend) do_host_suspend "$@" ;;
+    host-unsuspend) do_host_unsuspend "$@" ;;
     *) usage "unknown verb '$verb'" ;;
 esac

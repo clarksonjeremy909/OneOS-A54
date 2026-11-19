@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- The full edition (OneOS): its own texts and the switching screens. -->
 <resources>
-    <string name="app_name">OneOS</string>
+    <string name="app_name">OneOS A54</string>
 
     <!-- Before you start (first launch until acknowledged; again from Home and About) -->
     <string name="before_link_summary">What can break, backups and the screen lock</string>

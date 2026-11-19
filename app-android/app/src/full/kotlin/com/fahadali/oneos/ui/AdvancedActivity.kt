@@ -90,6 +90,17 @@ class AdvancedFragment : CardsFragment() {
         CardRows.toggle(sessions, getString(R.string.advanced_heat_cap_title), getString(R.string.advanced_heat_cap_summary), SessionPrefs.heatCap(ctx)) { on ->
             SessionPrefs.setHeatCap(ctx, on)
         }
+        CardRows.toggle(sessions, getString(R.string.advanced_host_suspend_title), getString(R.string.advanced_host_suspend_summary), SessionPrefs.hostSuspend(ctx)) { on ->
+            SessionPrefs.setHostSuspend(ctx, on)
+        }
+        Cards.row(sessions, OuiIcons.drawable.ic_oui_refresh, getString(R.string.advanced_host_suspend_unsuspend), getString(R.string.advanced_host_suspend_unsuspend_summary)) {
+            Toast.makeText(ctx, R.string.advanced_host_suspend_working, Toast.LENGTH_SHORT).show()
+            com.fahadali.oneos.session.HostSuspendActions.unsuspend(ctx) {
+                val left = SessionPrefs.hostSuspendedList(ctx).isNotEmpty()
+                Toast.makeText(ctx, if (left) R.string.advanced_host_suspend_unsuspend_fail else R.string.advanced_host_suspend_unsuspend_done, Toast.LENGTH_SHORT).show()
+            }
+        }
+        Cards.row(sessions, OuiIcons.drawable.ic_oui_apps, getString(R.string.advanced_host_suspend_allow_title), getString(R.string.advanced_host_suspend_allow_row_summary), open(HostSuspendAllowActivity::class.java))
         CardRows.toggle(sessions, getString(R.string.advanced_full_logs_title), getString(R.string.advanced_full_logs_summary), SessionPrefs.fullLogs(ctx)) { on ->
             SessionPrefs.setFullLogs(ctx, on)
         }

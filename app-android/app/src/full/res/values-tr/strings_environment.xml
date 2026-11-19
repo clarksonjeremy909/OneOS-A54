@@ -1,0 +1,35 @@
+<resources>
+    <string name="environment_boot">%1$s sistemine geç</string>
+    <string name="environment_root">Root</string>
+    <string name="environment_storage">Depolama alanı</string>
+    <string name="environment_battery">Pil</string>
+    <string name="environment_lock">Ekran kilidi</string>
+    <string name="environment_guest_root">Konuk root erişimi</string>
+    <string name="environment_guest_root_status">OneOS\'un mevcut konuk root köprüsü tarafından açıldı</string>
+    <string name="environment_no_root">Root algılanmadı</string>
+    <string name="environment_lock_off">Kapalı</string>
+    <string name="environment_lock_on">Açık</string>
+    <string name="environment_unknown">Kontrol edilmedi</string>
+    <string name="environment_free">%1$s boş</string>
+    <string name="environment_active">%1$s etkin</string>
+    <string name="environment_apps">Uygulamalar</string>
+    <string name="environment_bring_summary">One UI\'den uygulamaları, verileri ve oturumlarıyla birlikte götürün</string>
+    <string name="environment_report">Sorunu OneOS ekibine bildir</string>
+    <string name="environment_checking">Telefon ve hazırlanan sistem kontrol ediliyor…</string>
+    <string name="environment_busy_logs">Son oturumun günlükleri kaydediliyor (kişisel veriler kaldırıldı). Önyükleme ve Güncelle bu bitince başlar, genellikle birkaç dakika içinde.</string>
+    <string name="environment_busy_other">OneOS başka bir işi bitiriyor. Önyükleme ve Güncelle, o bitince başlar.</string>
+    <string name="environment_preview">Önizleme kipi · benzetilmiş ortam ve önyükleme</string>
+    <string name="switch_blocked_now">Son kontrolden beri bir şey değişti. Neyin durdurduğunu sistemin sayfasında bakın.</string>
+    <string name="boot_cannot_cancel">Şimdi iptal edilemez</string>
+    <string name="boot_cannot_cancel_line">Geçiş durabileceği noktayı geçti. Birazdan biter.</string>
+    <string name="environment_boot_cancelled">Önyükleme iptal edildi</string>
+    <string name="environment_boot_cancelling">İptal ediliyor…</string>
+    <string name="environment_update">%1$s güncelle</string>
+    <string name="environment_restage_title">%1$s yeniden kurulmalı</string>
+    <string name="environment_restage_summary">Önceki kurulum bitmedi. Önyüklemeden önce kurulumunu güncelleyin.</string>
+    <string name="logs_skip">Günlük kaydını atla</string>
+    <string name="logs_skip_summary">Son oturumun günlük kaydını durdurur; böylece şimdi geçiş yapabilir veya güncelleyebilirsiniz. Hiçbir şey gönderilmez. Bir sonraki geçişinize kadar Son oturum\'dan hâlâ kaydedebilirsiniz.</string>
+    <string name="logs_keep">Kaydetmeye devam et</string>
+    <string name="logs_stopping">Günlük kaydı durduruluyor…</string>
+    <string name="environment_busy_logs_stopping">Günlük kaydı durduruluyor. Önyükleme ve Güncelle birazdan hazır.</string>
+</resources>

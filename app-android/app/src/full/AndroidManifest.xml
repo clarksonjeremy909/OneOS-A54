@@ -95,6 +95,11 @@
             android:parentActivityName=".ui.MainActivity" />
 
         <activity
+            android:name=".ui.HostSuspendAllowActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.AdvancedActivity" />
+
+        <activity
             android:name=".ui.TeamActivity"
             android:exported="false"
             android:parentActivityName=".ui.AdvancedActivity" />

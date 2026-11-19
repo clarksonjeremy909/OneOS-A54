@@ -1,0 +1,13 @@
+<resources>
+    <string name="patch_channel_title">%1$s yama kanalı</string>
+    <string name="patch_channel_stable">OneOS yamaları (Kararlı)</string>
+    <string name="patch_channel_experimental">That Josh Guy yamaları (Deneysel)</string>
+    <string name="patch_channel_summary">Bu sistem için yamaları seçin. Değişiklikleri önyüklemeden önce Güncelle ile uygulayın.</string>
+    <string name="patch_channel_checking">Yama güncellemeleri kontrol ediliyor…</string>
+    <string name="patch_channel_refresh">Yama güncellemelerini kontrol et</string>
+    <string name="patch_channel_failed">Yamalar yüklenemedi</string>
+    <string name="patch_channel_stable_version">OneOS %1$s</string>
+    <string name="patch_channel_stable_current">Kararlı yamalar OneOS %1$s için güncel.</string>
+    <string name="patch_channel_stable_newer">OneOS %1$s kullanılabilir. Kararlı yamalar resmi OneOS sürümüyle dağıtılır; yeni yama listesini kullanmak için uygulamayı güncellemeniz gerekir.</string>
+    <string name="patch_channel_checked">Deneysel yamalar kontrol edildi. Değişiklikleri önyüklemeden önce Güncelle ile uygulayın.</string>
+</resources>

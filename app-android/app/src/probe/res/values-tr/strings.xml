@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The probe edition (OneOS Probe): only the read-only tests and the
+     findings, to share with the OneOS team. Its own texts; the rest are in
+     src/main. -->
+<resources>
+    <string name="app_name">OneOS A54 Probe</string>
+
+    <!-- Before you start (first launch until acknowledged; again from Home and About) -->
+    <string name="before_link_summary">Testlerin okudukları, root ve paylaşılanlar</string>
+    <string name="before_probe_reads_title">OneOS Probe yalnızca okur</string>
+    <string name="before_probe_reads_summary">Root olarak salt okunur testler çalıştırır ve bulduklarını OneOS ekibi için bir zip\'e koyar. Telefonda hiçbir şey değişmez: root dosya yazmaz, ayar veya özellik değiştirmez, hiçbir şey yazılmaz veya geçiş yapılmaz.</string>
+    <string name="before_probe_root_title">Root gerekli</string>
+    <string name="before_probe_root_summary">Testler root olarak çalışır (KernelSU, Magisk veya APatch). Root yöneticiniz sorduğunda OneOS Probe\'a izin verin; KernelSU veya APatch\'te önce süper kullanıcı listesinde izin verin.</string>
+    <string name="before_probe_privacy_title">Önce kişisel veriler kaldırılır</string>
+    <string name="before_probe_privacy_summary">Paylaşılmadan önce OneOS Probe IMEI ve MEID, seri numaraları ve cihaz kimlikleri, MAC adresleri, SIM ve telefon numaraları, e-postalar, Wi-Fi ve hesap adları ile konumları kaldırır. Paylaşmadan önce her dosyayı açabilirsiniz.</string>
+    <string name="before_probe_share_title">Neyin paylaşılacağına siz karar verirsiniz</string>
+    <string name="before_probe_share_summary">Bulgular, zip\'i paylaşana veya kaydedene kadar uygulamada kalır. OneOS Probe\'un internet izni yoktur.</string>
+    <string name="before_probe_switch_title">Geçiş OneOS uygulamasındadır</string>
+    <string name="before_probe_switch_summary">Bu uygulama başka bir işletim sistemini hazırlayamaz veya ona geçiş yapamaz. Bulgular, OneOS ekibine OneOS uygulamasının bu telefonda çalışıp çalışamayacağını söyler.</string>
+    <string name="before_ack">Testlerin root gerektirdiğini ve yalnızca okuduğunu anlıyorum</string>
+
+    <!-- Home -->
+    <string name="home_subtitle">OneOS ekibi için salt okunur testler</string>
+    <string name="home_about_title">OneOS A54 Probe hakkında</string>
+
+    <!-- Device report -->
+    <string name="report_warning_next">OneOS uygulaması bir şey hazırlamadan veya geçiş yapmadan önce her şeyi yeniden kontrol eder.</string>
+    <string name="report_readonly_summary">Bu bilgiler Android API\'lerinden ve sistem özelliklerinden gelir. OneOS Probe, Root\'u kontrol et\'e dokunursanız su -c id dışında hiçbir şey yazmadı ve root olarak hiçbir şey çalıştırmadı.</string>
+
+    <!-- The root prompts and the texts about where the results are kept name OneOS in
+         src/main; the root manager lists this app as OneOS Probe, and it keeps its
+         own findings (the device report's and Run tests' Kotlin texts take app_name). -->
+    <string name="check_root_running">Root bekleniyor… root yöneticiniz sorarsa OneOS Probe\'a izin verin.</string>
+    <string name="check_root_dialog_message">OneOS Probe bir kez "su -c id" çalıştırır. Yalnızca hangi kullanıcı olarak çalıştığını yazdırır, hiçbir şeyi değiştirmez.
+
+Magisk, OneOS Probe\'a izin vermenizi isteyebilir. KernelSU veya APatch\'te önce süper kullanıcı listesinde OneOS Probe\'a izin verin.</string>
+    <string name="tests_checking_root">Root kontrol ediliyor… root yöneticiniz sorarsa OneOS Probe\'a izin verin.</string>
+    <string name="tests_readonly_summary">Her komut yalnızca okur. Root dosya yazmaz, özellik veya ayar değiştirmez, hiçbir şeyi başlatmaz veya durdurmaz. Sonuçlar bir boru üzerinden OneOS Probe\'a gider ve siz paylaşana kadar kendi depolamasında kalır. Tam komutu görmek için aşağıdaki bir teste dokunun.</string>
+    <string name="tests_privacy_summary">Paylaşılmadan önce OneOS Probe IMEI ve MEID, seri numaraları ve cihaz kimlikleri, MAC adresleri, SIM numaraları (ICCID, IMSI), telefon numaraları, e-postalar, Wi-Fi adları, hesap adları ve konumları kaldırır. Günlük, ileti, kişi, fotoğraf veya dosya okunmaz. Paylaşmadan önce her dosyayı açabilirsiniz.</string>
+    <string name="tests_dialog_message">OneOS Probe, "su -c id" komutunu ve ardından bu ekranda listelenen salt okunur komutları çalıştırır. Telefonda hiçbir şey değiştirilmez. Sonuçlar siz paylaşana kadar OneOS Probe\'da kalır ve ondan önce kişisel veriler kaldırılır.
+
+Magisk, OneOS Probe\'a izin vermenizi isteyebilir. KernelSU veya APatch\'te önce süper kullanıcı listesinde OneOS Probe\'a izin verin.</string>
+
+    <!-- Findings -->
+    <string name="findings_delete_summary">Zip\'i ve bulgular klasörünü OneOS Probe depolamasından kaldırır.</string>
+
+    <!-- About -->
+    <string name="about_title">OneOS A54 Probe hakkında</string>
+    <string name="about_version_scope_summary">OneOS Probe, bulguları paylaşmak için ayrı bir uygulama olarak OneOS\'un salt okunur kısmıdır: bu telefonu kontrol eder, testleri root olarak çalıştırır, kişisel verileri kaldırır ve paylaşabileceğiniz bir bulgular zip\'i oluşturur. Bir şey hazırlayamaz veya geçiş yapamaz; o iş OneOS uygulamasındadır. OneOS\'un yanına yüklenir ve kendi root iznini gerektirir.</string>
+    <string name="about_safety_summary">Her root komutu Testleri çalıştır listesindedir (görmek için bir teste dokunun) ve yalnızca okur; uygulama her çalıştırmadan önce listeyi salt okunur kurallarına göre kontrol eder. Root dosya yazmaz, hiçbir şey ayarlamaz, hiçbir şeyi başlatmaz veya durdurmaz. Siz paylaşmadıkça telefondan hiçbir şey çıkmaz.</string>
+</resources>

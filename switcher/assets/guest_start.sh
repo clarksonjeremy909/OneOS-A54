@@ -55,7 +55,32 @@ fi
 SHARE_DIRS="DCIM Pictures Download Documents Movies Music"
 SHARE_HOLD=/dev/.oneos_share
 SHARE_HELD=""
+# OneOS A54: optional per-folder list from Bring apps ($STAGE/data/oneos_share.dirs,
+# one allowed name per line). Missing file: official ONEOS_SHARE_FILES behaviour.
+# Settings "share my files" still shares every folder in SHARE_DIRS.
+SHARE_PICK=""
+if [ -f /data/oneos_share.dirs ]; then
+    while IFS= read -r d || [ -n "$d" ]; do
+        d=${d%$''}
+        case "$d" in
+            DCIM|Pictures|Download|Documents|Movies|Music)
+                case " $SHARE_PICK " in
+                    *" $d "*) ;;
+                    *) SHARE_PICK="$SHARE_PICK $d" ;;
+                esac
+                ;;
+        esac
+    done < /data/oneos_share.dirs
+    SHARE_PICK=${SHARE_PICK# }
+fi
+SHARE_DO=0
 if [ "${ONEOS_SHARE_FILES:-0}" = 1 ]; then
+    SHARE_DO=1
+elif [ -n "$SHARE_PICK" ]; then
+    SHARE_DIRS="$SHARE_PICK"
+    SHARE_DO=1
+fi
+if [ "$SHARE_DO" = 1 ]; then
     # This namespace's copy of host /data still has the /data/media bridge on it; taken off here only
     # (rprivate: One UI and its daemons keep theirs), One UI's real storage is under it. A bind from a
     # mount of another namespace is refused (EINVAL: /proc/<pid>/cwd of a host process, 0.5.20 test).

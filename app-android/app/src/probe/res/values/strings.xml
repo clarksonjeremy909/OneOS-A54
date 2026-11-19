@@ -3,7 +3,7 @@
      findings, to share with the OneOS team. Its own texts; the rest are in
      src/main. -->
 <resources>
-    <string name="app_name">OneOS Probe</string>
+    <string name="app_name">OneOS A54 Probe</string>
 
     <!-- Before you start (first launch until acknowledged; again from Home and About) -->
     <string name="before_link_summary">What the tests read, root and what is shared</string>

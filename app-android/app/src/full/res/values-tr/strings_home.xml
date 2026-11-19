@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Home, the Switch sheet and Welcome back (the redesign: Main, HomeInner,
+         SwitchSheet and WelcomeBack in oneos-notes/2026-10-24/design-canvas).
+         Fixed text never names a system: %1$s is the image table's name
+         (StringsNeutralTest reads this file). -->
+
+    <!-- Hero -->
+    <string name="home_overline">OneOS A54</string>
+    <string name="home_line_ready">Geçişe hazır · Android %1$s</string>
+    <string name="home_line_kept">İçindeki uygulama ve verileriniz saklanır</string>
+    <string name="home_line_setup_time">Kurulum yaklaşık 15 dakika sürer</string>
+    <string name="home_line_picked">İndirildi · kurulmaya hazır</string>
+    <string name="home_line_setting_up">Kuruluyor · %1$d%%</string>
+    <string name="home_line_setting_up_start">Kuruluyor…</string>
+    <string name="home_line_switching">Geçişe hazırlanılıyor…</string>
+    <string name="home_line_moment">Bu biraz sürer…</string>
+
+    <!-- Under the main button -->
+    <string name="home_caption_switch">Yaklaşık bir dakika · One UI olduğu gibi kalır</string>
+    <string name="home_caption_setup">Yaklaşık 15 dakika · One UI çalışmaya devam eder</string>
+
+    <!-- The check tiles -->
+    <string name="home_checks_ready">Telefonunuz hazır</string>
+    <string name="home_checks_fix">Geçişten önce</string>
+    <string name="home_checks_count">%1$d / %2$d kontrol</string>
+    <string name="home_checks_checking">Kontrol ediliyor…</string>
+    <string name="home_tile_root">Root</string>
+    <string name="home_tile_space">Alan</string>
+    <string name="home_tile_battery">Pil</string>
+    <string name="home_tile_lock">Ekran kilidi</string>
+    <string name="home_value_root_app">%1$s izinli</string>
+    <string name="home_value_root_ok">İzinli</string>
+    <string name="home_value_root_denied">İzin verilmedi</string>
+    <string name="home_value_root_missing">Bulunamadı</string>
+    <string name="home_value_space_free">%1$s boş</string>
+    <string name="home_value_space_short">%1$s boşalt</string>
+    <string name="home_value_space_setup">%1$s boş · kurulum için %2$s gerekir</string>
+    <string name="home_value_space_old">%1$s boş · %2$s</string>
+    <plurals name="home_space_old_copies">
+        <item quantity="one">%d eski kopya</item>
+        <item quantity="other">%d eski kopya</item>
+    </plurals>
+    <string name="home_value_battery">%1$d%% · %2$d °C</string>
+    <string name="home_value_battery_no_temp">%1$d%%</string>
+    <string name="home_value_lock_off">Kapalı</string>
+    <string name="home_value_lock_on">Açık</string>
+    <string name="home_value_unknown">Okunmadı</string>
+
+    <!-- Rows -->
+    <string name="home_row_last">Son oturum</string>
+    <string name="home_row_last_time">%1$s, %2$s içinde</string>
+    <string name="home_row_last_reading">Nasıl geçtiği okunuyor…</string>
+    <string name="home_row_last_unread">%1$s · nasıl geçtiğini görmek için dokunun</string>
+    <string name="home_row_systems">Sistemler</string>
+    <string name="home_row_systems_summary">Başka birini kurun veya indirilmiş bir dosya kullanın</string>
+    <string name="home_row_advanced_summary">Depolama, onarım, son oturum ve yardım</string>
+    <string name="home_row_session">Son oturum</string>
+    <string name="home_row_session_summary">Ne olduğu ve paylaşılacak günlükler</string>
+
+    <!-- Setting up -->
+    <string name="home_progress_label">Kurulum ilerlemesi</string>
+
+    <!-- Welcome back -->
+    <string name="home_welcome_good">One UI bıraktığınız gibi</string>
+    <string name="home_welcome_card">%1$s içindeki süreniz</string>
+    <string name="home_welcome_card_test">Test çalışmanız</string>
+    <string name="home_welcome_in">%1$s içinde</string>
+    <string name="home_welcome_how">nasıl geri döndüğünüz</string>
+    <string name="home_welcome_logs">Günlükler toplandı. Numaralar, Wi-Fi adları ve hesaplar kaldırıldı.</string>
+    <string name="home_how_keys">Ses tuşları</string>
+    <string name="home_how_app">One UI\'ye dön</string>
+    <string name="home_how_auto">OneOS sizi geri getirdi</string>
+    <string name="home_how_restart">Zorla yeniden başlat</string>
+    <string name="home_how_off">Telefon kapandı</string>
+    <string name="home_how_none">One UI\'den hiç çıkılmadı</string>
+    <string name="home_how_test">Test çalışması</string>
+    <string name="home_how_other">Bilinmiyor</string>
+    <string name="home_switch_again">Yeniden geç</string>
+    <string name="home_done">Bitti</string>
+
+    <!-- The Switch sheet (SwitchConfirm): the ways back stay listed, the boxes stay required. -->
+    <string name="home_sheet_ways_three">One UI\'ye dönmenin üç yolu</string>
+    <string name="home_sheet_ways_two">One UI\'ye dönmenin iki yolu</string>
+    <string name="home_sheet_back_app">One UI\'ye dön\'e dokunun</string>
+    <string name="home_sheet_back_app_line">%1$s içindeki OneOS uygulamasında veya Hızlı ayarlar kısayolunda</string>
+    <string name="home_sheet_back_keys">Ses Aç + Ses Kıs tuşlarını basılı tutun</string>
+    <string name="home_sheet_back_keys_line">İkisini birlikte 3 saniye</string>
+    <string name="home_sheet_back_stuck">Logoda mı kaldı?</string>
+    <string name="home_sheet_back_stuck_line">One UI\'ye yeniden başlatmak için Güç + Ses Kıs tuşlarını basılı tutun</string>
+
+    <!-- Quick switch (0.4.30): the other systems set up earlier, on Home. -->
+    <string name="home_other_switch">%1$s sistemine geç</string>
+    <string name="home_other_since">%1$s tarihinden beri saklanıyor</string>
+    <string name="home_other_kept">uygulama ve verileriyle</string>
+    <string name="home_other_getting_ready">%1$s hazırlanıyor…</string>
+    <string name="home_other_getting_ready_line">Geri konuyor. OneOS dosyaları eskiyse sırada onlar güncellenir.</string>
+    <string name="home_other_confirm_title">%1$s sistemine geçilsin mi?</string>
+    <string name="home_other_confirm_message">%1$s, uygulamaları ve verileriyle birlikte geri konur; %2$s de aynı şekilde saklanır, buradan ona dönebilirsiniz. OneOS dosyaları bu uygulamadan eskiyse OneOS önce onları günceller (yaklaşık 2 dakika). Sonra geçiş her zamanki gibi açılır.</string>
+    <string name="home_other_current_unknown">şu an kurulu sistem</string>
+    <string name="home_other_confirm_go">Hazırla</string>
+    <string name="home_other_failed">Geri konamadı</string>
+    <!-- The app's own update (0.4.41, AppUpdater): a row on Home. -->
+    <string name="home_update_title">OneOS\'u %1$s sürümüne güncelle</string>
+    <string name="home_update_downloading">İndiriliyor… %1$d%%</string>
+    <string name="home_update_confirm">OneOS %1$s, %3$d MB indirir ve %2$s sürümünü root ile veya root kapalıyken Android yükleyicisiyle yükler (orada onaylarsınız). Uygulama kapanır ve yeniden açılır. Sonra sisteminizi yeniden kurun: yalnızca değişen dosyalar indirilir.</string>
+    <string name="home_update_run">Güncelle</string>
+    <!-- 0.4.42: the app's own update as Home's hero (title at most 40 characters). -->
+    <string name="home_app_update_title">OneOS %1$s kullanılabilir</string>
+    <string name="home_app_update_for_system">%1$s için güncelleme</string>
+    <string name="home_app_update_your_phone">%1$s cihazınızda</string>
+    <string name="home_app_update_line_system">OneOS %1$s, %2$s %3$s değiştirir. Güncelleyin, sonra yeniden kurun: yalnızca değişen dosyalar indirilir.</string>
+    <string name="home_app_update_line_notes">OneOS %1$s: %2$s</string>
+    <string name="home_app_update_line">Daha yeni bir OneOS. Sistemleriniz ve ayarlarınız olduğu gibi kalır.</string>
+    <string name="home_app_update_installing">Yükleniyor…</string>
+    <!-- 0.4.47: the update banner on the launch screen (systems_screen.xml). -->
+    <string name="systems_update_banner_title">OneOS %1$s kullanılabilir</string>
+    <string name="systems_update_banner_for">%1$s düzeltilir. Güncelle\'ye dokunun: yalnızca değişen dosyalar indirilir.</string>
+    <string name="systems_update_banner_default">Yüklemek için Güncelle\'ye dokunun. Sistemleriniz ve ayarlarınız olduğu gibi kalır.</string>
+    <string name="systems_update_banner_failed">Güncelleme yüklenmedi. Nedenini görmek için dokunun.</string>
+    <string name="systems_update_banner_confirm">Root kapalı: güncellemeyi Android yükleyicisinde onaylayın.</string>
+    <string name="systems_update_action">Güncelle</string>
+    <string name="systems_update_action_retry">Yeniden dene</string>
+    <string name="systems_update_action_confirm">Onayla</string>
+    <string name="home_app_update_confirm">Onayla</string>
+    <string name="systems_phone_status">Telefon durumu</string>
+</resources>

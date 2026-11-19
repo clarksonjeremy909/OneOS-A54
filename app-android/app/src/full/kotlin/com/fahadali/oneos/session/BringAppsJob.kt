@@ -45,7 +45,7 @@ import com.fahadali.oneos.probe.ProbeSession
  * whose root script is this build's (the launcher refuses otherwise: [State.stale]).
  */
 object BringAppsJob : BackgroundJob<BringAppsJob.State>(State(), "oneos-bring-apps") {
-    enum class Phase { IDLE, LOADING, COLLECTING, CLEARING, DONE, FAILED }
+    enum class Phase { IDLE, LOADING, COLLECTING, CLEARING, SHARING, DONE, FAILED }
 
     data class Candidate(val pkg: String, val label: String, val version: String)
 
@@ -77,8 +77,11 @@ object BringAppsJob : BackgroundJob<BringAppsJob.State>(State(), "oneos-bring-ap
         /** Asked for in the last Bring but not copied, and what root said about them. */
         val skipped: Set<String> = emptySet(),
         val notes: List<String> = emptyList(),
+        /** Last Bring-media (folder share / APK copy) result, shown on the transfer card. */
+        val mediaMessage: String? = null,
     ) {
-        val busy: Boolean get() = phase == Phase.LOADING || phase == Phase.COLLECTING || phase == Phase.CLEARING
+        val busy: Boolean get() = phase == Phase.LOADING || phase == Phase.COLLECTING || phase == Phase.CLEARING || phase == Phase.SHARING
+        val locked: Boolean get() = phase == Phase.COLLECTING || phase == Phase.CLEARING || phase == Phase.SHARING
     }
 
     private const val PREFS = "oneos_bring"
@@ -141,7 +144,7 @@ object BringAppsJob : BackgroundJob<BringAppsJob.State>(State(), "oneos-bring-ap
         val key = stageKey(marker)
         val image = imageId ?: marker?.imageId
         val changed = change { st ->
-            if ((key == st.stageKey && image == st.imageId) || st.phase == Phase.COLLECTING || st.phase == Phase.CLEARING) return@change null
+            if ((key == st.stageKey && image == st.imageId) || st.locked) return@change null
             st.copy(
                 phase = if (st.phase == Phase.LOADING) Phase.LOADING else Phase.IDLE,
                 stageKey = key, imageId = image, selected = shown(ticksOf(app, image), st.candidates),
@@ -196,7 +199,7 @@ object BringAppsJob : BackgroundJob<BringAppsJob.State>(State(), "oneos-bring-ap
             // Not while the stage is being rewritten or started; a bring reads it itself when it ends.
             if (state.stageKey != key || PrepareJob.state.busy || LaunchJob.state.busy || OldStagesJob.state.busy) return@execute
             val read = readStatus(app)
-            change { st -> if (st.stageKey != key || st.phase == Phase.COLLECTING || st.phase == Phase.CLEARING) null else st.with(app, read) }
+            change { st -> if (st.stageKey != key || st.locked) null else st.with(app, read) }
         }
     }
 
@@ -215,7 +218,7 @@ object BringAppsJob : BackgroundJob<BringAppsJob.State>(State(), "oneos-bring-ap
     private fun retick(ctx: Context, f: (Set<String>) -> Set<String>) {
         val app = ctx.applicationContext
         change { st ->
-            if (st.phase == Phase.COLLECTING || st.phase == Phase.CLEARING) return@change null
+            if (st.locked) return@change null
             val sel = f(st.selected).filter(BringApps.PACKAGE::matches).toSet()
             saveTicks(app, st.imageId, sel)
             st.copy(selected = sel)
@@ -235,7 +238,7 @@ object BringAppsJob : BackgroundJob<BringAppsJob.State>(State(), "oneos-bring-ap
         val before = state
         val chosen = before.selected.toList().sorted()
         if (chosen.isEmpty()) {
-            change { if (it.busy) null else it.copy(phase = Phase.FAILED, message = "Tick at least one app first.", failed = true) }
+            change { if (it.busy) null else it.copy(phase = Phase.FAILED, message = "Önce en az bir uygulamayı işaretleyin.", failed = true) }
             return
         }
         if (!claim(Phase.COLLECTING, chosen.size)) return
@@ -262,13 +265,46 @@ object BringAppsJob : BackgroundJob<BringAppsJob.State>(State(), "oneos-bring-ap
      * neither is called. A Bring started on the Apps screen is waited for.
      * Never stops the boot: what went wrong is kept for the Apps screen.
      */
+    /**
+     * Apply the transfer-card ticks: write the share-dirs list and copy host
+     * APKs into the guest Download folder (`bring-media`). Host files are only read.
+     */
+    fun applyMedia(ctx: Context) {
+        val app = ctx.applicationContext
+        if (!claim(Phase.SHARING)) return
+        val r = runCatching { runMedia(app) }.getOrElse { OutcomeMedia(false, it.message ?: it.javaClass.simpleName) }
+        change { it.copy(phase = if (r.ok) Phase.DONE else Phase.FAILED, failed = !r.ok, mediaMessage = r.message) }
+    }
+
+    private class OutcomeMedia(val ok: Boolean, val message: String)
+
+    private fun runMedia(app: Context): OutcomeMedia {
+        val chosen = BringMedia.selected(app).toList().sorted()
+        val r = RootVerbs.run(app, RootScript.Verb.BRING_MEDIA, chosen, silenceMs = 5 * 60_000L)
+        val ok = r.ok
+        val raw = r.reply.ok ?: r.problem
+        val msg = if (ok) {
+            BringMedia.setApplied(app, chosen.toSet())
+            raw ?: "bring-media ok"
+        } else {
+            raw ?: "bring-media failed"
+        }
+        change { it.copy(mediaMessage = msg) }
+        return OutcomeMedia(ok, msg)
+    }
+
     fun beforeLaunch(
+
         app: Context, marker: StageMarker?, system: String, cancelled: () -> Boolean,
         onApps: (String?) -> Unit, onDetail: (String) -> Unit,
     ) {
         val key = stageKey(marker) ?: return
         val image = marker?.imageId ?: return
         runCatching {
+            // Folder share list / APK copy for the next session (Bring apps transfer card).
+            if (BringMedia.selected(app).isNotEmpty() || BringMedia.applied(app).isNotEmpty()) {
+                runMedia(app)
+            }
             // Nothing ticked and nothing ever brought into this stage: root is not asked at all.
             if (ticksOf(app, image).none { installed(app, it) } && broughtIn(app, key).isEmpty()) return
             var said = false
@@ -333,16 +369,16 @@ object BringAppsJob : BackgroundJob<BringAppsJob.State>(State(), "oneos-bring-ap
         val problem = out.problem
         return when {
             problem != null && STALE in problem ->
-                base.copy(phase = Phase.FAILED, failed = true, stale = true, message = "Nothing was brought.")
+                base.copy(phase = Phase.FAILED, failed = true, stale = true, message = "Hiçbir şey getirilmedi.")
             problem != null -> base.copy(
                 phase = Phase.FAILED, failed = true,
-                message = if (n > 0) "Brought $n app${s(n)}, then it stopped: $problem" else "Could not bring the apps: $problem",
+                message = if (n > 0) "$n uygulama getirildi, sonra durdu: $problem" else "Uygulamalar getirilemedi: $problem",
             )
             else -> base.copy(
                 phase = Phase.DONE, failed = false,
-                message = "Brought $n app${s(n)} (${gb(out.kib)})" +
-                    (if (base.skipped.isNotEmpty()) "; ${base.skipped.size} skipped" else "") +
-                    (if (out.partial > 0) "; ${out.partial} may ask to sign in" else "") + ".",
+                message = "$n uygulama getirildi (${gb(out.kib)})" +
+                    (if (base.skipped.isNotEmpty()) "; ${base.skipped.size} atlandı" else "") +
+                    (if (out.partial > 0) "; ${out.partial} oturum açmanızı isteyebilir" else "") + ".",
             )
         }
     }
@@ -403,7 +439,7 @@ object BringAppsJob : BackgroundJob<BringAppsJob.State>(State(), "oneos-bring-ap
                 change {
                     it.copy(
                         phase = Phase.DONE, brought = emptySet(), broughtKib = 0, copies = emptyList(), log = emptyList(),
-                        skipped = emptySet(), notes = emptyList(), message = "Removed the brought apps from the system set up now.", failed = false,
+                        skipped = emptySet(), notes = emptyList(), message = "Getirilen uygulamalar şu an kurulu sistemden kaldırıldı.", failed = false,
                     )
                 }
             } else {

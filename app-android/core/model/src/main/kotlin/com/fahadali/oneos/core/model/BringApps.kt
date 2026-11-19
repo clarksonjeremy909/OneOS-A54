@@ -168,11 +168,11 @@ object BringApps {
         return BootCount(rest.count { it.state == CopyState.WAITING }, rest.count { it.state == CopyState.INSTALLED })
     }
 
-    private fun apps(n: Int) = if (n == 1) "1 app" else "$n apps"
+    private fun apps(n: Int) = if (n == 1) "1 uygulama" else "$n uygulama"
 
     /** The boot screen's status while [n] apps are copied: the count, then the one being copied ([at] of [n]). */
     fun bootDetail(n: Int, at: Int = 0, label: String? = null): String =
-        "Bringing over ${apps(n)}…" + if (at > 0 && label != null) "\n$label ($at of $n)" else ""
+        "${apps(n)} getiriliyor…" + if (at > 0 && label != null) "\n$label ($at / $n)" else ""
 
     /**
      * The boot screen's own line about the brought apps (build 108, owner: "the
@@ -182,9 +182,9 @@ object BringApps {
      * them when it is up. [there]: it installed them before. Null: none.
      */
     fun bootLine(system: String, coming: Int, there: Int): String? = when {
-        coming > 0 && there > 0 -> "Bringing over ${apps(coming)} · $there already in $system"
-        coming > 0 -> "Bringing over ${apps(coming)} to $system"
-        there > 0 -> "Your ${apps(there)} from One UI ${if (there == 1) "is" else "are"} already in $system"
+        coming > 0 && there > 0 -> "${apps(coming)} getiriliyor · $there zaten $system içinde"
+        coming > 0 -> "${apps(coming)} $system sistemine getiriliyor"
+        there > 0 -> "One UI'den ${apps(there)} zaten $system içinde"
         else -> null
     }
 

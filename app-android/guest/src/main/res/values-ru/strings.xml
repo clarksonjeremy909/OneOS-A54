@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">OneOS</string>
+    <string name="app_name">OneOS A54</string>
     <string name="title_in">Вы в %1$s</string>
     <string name="title_in_other">Вы в другой системе</string>
     <string name="body">через OneOS. One UI ждёт вас без изменений.</string>

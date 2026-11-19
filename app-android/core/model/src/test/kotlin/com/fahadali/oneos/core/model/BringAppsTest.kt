@@ -164,13 +164,13 @@ class BringAppsTest {
         // The stage could not be asked: nothing is claimed.
         assertEquals(BringApps.BootCount(0, 0), BringApps.bootCount(null, listOf("f.new")))
 
-        assertEquals("Bringing over 3 apps…", BringApps.bootDetail(3))
-        assertEquals("Bringing over 1 app…\nXGram (1 of 1)", BringApps.bootDetail(1, 1, "XGram"))
-        assertEquals("Bringing over 3 apps · 2 already in ColorOS 17", BringApps.bootLine("ColorOS 17", 3, 2))
-        assertEquals("Bringing over 1 app to ColorOS 17", BringApps.bootLine("ColorOS 17", 1, 0))
+        assertEquals("3 uygulama getiriliyor…", BringApps.bootDetail(3))
+        assertEquals("1 uygulama getiriliyor…\nXGram (1 / 1)", BringApps.bootDetail(1, 1, "XGram"))
+        assertEquals("3 uygulama getiriliyor · 2 zaten ColorOS 17 içinde", BringApps.bootLine("ColorOS 17", 3, 2))
+        assertEquals("1 uygulama ColorOS 17 sistemine getiriliyor", BringApps.bootLine("ColorOS 17", 1, 0))
         // The owner's case (11-10): both apps brought on the Apps screen and installed by an earlier boot.
-        assertEquals("Your 2 apps from One UI are already in ColorOS 17", BringApps.bootLine("ColorOS 17", 0, 2))
-        assertEquals("Your 1 app from One UI is already in ColorOS 17", BringApps.bootLine("ColorOS 17", 0, 1))
+        assertEquals("One UI'den 2 uygulama zaten ColorOS 17 içinde", BringApps.bootLine("ColorOS 17", 0, 2))
+        assertEquals("One UI'den 1 uygulama zaten ColorOS 17 içinde", BringApps.bootLine("ColorOS 17", 0, 1))
         assertEquals(null, BringApps.bootLine("ColorOS 17", 0, 0))
     }
 

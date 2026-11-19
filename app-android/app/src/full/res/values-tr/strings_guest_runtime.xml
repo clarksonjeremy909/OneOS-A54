@@ -1,0 +1,4 @@
+<resources>
+    <string name="guest_root_shared_kernel_title">Konuk root tüm telefona erişebilir</string>
+    <string name="guest_root_shared_kernel_summary">Konuk sistemde verilen root, bu telefonun paylaşılan çekirdeğinde root\'tur. Ayrı uygulama izinleri, modüller ve Xposed durumu, yetkili kodu One UI\'den tam olarak yalıtmaz.</string>
+</resources>

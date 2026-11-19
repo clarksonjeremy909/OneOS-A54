@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Choose a system (SystemsActivity) and Setting up (SetupProgressActivity).
+         Fixed text never names a system: %1$s is ImageRef.name at runtime
+         (StringsNeutralSystemsTest). -->
+
+    <!-- Choose a system -->
+    <string name="systems_title">Bir sistem seçin</string>
+    <string name="systems_subtitle">%1$s cihazınız için yapıldı. One UI olduğu gibi kalır.</string>
+    <string name="systems_subtitle_unknown">One UI olduğu gibi kalır.</string>
+    <string name="systems_reading">Bu telefon okunuyor…</string>
+    <string name="systems_none_title">Bu telefon için henüz sistem yok</string>
+    <string name="systems_none_line">Bu OneOS sürümünün bu telefon için hiçbiri yok. Nedenini Ayarlar › OneOS ekibi için içindeki Telefon ayrıntıları gösterir.</string>
+    <string name="systems_chip_android">Android %1$s</string>
+    <string name="systems_chip_tested">Bu telefonda test edildi</string>
+    <string name="systems_chip_untested">Bu telefonda henüz denenmedi</string>
+    <string name="systems_chip_google">Google uygulamaları</string>
+    <string name="systems_chip_download">%1$s indirmesi</string>
+    <string name="systems_badge_set_up">Kur</string>
+    <string name="systems_badge_picked">Dosya seçildi</string>
+    <string name="systems_badge_setting_up">Kuruluyor</string>
+    <string name="systems_use">Bunu kullan</string>
+    <string name="systems_download">İndir</string>
+    <string name="systems_download_drive">Google Drive\'dan indir</string>
+    <string name="systems_have_file">Dosyam var</string>
+    <string name="systems_set_up">%1$s kur</string>
+    <string name="systems_show_progress">İlerlemeyi göster</string>
+    <string name="systems_pick_other">O dosya %1$s.</string>
+    <string name="systems_size_unknown_title">Önce bu dosyayı kontrol edin</string>
+    <string name="systems_size_unknown_line">Dosyalar uygulamanız ne kadar büyük olduğunu söylemedi. İndirilmiş bir dosya kullan içinde kontrol edin; bir iki dakika sürer.</string>
+    <string name="systems_open_file_page">Dosyayı kontrol et</string>
+    <string name="systems_more_title">İndirilmiş bir dosya kullan</string>
+    <string name="systems_more_summary">Bir dosyayı kontrol edin veya bu telefondaki bir sistemi kullanın</string>
+    <string name="systems_close">Kapat</string>
+
+    <!-- Setting up -->
+    <string name="setup_label">Kuruluyor</string>
+    <string name="setup_title">%1$s kuruluyor</string>
+    <string name="setup_subtitle">Bu sırada One UI çalışmaya devam eder</string>
+    <string name="setup_percent">%1$d%%</string>
+    <string name="setup_ring_desc">%1$d yüzde tamamlandı. %2$s</string>
+    <string name="setup_eta_minutes">Yaklaşık %1$d dk kaldı</string>
+    <string name="setup_eta_soon">Bir dakikadan az kaldı</string>
+    <string name="setup_eta_estimating">Süre hesaplanıyor…</string>
+    <string name="setup_ring_done">Bitti</string>
+    <string name="setup_ring_stopped">Durduruldu</string>
+    <string name="setup_ring_failed">Bitmedi</string>
+
+    <string name="setup_step_check">İndirmeyi kontrol et</string>
+    <string name="setup_step_check_pending">Bu telefon için doğru dosya olduğundan emin olur</string>
+    <string name="setup_step_check_done">Bu telefon için doğru dosya</string>
+    <string name="setup_step_check_phone">Bu telefonu kontrol et</string>
+    <string name="setup_step_check_phone_pending">Her şeyin yerinde olduğundan emin olur</string>
+    <string name="setup_step_check_phone_done">Her şey yerinde</string>
+    <string name="setup_step_install">%1$s yükle</string>
+    <string name="setup_step_install_generic">Sistemi kur</string>
+    <string name="setup_step_install_pending">Bu telefona kopyalar</string>
+    <string name="setup_step_install_done">Yüklü</string>
+    <string name="setup_step_finish">Bitir</string>
+    <string name="setup_step_finish_pending">Son bir kontrol, sonra hazır</string>
+    <string name="setup_step_finish_done">Hazır</string>
+    <string name="setup_step_bytes">%1$s / %2$s</string>
+    <string name="setup_step_stopped">Burada durdu</string>
+    <string name="setup_step_failed">Burada bitmedi</string>
+    <!-- Read by TalkBack: "Check the download, done, It's the right file for this phone". -->
+    <string name="setup_step_desc">%1$s, %2$s, %3$s</string>
+    <string name="setup_state_done">bitti</string>
+    <string name="setup_state_current">sürüyor</string>
+    <string name="setup_state_pending">henüz başlamadı</string>
+    <string name="setup_state_stopped">durdu</string>
+    <string name="setup_state_failed">bitmedi</string>
+
+    <string name="setup_keep_open">OneOS\'u açık tutun ve telefonunuzu şarza takılı bırakın.</string>
+    <string name="setup_stop">Durdur</string>
+    <string name="setup_stopping">Durduruluyor…</string>
+    <string name="setup_done_title">%1$s hazır</string>
+    <string name="setup_done_subtitle">Ana ekrandan ona geçebilirsiniz.</string>
+    <string name="setup_done_button">Bitti</string>
+    <string name="setup_failed_title">Kurulum bitmedi</string>
+    <string name="setup_close">Kapat</string>
+    <string name="setup_delete_old">Eski kopyayı sil</string>
+    <string name="setup_delete_old_title">Eski kopya silinsin mi?</string>
+    <string name="setup_delete_old_message">Daha önce kurduğunuz sistem, uygulama, hesap ve ayarlarıyla birlikte eski kopya olarak saklandı (%1$s). Yerini boşaltmak için silinsin mi? Geri alınamaz. One UI ve yeni sistem dokunulmaz.</string>
+    <string name="setup_old_size_unknown">boyut henüz okunmadı</string>
+    <string name="setup_old_deleting">Eski kopya siliniyor…</string>
+    <string name="setup_old_deleted">Eski kopya silindi · %1$s boşaldı</string>
+    <string name="setup_old_not_deleted">Eski kopya silinmedi: Yer aç bölümüne bakın</string>
+    <string name="setup_idle_title">Kurulan bir şey yok</string>
+    <string name="setup_idle_subtitle">Bir sistem kurmak için ana ekrandan bir sistem seçin.</string>
+
+    <string name="setup_details">Ayrıntılar</string>
+    <string name="setup_details_summary">Her adım, OneOS ekibi için</string>
+    <string name="setup_details_result">Ne dedi</string>
+    <string name="setup_details_moved">Eski kopya olarak saklandı</string>
+    <string name="setup_expanded">Genişletilmiş</string>
+    <string name="setup_collapsed">Daraltılmış</string>
+</resources>

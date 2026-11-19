@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">OneOS Probe</string>
+    <string name="app_name">OneOS A54 Probe</string>
     <string name="before_link_summary">Что читают тесты, root и что передаётся</string>
     <string name="before_probe_reads_title">OneOS Probe только читает</string>
     <string name="before_probe_reads_summary">Запускает тесты только для чтения с root и упаковывает найденное в архив для команды OneOS. Ничего на телефоне не меняется: root не записывает файлов, не меняет настроек и свойств, ничего не прошивается и не переключается.</string>

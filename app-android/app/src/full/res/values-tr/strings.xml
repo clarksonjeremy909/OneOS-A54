@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The full edition (OneOS): its own texts and the switching screens. -->
+<resources>
+    <string name="app_name">OneOS A54</string>
+
+    <!-- Before you start (first launch until acknowledged; again from Home and About) -->
+    <string name="before_link_summary">Neler bozulabilir, yedekler ve ekran kilidi</string>
+    <string name="before_experimental_title">OneOS deneyseldir</string>
+    <string name="before_backup_title">Önce yedek alın</string>
+    <string name="before_backup_summary">Önce hesaplarınızı ve verilerinizi yedekleyin: Samsung Cloud, Google, Smart Switch.</string>
+    <string name="before_lock_title">Ekran kilidini kaldır</string>
+    <string name="before_apps_title">Diğer sistemde çalıştırdığınız uygulamalar</string>
+    <string name="before_tested_title">Bir telefonda test edildi</string>
+    <string name="before_ack">Yedek aldım ve ekran kilidimi kaldırdım</string>
+
+    <!-- Home (the redesign: one status, one button). No system is named here:
+         %1$s is the image table's name (StringsNeutralTest). -->
+    <string name="home_subtitle">One UI\'nin yanında başka bir sistem</string>
+    <string name="home_about_title">OneOS A54 hakkında</string>
+    <string name="home_checking">Telefonunuz kontrol ediliyor…</string>
+    <string name="home_choose">Bir sistem seçin</string>
+    <string name="home_system_ready">%1$s hazır</string>
+    <string name="home_system_row">Android %1$s · uygulamalarınız ve verileriniz saklanır</string>
+    <string name="home_advanced">Ayarlar</string>
+    <string name="home_setting_up">%1$s kuruluyor · %2$d%%</string>
+    <string name="home_setting_up_start">%1$s kuruluyor</string>
+    <string name="home_eta">Yaklaşık %1$d dk kaldı</string>
+    <string name="home_eta_wait">Süre hesaplanıyor…</string>
+    <string name="home_setup_keep_open">OneOS\'u açık tutun ve telefonunuzu şarza takılı bırakın.</string>
+    <string name="home_switching">%1$s hazırlanıyor…</string>
+    <string name="home_closing">One UI kapanıyor…</string>
+    <string name="home_restoring">One UI ayarları geri yükleniyor…</string>
+    <string name="home_welcome">Tekrar hoş geldiniz</string>
+    <string name="home_welcome_line_short">%1$s</string>
+    <string name="home_minutes">%1$d dk</string>
+    <string name="home_send_report">Raporu OneOS ekibine gönder</string>
+    <string name="home_send_report_summary">Önce kişisel bilgiler kaldırılır: numaralar, Wi-Fi adları, hesaplar.</string>
+    <string name="home_dismiss">Kapat</string>
+    <string name="home_details">Ayrıntılar</string>
+    <string name="home_details_all">Tüm kontroller</string>
+    <string name="menu_how">Başlamadan önce</string>
+    <string name="menu_about">OneOS A54 hakkında</string>
+
+    <!-- Use a downloaded file: the texts that did not change (the rest: strings_advanced.xml) -->
+    <string name="image_choice_title">%1$s kalıbı</string>
+    <string name="image_pick_title">İndirilen dosyayı seçin</string>
+    <string name="image_picked_unnamed">Seçilen dosya</string>
+    <string name="image_size_unknown">Boyut bilinmiyor</string>
+    <string name="image_stop_summary">Kontrolü durdurur. Hiçbir şey saklanmaz.</string>
+    <string name="image_forget_title">Bu dosyayı unut</string>
+    <string name="image_look_title">Bu telefondaki bir sistemi ara</string>
+    <string name="image_look_again">Yeniden bak</string>
+    <string name="image_looking">Aranıyor…</string>
+    <string name="image_on_phone_chosen_summary">Onun yerine onu kullanmak için yukarıdan indirilmiş bir dosya seçin.</string>
+
+    <!-- Repair or start fresh: the texts that did not change (the rest: strings_advanced.xml) -->
+    <string name="prepare_cat_checks">Kontroller</string>
+    <string name="prepare_check_title">Telefonunuzu kontrol edin</string>
+    <string name="prepare_check_again">Tekrar kontrol et</string>
+    <string name="prepare_checking">Kontrol ediliyor…</string>
+    <string name="prepare_check_dialog_title">Root olarak kontrol edilsin mi?</string>
+    <string name="prepare_mode_keep">Uygulama ve verilerini tut</string>
+    <string name="prepare_run_check_first">Önce kontrol et</string>
+    <string name="prepare_run_stale">Son kontrol 10 dakikadan eski. Tekrar kontrol edin.</string>
+    <string name="prepare_run_blocked">Önce yukarıda işaretlenenleri düzeltin</string>
+    <string name="prepare_next_summary">Geçişten önce her kontrol yeniden çalışır</string>
+    <string name="prepare_delete_gz_title">İndirilen dosyayı sil</string>
+    <string name="prepare_deleted">Silindi</string>
+    <string name="prepare_delete_failed">Dosya silinemedi</string>
+
+    <!-- All checks and Test run: the texts that did not change (the rest: strings_advanced.xml) -->
+    <string name="switch_back_force_title">Zorla yeniden başlat</string>
+    <string name="switch_back_root_title">Geri döndükten sonra</string>
+    <string name="switch_cat_checks">Kontroller</string>
+    <string name="switch_cat_tick">Geçişten önce</string>
+    <string name="switch_blocked">Önce yukarıda işaretlenenleri düzeltin</string>
+    <string name="switch_tick_first">Önce yukarıdaki her kutuyu işaretleyin</string>
+    <string name="switch_go_title">%1$s sistemine geç</string>
+    <string name="switch_starting">Başlatılıyor…</string>
+    <string name="switch_launched">Başladı</string>
+    <string name="switch_not_started">Başlatılmadı</string>
+    <string name="switch_dry_dialog_message">Root %1$s sistemini kurup kontrol ederken One UI yaklaşık bir dakika kapanır. Sonra One UI, genellikle yeniden başlatmadan geri gelir. OneOS, One UI ile birlikte kapanır.</string>
+    <string name="switch_go_dialog_title">Şimdi %1$s sistemine geçilsin mi?</string>
+
+    <!-- Last session: the texts that did not change (the rest: strings_advanced.xml) -->
+    <string name="last_title">Son oturum</string>
+    <string name="last_id">Oturum %1$s</string>
+    <string name="last_cat_logs">Günlükler</string>
+    <string name="last_privacy_title">Neler toplanır</string>
+    <string name="last_collect_dialog_title">Günlükler root olarak toplansın mı?</string>
+    <string name="last_view_title">Oturum günlükleri</string>
+    <string name="last_cat_restore">One UI ayarları</string>
+    <string name="last_restore_title">One UI ayarlarını geri yükle</string>
+    <string name="last_restore_run">Geri yükle</string>
+    <string name="last_forget_title">Bu oturum bitti</string>
+
+    <!-- About -->
+    <string name="about_title">OneOS A54 hakkında</string>
+
+    <!-- Switch confirm (the redesign, step 4): a dialog from Home. -->
+    <string name="confirm_switch_title">%1$s sistemine geçilsin mi?</string>
+    <string name="confirm_switch_msg">One UI kapanır ve %1$s yaklaşık bir dakika içinde başlar. One UI uygulama ve dosyalarınız olduğu gibi kalır.</string>
+    <string name="confirm_back_title">Geri dönmek için</string>
+    <string name="confirm_back_app">%1$s içinde One UI\'ye dön\'e dokunun</string>
+    <string name="confirm_back_keys">Ses Aç + Ses Kıs tuşlarını 3 saniye basılı tutun</string>
+    <string name="confirm_back_keys_or">Veya Ses Aç + Ses Kıs tuşlarını 3 saniye basılı tutun</string>
+    <string name="confirm_back_stuck">Logoda mı kaldı? Güç + Ses Kıs tuşlarını basılı tutun</string>
+    <string name="confirm_calls_2g">%1$s içindeki aramalar 2G veya 3G kullanır.</string>
+    <string name="confirm_gms_hidden">Google uygulamaları bu sefer gizlendi.</string>
+    <string name="confirm_heat_cap_off">Isınınca soğut kapalı: telefon çok ısınabilir (Ayarlar).</string>
+    <string name="confirm_sec_ims">%1$s içinde aramalar ve iletiler için One UI arama hizmeti (VoLTE) kullanılır (Ayarlar).</string>
+    <string name="confirm_edm_stub">Knox beklemesi olmadan kamera kapalı (Ayarlar): %1$s içindeki çoğu kamera uygulaması kamerayı açarken zaman aşımına uğrar.</string>
+    <string name="confirm_setup_wizard">Yeni bir kurulumda %1$s kendi kurulum ekranlarıyla başlar: Google oturumunu atlayın, ekran kilidi, parmak izi ve yüzü de atlayın (telefonun kilidi One UI\'nin kilidi olarak kalır).</string>
+    <string name="confirm_switch_go">Geç</string>
+    <string name="confirm_refused_tail">Hiçbir şey değişmedi. One UI çalışmaya devam eder.</string>
+    <string name="confirm_setup_title">%1$s kurulsun mu?</string>
+    <string name="confirm_setup_file">İndirdiğiniz dosyayı kullanır ve yaklaşık 15 dakika sürer. %1$s içindeki uygulama ve verileriniz kalır. OneOS\'u açık tutun ve telefonunuzu şarza takılı bırakın.</string>
+    <string name="confirm_setup_go">Kur</string>
+    <string name="confirm_new_setup_msg">Yaklaşık %1$s kullanır ve yaklaşık 15 dakika sürer. OneOS\'u açık tutun ve telefonunuzu şarza takılı bırakın. Bu sırada One UI çalışmaya devam eder.</string>
+    <string name="confirm_setup_keep_data">%1$s uygulama ve verileriniz saklanır.</string>
+    <string name="confirm_setup_aside">%1$s uygulama ve verileriniz eski kopya olarak saklanır. Daha sonra Ayarlar › Yer aç bölümünden silebilirsiniz.</string>
+    <string name="confirm_setup_aside_unknown">Şu an kurulu olan eski kopya olarak saklanır. Daha sonra Ayarlar › Yer aç bölümünden silebilirsiniz.</string>
+    <string name="confirm_choose_download">%1$s indirmesini seçin</string>
+
+    <!-- What the fix buttons say when they cannot do it themselves. -->
+    <string name="fix_open_root_app">Root uygulamanızı açın ve OneOS\'a izin verin.</string>
+    <string name="fix_no_app">Bunu açacak uygulama bulunamadı</string>
+    <!-- 0.4.43 (UX audit): the pre-boot button when a check stops the switch and has nothing to tap. -->
+    <string name="environment_what_stops">Geçişi durduran</string>
+</resources>

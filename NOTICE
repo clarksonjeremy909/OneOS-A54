@@ -21,3 +21,12 @@ CREDITS.md.
 
 Galaxy and One UI are trademarks of Samsung Electronics; Android and Pixel of
 Google LLC; ColorOS of OPPO. OneOS is not affiliated with any of them.
+
+---
+
+OneOS A54 is an unofficial modified fork of OneOS
+(https://github.com/fahadalijaved/OneOS) by fahadalijaved.
+Copyright for the A54 modifications: Miraç Aytaç and contributors, 2026.
+The original LICENSE (Apache License 2.0) still applies. Files changed for
+this fork are described in ONEOS_A54_CHANGES.md; those files are modified
+from the upstream OneOS 0.5.23 sources.

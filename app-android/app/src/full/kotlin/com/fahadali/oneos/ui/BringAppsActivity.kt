@@ -16,6 +16,7 @@ import com.fahadali.oneos.core.model.ImageRef
 import com.fahadali.oneos.core.model.Images
 import com.fahadali.oneos.core.model.Level
 import com.fahadali.oneos.session.BringAppsJob
+import com.fahadali.oneos.session.BringMedia
 import com.fahadali.oneos.session.BringAppsJob.Phase
 import com.fahadali.oneos.session.StageCheck
 import dev.oneuiproject.oneui.R as OuiIcons
@@ -122,6 +123,44 @@ class BringAppsFragment : CardsFragment() {
         val about = Cards.section(column, getString(R.string.bring_card_about))
         CardRows.text(about, getString(R.string.bring_about_body, system))
         CardRows.text(about, getString(R.string.bring_about_one_way, system), R.style.OneOS_Text_Caption)
+
+        // File transfer: official folder bind + one-way APK copy. Apps stay in the list below.
+        val mediaSel = BringMedia.selected(ctx)
+        val media = Cards.section(column, getString(R.string.bring_media_card), rows = true)
+        CardRows.text(media, getString(R.string.bring_media_body, system), R.style.OneOS_Text_Caption)
+        CardRows.tick(
+            media, getString(R.string.bring_media_select_all),
+            null,
+            checked = mediaSel.size == BringMedia.CATEGORIES.size,
+            enabled = !st.busy,
+        ) { on -> BringMedia.setAll(ctx, on); redraw() }
+        CardRows.tick(
+            media, getString(R.string.bring_media_apps_note),
+            getString(R.string.bring_media_apps_summary),
+            checked = ticked > 0,
+            enabled = false,
+        ) { _ -> }
+        for (cat in BringMedia.CATEGORIES) {
+            CardRows.tick(
+                media, getString(cat.title),
+                getString(cat.summary, system),
+                checked = cat.id in mediaSel,
+                enabled = !st.busy,
+            ) { on -> BringMedia.toggle(ctx, cat.id, on); redraw() }
+        }
+        when {
+            st.phase == Phase.SHARING ->
+                CardRows.tint(
+                    Cards.row(media, OuiIcons.drawable.ic_oui_download, getString(R.string.bring_media_working), st.mediaMessage),
+                    Level.INFO,
+                )
+            else -> CardRows.row(
+                media, OuiIcons.drawable.ic_oui_download,
+                getString(R.string.bring_media_apply),
+                st.mediaMessage ?: getString(R.string.bring_media_apply_summary),
+                enabled = prepared && !stale && !st.busy,
+            ) { BringAppsJob.applyMedia(ctx) }
+        }
 
         // The apps on One UI, a box each. The header counts the ticks.
         val apps = Cards.section(

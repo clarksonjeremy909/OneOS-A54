@@ -1,0 +1,10 @@
+<resources>
+<string name="setup_preview_menu">Kurulum önizlemesi</string><string name="setup_preview_title">Kurulum önizlemesi · %1$s</string>
+<string name="setup_preview_simulated">Benzetilmiş kurulum. İşletim sistemi dosyaları değişmez ve hiçbir işletim sistemi başlamaz.</string>
+<string name="setup_preview_cancel">Önizlemeyi iptal et</string><string name="setup_preview_boot">Önyükleme önizlemesi</string>
+<string name="setup_preview_boot_title">%1$s önyüklemesi önizlensin mi?</string><string name="setup_preview_boot_message">Bu yalnızca onayın önizlemesidir. One UI çalışmaya devam eder ve hiçbir root komutu çalıştırılmaz.</string>
+<string name="setup_preview_finish">Önizlemeyi bitir</string><string name="setup_preview_complete">Önizleme tamamlandı</string>
+<string name="setup_preview_busy">Kurulum önizlemeden önce geçerli OneOS işleminin bitmesini bekleyin.</string>
+<string name="setup_preview_cancelled">Önizleme iptal edildi. İşletim sistemi dosyaları değiştirilmedi.</string>
+<string name="setup_preview_finished">Kurulum önizlemesi bitti. İşletim sistemi dosyaları değiştirilmedi.</string>
+</resources>

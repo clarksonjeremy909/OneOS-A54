@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.SystemClock
 import com.fahadali.oneos.BuildConfig
+import com.fahadali.oneos.R
 import com.fahadali.oneos.core.device.FactProbe
 import com.fahadali.oneos.core.model.Finding
 import com.fahadali.oneos.core.model.GatePhase
@@ -240,18 +241,30 @@ object LaunchJob : BackgroundJob<LaunchJob.State>(State(), "oneos-launch") {
             SessionPrefs.Launch(sid, dryRun, profile.id, image.id, System.currentTimeMillis(), SystemClock.elapsedRealtime(), logsCollected = false),
         )
         if (!dryRun) com.fahadali.oneos.report.UsageCheckIn.switchStarted(app)
+        var didSuspend = false
+        if (!dryRun && SessionPrefs.hostSuspend(app) && !guard.isCancelled()) {
+            update(state.copy(detail = app.getString(R.string.advanced_host_suspend_working)))
+            HostSuspendActions.suspendEligible(app)
+            didSuspend = SessionPrefs.hostSuspendedList(app).isNotEmpty()
+        }
         update(state.copy(detail = "Root is checking everything again and starting the switch…"))
-        val reply = RootVerbs.run(
-            app, RootScript.Verb.LAUNCH,
-            listOf(
-                if (dryRun) "dry" else "session", BuildConfig.VERSION_CODE.toString(), sid, if (hideGms) "1" else "0",
-                if (SessionPrefs.heatCap(app)) "1" else "0", if (secIms) "1" else "0", if (edmStub) "1" else "0",
-                if (SessionPrefs.verboseBoot(app)) "1" else "0", if (SessionPrefs.fullLogs(app)) "1" else "0",
-                if (SessionPrefs.shareFiles(app)) "1" else "0",
-            ),
-            silenceMs = 5 * 60_000L,
-        )
+        val reply = try {
+            RootVerbs.run(
+                app, RootScript.Verb.LAUNCH,
+                listOf(
+                    if (dryRun) "dry" else "session", BuildConfig.VERSION_CODE.toString(), sid, if (hideGms) "1" else "0",
+                    if (SessionPrefs.heatCap(app)) "1" else "0", if (secIms) "1" else "0", if (edmStub) "1" else "0",
+                    if (SessionPrefs.verboseBoot(app)) "1" else "0", if (SessionPrefs.fullLogs(app)) "1" else "0",
+                    if (SessionPrefs.shareFiles(app)) "1" else "0",
+                ),
+                silenceMs = 5 * 60_000L,
+            )
+        } catch (e: Exception) {
+            if (didSuspend) HostSuspendActions.unsuspendBlocking(app)
+            throw e
+        }
         if (!reply.ok) {
+            if (didSuspend) HostSuspendActions.unsuspendBlocking(app)
             // Nothing started: no last session to show. A refusal by the started switch's own check
             // (root's "switch started" step came first) is a session with a log: Last session keeps it.
             if (SWITCH_STARTED !in reply.reply.steps) SessionPrefs.forgetLaunch(app)

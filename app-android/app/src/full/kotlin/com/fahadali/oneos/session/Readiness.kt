@@ -68,7 +68,7 @@ object Readiness {
     }
 
     fun anyBusy(): Boolean =
-        StageCheck.state.busy || PrepareJob.state.busy || LaunchJob.state.busy || LogJob.state.busy || OldStagesJob.state.busy
+        StageCheck.state.busy || PrepareJob.state.busy || LaunchJob.state.busy || LogJob.state.busy || OldStagesJob.state.busy || HostSuspendActions.busy
 
     /** Home calls it on resume and whenever a job's state changes while it is shown. [force]: Try again. */
     fun tick(ctx: Context, force: Boolean = false) {
@@ -76,6 +76,10 @@ object Readiness {
         val app = ctx.applicationContext
         // A switch that started is followed by One UI stopping: nothing more to do in this process.
         if (LaunchJob.state.phase == LaunchJob.Phase.LAUNCHED) return
+        if (HostSuspendActions.pending(app)) {
+            HostSuspendActions.restoreOnStart(app) { tick(app) }
+            return
+        }
         val check = StageCheck.state
         val r = check.result
         val now = SystemClock.elapsedRealtime()

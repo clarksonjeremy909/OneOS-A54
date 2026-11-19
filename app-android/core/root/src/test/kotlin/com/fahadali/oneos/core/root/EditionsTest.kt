@@ -70,7 +70,7 @@ class EditionsTest {
         fun strings(f: File) = Regex("""<string name="(\w+)">(.*?)</string>""", RegexOption.DOT_MATCHES_ALL)
             .findAll(f.readText()).associate { it.groupValues[1] to it.groupValues[2].replace("\\'", "'") }
         val probe = strings(File(src, "main/res/values/strings.xml")) + strings(File(src, "probe/res/values/strings.xml"))
-        assertEquals("OneOS Probe", probe["app_name"])
+        assertEquals("OneOS A54 Probe", probe["app_name"])
         for ((name, text) in probe) {
             assertFalse("$name: $text", OTHER_APP_ROOT.containsMatchIn(text))
             // The session logs are OneOS's only (FindingsActivity shows them in OneOS).
