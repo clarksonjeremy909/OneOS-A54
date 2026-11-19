@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageInstaller
 import android.content.pm.PackageManager
 import com.fahadali.oneos.BuildConfig
+import com.fahadali.oneos.R
 import com.fahadali.oneos.core.model.AppUpdate
 import com.fahadali.oneos.core.model.SuState
 import com.fahadali.oneos.core.root.RootScript
@@ -105,7 +106,7 @@ object AppUpdater : BackgroundJob<AppUpdater.State>(State(), "oneos-update") {
             val u = r.getOrNull()
             update(
                 when {
-                    u == null -> State(Phase.FAILED, message = "Could not check for an update: ${r.exceptionOrNull()?.message ?: "no answer"}")
+                    u == null -> State(Phase.FAILED, message = checkError(app, r.exceptionOrNull()))
                     u.newerThan(BuildConfig.VERSION_CODE) -> State(Phase.AVAILABLE, u)
                     else -> State(Phase.CURRENT, u)
                 },
@@ -147,10 +148,25 @@ object AppUpdater : BackgroundJob<AppUpdater.State>(State(), "oneos-update") {
                 if (!have) {
                     dir(app).listFiles()?.filter { it != part }?.forEach { it.delete() }
                     if (part.length() > u.bytes) part.delete()
-                    SetDownloader.download(part, u.apk, u.bytes, "OneOS ${u.versionName}", { cancelled }) { done ->
-                        val pct = (done * 100 / u.bytes).toInt()
-                        if (pct != state.percent) update(State(Phase.DOWNLOADING, u, pct))
+                    var last: Throwable? = null
+                    for (attempt in 1..3) {
+                        if (cancelled) throw SetDownloader.Failed("stopped")
+                        try {
+                            SetDownloader.download(part, u.apk, u.bytes, "OneOS ${u.versionName}", { cancelled }) { done ->
+                                val pct = (done * 100 / u.bytes).toInt()
+                                if (pct != state.percent) update(State(Phase.DOWNLOADING, u, pct))
+                            }
+                            last = null
+                            break
+                        } catch (e: SetDownloader.Failed) {
+                            if (e.message == "stopped") throw e
+                            last = e
+                            if ("hash" in e.message.orEmpty() || "damaged" in e.message.orEmpty()) throw e
+                        } catch (e: IOException) {
+                            last = e
+                        }
                     }
+                    if (last != null) throw last
                     SetDownloader.verify(part, u.bytes, u.sha256, "OneOS ${u.versionName}")
                     if (!part.renameTo(apk)) throw IOException("could not keep the update")
                 }
@@ -174,7 +190,7 @@ object AppUpdater : BackgroundJob<AppUpdater.State>(State(), "oneos-update") {
                 }
             }
             when {
-                r.isFailure -> update(State(Phase.FAILED, u, message = "The update was not installed: ${r.exceptionOrNull()?.message ?: "unknown error"}"))
+                r.isFailure -> update(State(Phase.FAILED, u, message = installError(app, r.exceptionOrNull())))
                 // Android's installer may have answered already ([onInstallerResult]).
                 r.getOrNull() == true -> if (state.phase == Phase.INSTALLING) update(State(Phase.CONFIRM, u, 100, NO_ROOT))
                 else -> update(State(Phase.INSTALLING, u, 100, "Installed: OneOS opens again as ${u.versionName}."))
@@ -234,12 +250,12 @@ object AppUpdater : BackgroundJob<AppUpdater.State>(State(), "oneos-update") {
             PackageInstaller.STATUS_SUCCESS -> update(State(Phase.INSTALLING, u, 100, "Installed: open OneOS again."))
             PackageInstaller.STATUS_FAILURE_ABORTED -> {
                 confirmIntent = null
-                update(State(Phase.FAILED, u, message = "The update was not installed: you cancelled it in Android's installer."))
+                update(State(Phase.FAILED, u, message = ctx.getString(R.string.update_error_installer, "cancelled")))
             }
             else -> {
                 confirmIntent = null
                 val why = intent.getStringExtra(PackageInstaller.EXTRA_STATUS_MESSAGE) ?: "status $status"
-                update(State(Phase.FAILED, u, message = "The update was not installed: Android's installer said $why."))
+                update(State(Phase.FAILED, u, message = ctx.getString(R.string.update_error_installer, why)))
             }
         }
     }
@@ -264,15 +280,40 @@ object AppUpdater : BackgroundJob<AppUpdater.State>(State(), "oneos-update") {
     }
 
     private fun fetchText(url: String): String {
-        val c = URL(url).openConnection() as HttpURLConnection
-        c.connectTimeout = 20_000
-        c.readTimeout = 20_000
-        c.instanceFollowRedirects = true
+        val c = SetDownloader.openHttps(url, accept = "application/json,text/plain,*/*")
         try {
             if (c.responseCode != HttpURLConnection.HTTP_OK) throw IOException("HTTP ${c.responseCode}")
             return c.inputStream.use { it.readNBytes(4097) }.toString(Charsets.UTF_8)
         } finally {
             c.disconnect()
+        }
+    }
+
+    private fun checkError(ctx: Context, e: Throwable?): String {
+        val msg = e?.message.orEmpty()
+        val http = Regex("^HTTP (\\d+)").find(msg)?.groupValues?.getOrNull(1)?.toIntOrNull()
+        return when {
+            http != null -> ctx.getString(R.string.update_error_http, http)
+            e is java.net.UnknownHostException || e is java.net.SocketTimeoutException ||
+                "Unable to resolve" in msg || "failed to connect" in msg.lowercase() || "timeout" in msg.lowercase() ->
+                ctx.getString(R.string.update_error_network)
+            "not a OneOS A54" in msg || "not a OneOS release" in msg || "update.json" in msg || "versionName" in msg ->
+                ctx.getString(R.string.update_error_parse)
+            else -> ctx.getString(R.string.update_error_generic, msg.ifBlank { "no answer" })
+        }
+    }
+
+    private fun installError(ctx: Context, e: Throwable?): String {
+        val msg = e?.message.orEmpty()
+        return when {
+            "damaged" in msg || "hash" in msg -> ctx.getString(R.string.update_error_hash)
+            "of " in msg && "bytes" in msg -> ctx.getString(R.string.update_error_download)
+            "HTTP " in msg || e is java.net.UnknownHostException || e is java.net.SocketTimeoutException ->
+                ctx.getString(R.string.update_error_download)
+            "signed" in msg || "not an app" in msg || "not OneOS" in msg || "not newer" in msg || "update.json says" in msg ->
+                ctx.getString(R.string.update_error_apk)
+            "root" in msg.lowercase() || "pm:" in msg -> ctx.getString(R.string.update_error_root, msg.ifBlank { "unknown error" })
+            else -> ctx.getString(R.string.update_error_generic, msg.ifBlank { "unknown error" })
         }
     }
 }

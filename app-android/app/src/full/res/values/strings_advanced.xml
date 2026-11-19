@@ -10,6 +10,27 @@
     <string name="advanced_details">Details</string>
     <string name="advanced_guest_beast_title">Beast mode</string>
     <string name="advanced_guest_beast_summary">Stronger, still reversible lag reductions: animations at 0.25×, a tighter background-app cap, window blurs off, a little more logging turned down, and milder I/O and dirty-page caps when the kernel exposes them. Does not raise clocks or remove thermal limits. Off by default; applied only while Reduce lag is also on. Turn it off if something feels wrong.</string>
+    <string name="advanced_guest_refresh_title">Refresh rate</string>
+    <string name="advanced_guest_refresh_summary">Used when you switch to the other system. Auto pins the rate to this phone\'s panel maximum, which avoids stutter from a variable rate. Only rates the panel actually supports are listed; nothing is overclocked. One UI is left as it is.</string>
+    <string name="advanced_guest_refresh_auto">Auto (panel maximum)</string>
+    <string name="advanced_guest_refresh_hz">%1$d Hz</string>
+    <string name="guest_refresh_hint">A fixed rate reduces stutter. Choose 60 Hz if frames still drop; 90 Hz appears only if this panel has that mode.</string>
+    <string name="settings_check_updates">Check for updates</string>
+    <string name="settings_check_updates_summary">Looks now, without waiting for the six-hour automatic check. Downloads the matching Turkish or English APK from this project\'s GitHub releases.</string>
+    <string name="settings_check_updates_checking">Checking for updates…</string>
+    <string name="settings_check_updates_current">This OneOS is up to date (%1$s).</string>
+    <string name="settings_check_updates_available">OneOS %1$s is available. Open Home and tap Update.</string>
+    <string name="settings_check_updates_busy">An update is already in progress.</string>
+    <string name="update_error_network">Could not reach GitHub. Check the connection and try again.</string>
+    <string name="update_error_http">Could not check for an update (HTTP %1$d). Try again in a moment.</string>
+    <string name="update_error_parse">The update list was not a OneOS A54 release file. Nothing was installed.</string>
+    <string name="update_error_download">The update could not be downloaded completely. Tap Update to retry; a partial file is resumed.</string>
+    <string name="update_error_hash">The download was damaged (its SHA-256 did not match). It was deleted; try again.</string>
+    <string name="update_error_apk">The download is not this OneOS (wrong app, build or signing key). Nothing was installed.</string>
+    <string name="update_error_root">Root could not install the update: %1$s</string>
+    <string name="update_error_installer">Android\'s installer did not install the update: %1$s</string>
+    <string name="update_error_generic">Could not update OneOS: %1$s</string>
+
 
     <!-- Advanced -->
     <string name="advanced_title">Settings</string>

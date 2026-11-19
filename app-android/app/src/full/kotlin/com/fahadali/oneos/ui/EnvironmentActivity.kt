@@ -300,6 +300,11 @@ class EnvironmentActivity : EdgeToEdgeActivity() {
                 surface.addView(content, LinearLayout.LayoutParams(-1, -2))
             }
         }
+        // Refresh-rate picker and Canavar: every guest ROM, not only OxygenOS.
+        if (!preview) {
+            val session = PrebootCards.section(column, getString(R.string.advanced_card_sessions))
+            GuestSessionOptions.bind(this, session)
+        }
         val patchProfile = currentFacts?.let { com.fahadali.oneos.core.model.Profiles.resolve(it).profile }
         if (!preview && patchProfile != null) {
             val key = "${patchProfile.id}:${image.id}"
@@ -459,13 +464,16 @@ class EnvironmentActivity : EdgeToEdgeActivity() {
                     }
                     return@setOnClickListener
                 }
+                // 0.5.26: "Update OxygenOS" must start the restage even when the
+                // last stage check is a few minutes old (readyToBoot would only
+                // refresh the check and leave the button in place).
+                if (maintenance != null && !checking) {
+                    FixActions.run(this@EnvironmentActivity, maintenance.action, image)
+                    return@setOnClickListener
+                }
                 if (!readyToBoot()) {
                     Readiness.tick(this@EnvironmentActivity)
                     render()
-                    return@setOnClickListener
-                }
-                if (maintenance != null) {
-                    FixActions.run(this@EnvironmentActivity, maintenance.action, image)
                     return@setOnClickListener
                 }
                 if (preview) ArtworkTransitions.start(this@EnvironmentActivity,

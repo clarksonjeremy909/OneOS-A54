@@ -106,6 +106,10 @@ class AdvancedFragment : CardsFragment() {
         CardRows.toggle(sessions, getString(R.string.advanced_guest_beast_title), getString(R.string.advanced_guest_beast_summary), SessionPrefs.guestBeast(ctx)) { on ->
             SessionPrefs.setGuestBeast(ctx, on)
         }
+        Cards.row(sessions, OuiIcons.drawable.ic_oui_refresh, getString(R.string.advanced_guest_refresh_title),
+            getString(R.string.advanced_guest_refresh_summary) + "\n" + GuestSessionOptions.label(ctx)) {
+            GuestSessionOptions.pick(ctx) { redraw() }
+        }
         CardRows.toggle(sessions, getString(R.string.advanced_full_logs_title), getString(R.string.advanced_full_logs_summary), SessionPrefs.fullLogs(ctx)) { on ->
             SessionPrefs.setFullLogs(ctx, on)
         }

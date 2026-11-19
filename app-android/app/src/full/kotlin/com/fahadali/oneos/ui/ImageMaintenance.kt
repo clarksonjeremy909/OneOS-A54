@@ -1,6 +1,7 @@
 package com.fahadali.oneos.ui
 
 import android.content.Context
+import com.fahadali.oneos.BuildConfig
 import com.fahadali.oneos.R
 import com.fahadali.oneos.core.model.FixAction
 import com.fahadali.oneos.core.model.GatePhase
@@ -12,6 +13,7 @@ import com.fahadali.oneos.core.model.Plain
 import com.fahadali.oneos.core.model.PlainMessage
 import com.fahadali.oneos.core.model.Profiles
 import com.fahadali.oneos.core.model.SwitchGates
+import com.fahadali.oneos.core.root.SetupPlan
 import com.fahadali.oneos.session.StageCheck
 
 /** OneOS's existing update/repair findings, shared by the picker and pre-boot page. */
@@ -44,7 +46,17 @@ internal object ImageMaintenance {
             ctx.getString(R.string.catalog_update), Level.BLOCK,
         )
         val checked = report ?: StageCheck.gates(ctx, result, GatePhase.SWITCH)
-        return checked.find(SwitchGates.ID_IMAGE)?.finding?.let { Plain.of(it, checked, result.facts) }
-            ?.takeIf { it.action in actions }
+        val profile = Profiles.resolve(result.facts).profile
+        val reusable = SetupPlan.updateWithoutDownload(result.status, image, profile, BuildConfig.VERSION_CODE)
+        val finding = checked.find(SwitchGates.ID_IMAGE)?.finding?.let {
+            Plain.of(it, checked, result.facts, installedReusable = reusable)
+        }?.takeIf { it.action in actions } ?: return null
+        // 0.5.26: if this build cannot restage the copy already on the phone and the
+        // user has not picked its download, do not keep a dead "Update OxygenOS"
+        // button that only opens the official image picker.
+        if (finding.action == FixAction.UPDATE &&
+            !SetupPlan.reusesInstalled(result.status, image, profile, BuildConfig.VERSION_CODE)
+        ) return null
+        return finding
     }
 }

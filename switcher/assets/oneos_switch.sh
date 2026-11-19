@@ -2119,7 +2119,33 @@ R=$(awk -F'fps=' '{ for (i = 2; i <= NF; i++) { v = $i + 0; if (v >= 30 && v <= 
 case "$R" in
     30.0|[3-9][0-9].0|1[01][0-9].0|120.0) GUEST_REFRESH=$R ;;
 esac
-echo "Guest refresh-rate policy: ${GUEST_REFRESH} Hz (One UI physical modes)"
+# ONEOS_GUEST_REFRESH=auto|<Hz>: pin min=peak to a physical mode of this panel
+# (avoids VRR stutter). An unknown rate, or 90 Hz when the dump has none, falls
+# back to the panel maximum. Applied only in the guest; One UI is not changed.
+WANT=${ONEOS_GUEST_REFRESH:-auto}
+case "$WANT" in
+    auto|"") echo "Guest refresh-rate policy: ${GUEST_REFRESH} Hz (auto, panel maximum)" ;;
+    [3-9][0-9]|1[01][0-9]|120)
+        PICK=$(awk -F'fps=' -v want="$WANT" '{
+            for (i = 2; i <= NF; i++) {
+                v = $i + 0; iv = int(v + 0.5)
+                if (iv == want && v >= 30 && v <= 120) { printf "%.1f", v; exit }
+            }
+        }' "$STAGE/display_host.txt" 2>/dev/null)
+        case "$PICK" in
+            30.0|[3-9][0-9].0|1[01][0-9].0|120.0)
+                GUEST_REFRESH=$PICK
+                echo "Guest refresh-rate policy: ${GUEST_REFRESH} Hz (chosen)"
+                ;;
+            *)
+                echo "ONEOS_GUEST_REFRESH=$WANT is not a physical mode of this panel: using ${GUEST_REFRESH} Hz"
+                ;;
+        esac
+        ;;
+    *)
+        echo "ONEOS_GUEST_REFRESH=$WANT is not auto or 30-120: using ${GUEST_REFRESH} Hz"
+        ;;
+esac
 # ONEOS_GUEST_POSTURE=live: the fold line's posture follows the guest's hinge
 # state instead of always flat.
 # Live by default with the hinge sets of pull request #1 (Fold8) and the Fold8 Ultra's.

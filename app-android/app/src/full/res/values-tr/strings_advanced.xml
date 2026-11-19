@@ -511,6 +511,27 @@ OneOS, One UI ile birlikte kapanır.</string>
     <string name="advanced_guest_perf_summary">Yalnızca OxygenOS için değil, her konuk ROM\'da geçerlidir. Animasyonlar yarı hızda çalışır, arka planda bekleyen süreçler makul ölçüde sınırlanır, konuk etkinlik günlüklerinin bir kısmı kısılır, flash okuma önbelleği sınırlanır ve çekirdek izin veriyorsa I/O zamanlayıcı none yapılır. Özgün değerler kaydedilir ve One UI\'ye dönünce geri yüklenir. İlk oturumdaki uygulama derlemesi ve isteğe bağlı One UI dondurma ayrı durur. Bir şey ters giderse kapatın. Konuk uygulamalar kapatılmaz.</string>
     <string name="advanced_guest_beast_title">Canavar modu</string>
     <string name="advanced_guest_beast_summary">Daha güçlü, yine de geri alınabilir kasma azaltma: animasyonlar 0,25×, daha sıkı arka plan uygulama sınırı, pencere bulanıklığı kapalı, biraz daha az günlük, çekirdek izin veriyorsa daha hafif I/O ve dirty-page sınırları. Saatleri yükseltmez, ısıl sınırları kaldırmaz. Varsayılan olarak kapalıdır; yalnızca “kasmayı azalt” da açıkken uygulanır. Bir şey ters gelirse kapatın.</string>
+    <string name="advanced_guest_refresh_title">Yenileme hızı</string>
+    <string name="advanced_guest_refresh_summary">Diğer sisteme geçince kullanılır. Otomatik, bu telefonun panelindeki en yüksek hıza sabitler; değişken yenilemenin takılmasını önler. Yalnızca panelin gerçekten desteklediği hızlar listelenir; hız aşırtma yoktur. One UI olduğu gibi bırakılır.</string>
+    <string name="advanced_guest_refresh_auto">Otomatik (panelin en yükseği)</string>
+    <string name="advanced_guest_refresh_hz">%1$d Hz</string>
+    <string name="guest_refresh_hint">Sabit yenileme hızı takılmayı azaltır. Kare düşmesi sürerse 60 Hz seçin; 90 Hz yalnızca bu panelde varsa görünür.</string>
+    <string name="settings_check_updates">Güncellemeleri denetle</string>
+    <string name="settings_check_updates_summary">Altı saatlik otomatik denetimi beklemeden şimdi bakar. Bu projenin GitHub sürümlerinden eşleşen Türkçe veya İngilizce APK\'yı indirir.</string>
+    <string name="settings_check_updates_checking">Güncellemeler denetleniyor…</string>
+    <string name="settings_check_updates_current">Bu OneOS güncel (%1$s).</string>
+    <string name="settings_check_updates_available">OneOS %1$s kullanılabilir. Ana ekranı açıp Güncelle\'ye dokunun.</string>
+    <string name="settings_check_updates_busy">Bir güncelleme zaten sürüyor.</string>
+    <string name="update_error_network">GitHub\'a ulaşılamadı. Bağlantıyı kontrol edip yeniden deneyin.</string>
+    <string name="update_error_http">Güncelleme denetlenemedi (HTTP %1$d). Biraz sonra yeniden deneyin.</string>
+    <string name="update_error_parse">Güncelleme listesi bir OneOS A54 sürüm dosyası değildi. Hiçbir şey yüklenmedi.</string>
+    <string name="update_error_download">Güncelleme tam inemedi. Yeniden denemek için Güncelle\'ye dokunun; kısmi dosya kaldığı yerden devam eder.</string>
+    <string name="update_error_hash">İndirme bozulmuş (SHA-256 eşleşmedi). Silindi; yeniden deneyin.</string>
+    <string name="update_error_apk">İndirme bu OneOS değil (yanlış uygulama, yapı veya imza). Hiçbir şey yüklenmedi.</string>
+    <string name="update_error_root">Root güncellemeyi yükleyemedi: %1$s</string>
+    <string name="update_error_installer">Android yükleyicisi güncellemeyi yüklemedi: %1$s</string>
+    <string name="update_error_generic">OneOS güncellenemedi: %1$s</string>
+
     <!-- 0.5.17 (owner): the warning before "Switch with a screen lock set" (LockRiskDialog). -->
     <string name="lock_risk_title">Ekran kilidi varken geçiş: riski siz üstlenirsiniz</string>
     <string name="lock_risk_message">Yeni Samsung yazılımları, PIN, desen, parola, parmak izi veya yüz kilidi varken Download Mode\'u engeller. Kilidiniz açıkken bir geçiş ters giderse telefonunuz açılmayabilir ve Download Mode\'a da ulaşamayabilir: o zaman tek dönüş yolu her şeyi silen fabrika sıfırlamasıdır. Bu bir testçiye oldu.

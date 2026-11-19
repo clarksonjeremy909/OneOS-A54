@@ -81,6 +81,9 @@ internal object SwitchConfirm {
             visibility = if (notes.isEmpty()) View.GONE else View.VISIBLE
         }
 
+        // Refresh-rate picker and Canavar: every guest ROM, not only OxygenOS.
+        GuestSessionOptions.bind(a, view.findViewById(R.id.switch_session_options))
+
         // The ways back to One UI, always listed.
         val ways = buildList {
             if (report.set?.hasReturnApp == true) {

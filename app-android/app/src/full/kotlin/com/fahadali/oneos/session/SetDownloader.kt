@@ -1,6 +1,7 @@
 package com.fahadali.oneos.session
 
 import android.content.Context
+import com.fahadali.oneos.BuildConfig
 import com.fahadali.oneos.core.model.Hashes
 import java.io.File
 import java.io.FileOutputStream
@@ -113,6 +114,34 @@ object SetDownloader {
         throw Failed("${f.name}: ${last?.message ?: "download failed"}")
     }
 
+    /** Follows HTTPS redirects by hand (GitHub release URLs go to objects.githubusercontent.com). */
+    internal fun openHttps(
+        from: String,
+        have: Long = 0L,
+        connections: MutableSet<HttpURLConnection>? = null,
+        accept: String = "*/*",
+    ): HttpURLConnection {
+        var url = from
+        repeat(8) {
+            if (!url.startsWith("https://")) throw Failed("the download is not HTTPS")
+            val c = URL(url).openConnection() as HttpURLConnection
+            c.connectTimeout = 30_000
+            c.readTimeout = 150_000
+            c.instanceFollowRedirects = false
+            c.setRequestProperty("User-Agent", "OneOS-A54/${BuildConfig.VERSION_NAME}")
+            c.setRequestProperty("Accept", accept)
+            if (have > 0) c.setRequestProperty("Range", "bytes=$have-")
+            connections?.add(c)
+            val code = c.responseCode
+            if (code !in 301..303 && code != 307 && code != 308) return c
+            val loc = c.getHeaderField("Location") ?: throw IOException("HTTP $code")
+            connections?.remove(c)
+            c.disconnect()
+            url = if (loc.startsWith("https://") || loc.startsWith("http://")) loc else URL(URL(url), loc).toString()
+        }
+        throw IOException("too many redirects")
+    }
+
     /**
      * Downloads [from] into [part], appending to what [part] already holds when the
      * server takes a Range; [bytes] is the size the file must have. Also the app's
@@ -124,17 +153,17 @@ object SetDownloader {
     ) {
         val have = part.length()
         if (have == bytes) return
-        val c = URL(from).openConnection() as HttpURLConnection
-        c.connectTimeout = 30_000
-        // Drive took up to 80 s before the first byte of some files (0.4.41 on the Fold, and from the server).
-        c.readTimeout = 150_000
-        c.instanceFollowRedirects = true
-        if (have > 0) c.setRequestProperty("Range", "bytes=$have-")
-        // The caller can close it from another thread (a stop): a blocked read then ends at once.
-        connections?.add(c)
+        val c = openHttps(from, have, connections)
         try {
             val code = c.responseCode
             val type = c.contentType.orEmpty()
+            if (code == 416 && have > 0) {
+                c.disconnect()
+                connections?.remove(c)
+                part.delete()
+                download(part, from, bytes, name, cancelled, connections, progress)
+                return
+            }
             // Drive answers an HTML page instead of the file when it refuses (quota, a removed file).
             if (type.startsWith("text/html")) throw Refused("the server did not hand out $name (HTTP $code): try again later")
             // Not there, or refused for now (GitHub's 404 for a missing asset, a rate limit): the next source.

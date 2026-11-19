@@ -21,15 +21,18 @@ if not SH and os.name == "nt":
 
 
 class GuestRefreshRate(unittest.TestCase):
-    def rate(self, text):
+    def rate(self, text, want=None):
         if not SH:
             self.skipTest("a POSIX shell is not installed")
         with tempfile.TemporaryDirectory() as td:
             stage = Path(td)
             (stage / "display_host.txt").write_text(text)
             script = "GUEST_REFRESH=120.0\n" + BLOCK + "printf '%s' \"$GUEST_REFRESH\"\n"
+            env = {"STAGE": str(stage)}
+            if want is not None:
+                env["ONEOS_GUEST_REFRESH"] = want
             run = subprocess.run(
-                [SH, "-c", script], env={"STAGE": str(stage)},
+                [SH, "-c", script], env=env,
                 capture_output=True, text=True, check=True,
             )
             return run.stdout.strip().splitlines()[-1]
@@ -54,6 +57,15 @@ class GuestRefreshRate(unittest.TestCase):
         self.assertNotIn("put system peak_refresh_rate 120.0", SOURCE)
         self.assertRegex(SOURCE, r"put system peak_refresh_rate \$GUEST_REFRESH")
         self.assertRegex(SOURCE, r"put system min_refresh_rate \$GUEST_REFRESH")
+
+    def test_user_pick_uses_a_physical_mode_only(self):
+        dump = "supportedModes [{id=0, fps=60.0, vsync=60.0}, {id=1, fps=120.0, vsync=120.0}]\n"
+        self.assertEqual("60.0", self.rate(dump, want="60"))
+        self.assertEqual("120.0", self.rate(dump, want="120"))
+        self.assertEqual("120.0", self.rate(dump, want="auto"))
+        # 90 Hz is not in this dump: keep the panel maximum, do not invent it.
+        self.assertEqual("120.0", self.rate(dump, want="90"))
+
 
 
 if __name__ == "__main__":

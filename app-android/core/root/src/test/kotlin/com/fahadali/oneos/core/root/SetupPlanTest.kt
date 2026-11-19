@@ -118,8 +118,10 @@ class SetupPlanTest {
         assertEquals(SetupPlan.Source.DOWNLOAD, SetupPlan.decide(st, n6, fold, app, hasDownload = true)!!.source)
         // No download picked: the same-size file is offered to root, which hashes it before use.
         assertEquals(SetupPlan.Source.ON_PHONE, SetupPlan.decide(st, n6, fold, app, hasDownload = false)!!.source)
-        // Home does not promise "no download" then.
+        // Home does not promise "no download" until root has vouched for the file.
         assertFalse(SetupPlan.updateWithoutDownload(st, n6, fold, app))
+        // The Update button must still start the on-phone restage (keep-raw re-hashes).
+        assertTrue(SetupPlan.reusesInstalled(st, n6, fold, app))
     }
 
     @Test

@@ -411,7 +411,7 @@ object StageAudit {
 
     val ALLOWED: Set<String> = setOf(
         "umask", "[", "echo", "printf", "id", "stat", "awk", "sed", "grep", "sort", "head", "tail", "cut", "tr", "wc",
-        "cat", "ls", "mkdir", "mv", "cp", "rm", "chown", "chmod", "sha256sum", "date", "getprop", "dumpsys", "pm", "getevent", "du",
+        "cat", "ls", "mkdir", "mv", "cp", "rm", "chown", "chmod", "chcon", "sha256sum", "date", "getprop", "dumpsys", "pm", "getevent", "du",
         "env", "unset", "export", "set", "read", "exit", "return", "shift", "true", "false", "break", "continue", "exec",
         "trap", "am", "od", "find", "sleep",
         // 0.5.17: tool-app off stops the one process whose program is that app's libtimer.so (tool_pids).
@@ -468,6 +468,7 @@ object StageAudit {
     private const val UPSRC_VALUE = "\"\$DATA/user/0/\$APP_PACKAGE/files/oneos-update/OneOS.apk\""
     private val SELFUPDATE_PM = listOf("install", "-r", "--pkg", "\"\$APP_PACKAGE\"", "\"\$upapk\"")
     private val SELFUPDATE_AM = listOf("start", "-n", "\"\$APP_PACKAGE/.ui.MainActivity\"")
+    private val SELFUPDATE_CHCON = listOf("u:object_r:apk_data_file:s0", "\"\$upapk\"")
 
     /**
      * An app's kernel tool (do_tool_app only, 0.5.10): `pm disable-user` of a package whose libtimer.so
@@ -665,6 +666,7 @@ object StageAudit {
                     p += "line ${c.line}: pm ${args.joinToString(" ")}"
                 }
                 "am" -> if (args != SELFUPDATE_AM || c.function != SELFUPDATE_FUNCTION) p += "line ${c.line}: am ${args.joinToString(" ")}"
+                "chcon" -> if (args != SELFUPDATE_CHCON || c.function != SELFUPDATE_FUNCTION) p += "line ${c.line}: chcon ${args.joinToString(" ")}"
                 "trap" -> if (args != listOf("''", "PIPE") && !(c.function == "take_lock" && args == listOf("'rm -f \"\$LOCK\"'", "EXIT"))) {
                     p += "line ${c.line}: trap ${args.joinToString(" ")}"
                 }

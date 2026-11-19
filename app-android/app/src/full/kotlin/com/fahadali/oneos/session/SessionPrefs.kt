@@ -261,6 +261,10 @@ object SessionPrefs {
     fun guestBeast(ctx: Context): Boolean = p(ctx).getBoolean("guest_beast", false)
     fun setGuestBeast(ctx: Context, on: Boolean) { p(ctx).edit().putBoolean("guest_beast", on).apply() }
 
+    /** Guest refresh-rate choice: "auto" or an integer Hz the panel actually supports. Default auto. */
+    fun guestRefresh(ctx: Context): String = GuestRefresh.normalize(p(ctx).getString("guest_refresh", GuestRefresh.AUTO))
+    fun setGuestRefresh(ctx: Context, value: String) { p(ctx).edit().putString("guest_refresh", GuestRefresh.normalize(value)).apply() }
+
     /** One-shot in-app intro for the A54 0.5.25 update. */
     fun a54IntroSeen(ctx: Context): Boolean = p(ctx).getBoolean("a54_intro_v025", false)
     fun setA54IntroSeen(ctx: Context, seen: Boolean) { p(ctx).edit().putBoolean("a54_intro_v025", seen).apply() }

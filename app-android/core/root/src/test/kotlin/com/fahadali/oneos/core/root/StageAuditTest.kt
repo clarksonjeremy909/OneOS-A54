@@ -34,6 +34,7 @@ class StageAuditTest {
         bad("upsrc=\"\$DATA/user/0/\$APP_PACKAGE/files/oneos-update/OneOS.apk\"", "upsrc=\"\$DATA/user/0/com.android.chrome/x.apk\"")
         bad("    upd=\"\$STAGE/update\"\n", "    upd=\"\$STAGE/update\"\n    x=\"\$DATA/user/0\"\n")
         bad("    upapk=\"\$STAGE/update/OneOS-\$code.apk\"", "    upapk=\"\$DATA/local/OneOS-\$code.apk\"")
+        bad("chcon u:object_r:apk_data_file:s0 \"\$upapk\"", "chcon u:object_r:apk_data_file:s0 \"\$upsrc\"")
     }
 
     @Test

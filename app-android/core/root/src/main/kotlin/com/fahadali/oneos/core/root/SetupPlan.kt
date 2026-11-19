@@ -95,11 +95,23 @@ data class SetupPlan(
          * Setting [image] up again keeps the stage and reuses the system
          * installed in it, which root verified: no download (update or repair).
          */
+        /**
+         * The installed system.raw can be kept: decide() chose [Source.ON_PHONE]
+         * and [BeginMode.KEEP]. Root's `keep-raw` hashes the file before reuse,
+         * so a stale system.raw.id (same size, hash not re-read) must not send
+         * the user to pick the official image download. 0.5.26: the Environment
+         * "Update OxygenOS" button used the stricter hash-id check and then
+         * opened the system picker instead of starting the 2-minute restage.
+         */
         fun reusesInstalled(status: StageStatus, image: ImageRef, profile: PhoneProfile?, appVersionCode: Int?): Boolean {
             val p = decide(status, image, profile, appVersionCode, hasDownload = false) ?: return false
-            return p.keepsData && p.source == Source.ON_PHONE && (status.rawVerifiedSha256 == image.rawSha256 ||
-                (status.partial && status.pendingUpdate?.imageId == image.id && status.rawSize == image.rawBytes))
+            return p.keepsData && p.source == Source.ON_PHONE
         }
+
+        /** Root has already vouched for system.raw: Home can promise "no download". */
+        fun verifiedOnPhone(status: StageStatus, image: ImageRef): Boolean =
+            status.rawVerifiedSha256 == image.rawSha256 ||
+                (status.partial && status.pendingUpdate?.imageId == image.id && status.rawSize == image.rawBytes)
 
         /**
          * Home's "Finish updating" needs no download: the same system, set up
@@ -107,6 +119,7 @@ data class SetupPlan(
          */
         fun updateWithoutDownload(status: StageStatus, image: ImageRef, profile: PhoneProfile?, appVersionCode: Int?): Boolean =
             reusesInstalled(status, image, profile, appVersionCode) &&
+                verifiedOnPhone(status, image) &&
                 decide(status, image, profile, appVersionCode, hasDownload = false)?.kind == Kind.UPDATE
     }
 }

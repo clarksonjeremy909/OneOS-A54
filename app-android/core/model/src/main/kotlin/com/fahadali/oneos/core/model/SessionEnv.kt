@@ -67,6 +67,12 @@ object SessionEnv {
     const val GUEST_PERF = "ONEOS_GUEST_PERF"
     /** 1: extra-aggressive reversible lag reductions (Canavar / Beast); applied only with GUEST_PERF=1. Default 0. */
     const val GUEST_BEAST = "ONEOS_GUEST_BEAST"
+    /**
+     * Guest panel refresh: `auto` (pin min=peak to the host panel's maximum
+     * physical mode) or an integer Hz in 30-120 that the host dump actually
+     * lists. Applied only in the guest; One UI is not changed.
+     */
+    const val GUEST_REFRESH = "ONEOS_GUEST_REFRESH"
 
     /** How the return brings One UI back: always in place, with the reboot as its failsafe (return_to_oneui.sh). */
     const val RETURN_MODE = "ONEOS_RETURN_MODE"
@@ -95,6 +101,7 @@ object SessionEnv {
         SHARE_FILES to Regex("[01]"),
         GUEST_PERF to Regex("[01]"),
         GUEST_BEAST to Regex("[01]"),
+        GUEST_REFRESH to Regex("auto|([3-9][0-9]|1[01][0-9]|120)"),
         RETURN_MODE to Regex("inplace"),
     )
 
@@ -165,6 +172,7 @@ object SessionEnv {
         out[SHARE_FILES] = "0"
         out[GUEST_PERF] = "1"
         out[GUEST_BEAST] = "0"
+        out[GUEST_REFRESH] = "auto"
         out[RETURN_MODE] = "inplace"
         return out
     }
@@ -220,6 +228,7 @@ object SessionEnv {
                     k == HEAT_CAP -> Unit
                     k == SEC_IMS -> {} // 0 or 1, a launch's choice on any phone and image
                     k == EDM_STUB || k == VERBOSE_BOOT || k == FULL_LOGS || k == SHARE_FILES || k == GUEST_PERF || k == GUEST_BEAST -> {} // 0 or 1, a launch's choice on any phone and image
+                    k == GUEST_REFRESH -> {} // auto or 30-120, a launch's choice; the switcher only applies a physical mode
                     k != HIDE_GMS -> if (got != v) p += "$k=$got does not match profile $id ($v)"
                     got == "1" && image?.gmsHideable != true -> p += if (image?.googleServices == true) {
                         "$HIDE_GMS=1, but the ${image.shortName} image's sessions present Google services, which cannot be hidden"

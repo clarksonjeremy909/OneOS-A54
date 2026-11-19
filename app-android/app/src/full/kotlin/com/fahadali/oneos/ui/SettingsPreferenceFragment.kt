@@ -13,6 +13,8 @@ import com.fahadali.oneos.R
 import com.fahadali.oneos.session.LogJob
 import com.fahadali.oneos.session.HostUnfreeze
 import com.fahadali.oneos.session.SessionPrefs
+import com.fahadali.oneos.session.AppUpdater
+import com.fahadali.oneos.BuildConfig
 import dev.oneuiproject.oneui.R as OuiIcons
 
 /** SESL9 preference rows, the same settings component used by Twidget. */
@@ -102,6 +104,16 @@ class SettingsPreferenceFragment : InsetPreferenceFragment() {
         row(sessions, R.string.advanced_host_suspend_allow_title, R.string.advanced_host_suspend_allow_row_summary, target = HostSuspendAllowActivity::class.java)
         toggle(sessions, R.string.advanced_guest_perf_title, R.string.advanced_guest_perf_summary, SessionPrefs.guestPerf(ctx)) { SessionPrefs.setGuestPerf(ctx, it) }
         toggle(sessions, R.string.advanced_guest_beast_title, R.string.advanced_guest_beast_summary, SessionPrefs.guestBeast(ctx)) { SessionPrefs.setGuestBeast(ctx, it) }
+        sessions.addDescribedPreference(Preference(ctx).apply {
+            key = "setting_guest_refresh"
+            setTitle(R.string.advanced_guest_refresh_title)
+            summary = ctx.getString(R.string.advanced_guest_refresh_summary) + "\n" + GuestSessionOptions.label(ctx)
+            isIconSpaceReserved = false
+            setOnPreferenceClickListener {
+                GuestSessionOptions.pick(requireContext()) { onCreatePreferences(null, null) }
+                true
+            }
+        })
         toggle(sessions, R.string.advanced_full_logs_title, R.string.advanced_full_logs_summary, SessionPrefs.fullLogs(ctx)) { SessionPrefs.setFullLogs(ctx, it) }
         toggle(sessions, R.string.advanced_share_files_title, R.string.advanced_share_files_summary, SessionPrefs.shareFiles(ctx)) { SessionPrefs.setShareFiles(ctx, it) }
         toggle(sessions, R.string.usage_count_title, R.string.usage_count_summary, SessionPrefs.usageCount(ctx)) { SessionPrefs.setUsageCount(ctx, it) }
@@ -141,6 +153,36 @@ class SettingsPreferenceFragment : InsetPreferenceFragment() {
             })
         }
         val help = category(R.string.settings_help)
+        help.addDescribedPreference(Preference(ctx).apply {
+            key = "setting_check_updates"
+            setTitle(R.string.settings_check_updates)
+            setSummary(R.string.settings_check_updates_summary)
+            isIconSpaceReserved = false
+            setOnPreferenceClickListener {
+                if (AppUpdater.state.busy) {
+                    Toast.makeText(ctx, R.string.settings_check_updates_busy, Toast.LENGTH_SHORT).show()
+                    return@setOnPreferenceClickListener true
+                }
+                Toast.makeText(ctx, R.string.settings_check_updates_checking, Toast.LENGTH_SHORT).show()
+                AppUpdater.check(ctx, force = true)
+                var unsub: (() -> Unit)? = null
+                unsub = AppUpdater.observe { s ->
+                    if (s.phase == AppUpdater.Phase.CHECKING) return@observe
+                    unsub?.invoke()
+                    val act = activity ?: return@observe
+                    val msg = when (s.phase) {
+                        AppUpdater.Phase.CURRENT -> act.getString(R.string.settings_check_updates_current, BuildConfig.VERSION_NAME)
+                        AppUpdater.Phase.AVAILABLE -> act.getString(R.string.settings_check_updates_available, s.update?.versionName.orEmpty())
+                        AppUpdater.Phase.FAILED -> s.message ?: act.getString(R.string.update_error_generic, "no answer")
+                        AppUpdater.Phase.DOWNLOADING, AppUpdater.Phase.INSTALLING, AppUpdater.Phase.CONFIRM -> return@observe
+                        else -> return@observe
+                    }
+                    AlertDialog.Builder(act).setTitle(R.string.settings_check_updates).setMessage(msg)
+                        .setPositiveButton(android.R.string.ok, null).show()
+                }
+                true
+            }
+        })
         row(help, R.string.about_title, target = AboutActivity::class.java)
         row(help, R.string.team_title, R.string.advanced_team_summary, target = DebugSettingsActivity::class.java)
         preferenceScreen.addBottomInset()

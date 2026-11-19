@@ -1,5 +1,12 @@
 # OneOS A54 (0.5.24 tabanlı özel derleme)
 
+## 0.5.26 (versionCode 171)
+
+- **Yenileme hızı** her konuk ROM’da (yalnızca OxygenOS değil): sistem kartı / geçiş ekranı ve Ayarlar’da, “kasmayı azalt”ın altında. Seçenekler: Otomatik (panelin en yükseği) ve bu telefonun panelinin gerçekten bildirdiği hızlar (A54’te genelde 60 ve 120 Hz; 90 Hz yalnızca panelde varsa). Konukta `min_refresh_rate` ve `peak_refresh_rate` aynı değere sabitlenir (değişken yenilemenin takılmasını azaltır). One UI değiştirilmez; dönüşte konuk ayarları kalkar.
+- **Canavar modu** aynı yerde daha görünür: Ayarlar → Oturumlar, “Her konuk sistemde kasmayı azalt”ın hemen altı; ayrıca her sistemin ortam ekranında ve geçiş onayında (yalnızca kasmayı azalt açıkken uygulanır).
+- Uygulama içi güncelleme: “Güncellemeleri denetle” (Ayarlar → Yardım) altı saatlik beklemeyi atlar; GitHub indirmeleri yönlendirme, devam ettirme, yeniden deneme ve SHA-256 doğrulamasıyla; kök `pm install` aşamadaki kopyaya APK SELinux etiketi verir; kök yoksa PackageInstaller; TR/EN alanları; daha açık hata iletileri.
+- “OxygenOS 16 güncelle” düğmesi: OneOS uygulamasının konuk dosya güncellemesiydi (aşama daha eski bir OneOS `versionCode` ile hazırlanmışsa). Basılınca resmi imaj indirmesine düşmek yerine, aynı sistem.raw duruyorsa yaklaşık 2 dakikalık yerinde yenilemeyi başlatır. Yerinde yenileme mümkün değilse ölü düğme gösterilmez. Konuk OTA paketleri kapatılmadı.
+
 ## 0.5.25 (versionCode 170)
 
 - Marka: “OneOS A54 ekibi” / “OneOS A54 team” (Miraç Aytaç, Grok Bot; orijinal OneOS: fahadalijaved). İlk açılışta tanıtım ekranı.

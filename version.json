@@ -1,11 +1,11 @@
 {
-  "versionCode": 170,
-  "versionName": "0.5.25",
-  "notes": "OneOS A54 team, intro, A54 OxygenOS 16 tested note, Beast/Canavar mode (off by default), more Turkish, A73 5G profile (untested). Opening OneOS and returning to One UI unsuspends frozen apps. Freeze-while-guest is off by default. Unfreeze apps button.",
-  "apkTr": "https://github.com/clarksonjeremy909/OneOS-A54/releases/download/v0.5.25-a54/OneOS-A54-0.5.25-tr.apk",
-  "bytesTr": 81616092,
-  "sha256Tr": "acd8ab196264979b9396ff765d19d8412b257ac3a881cca6392ea552fceb26bd",
-  "apkEn": "https://github.com/clarksonjeremy909/OneOS-A54/releases/download/v0.5.25-a54/OneOS-A54-0.5.25-en.apk",
-  "bytesEn": 81616092,
-  "sha256En": "5246f851ffb460720207621718a66ee94176e1ef9ca3dbcc85407c8d36390e48"
+  "versionCode": 171,
+  "versionName": "0.5.26",
+  "notes": "Refresh-rate picker and lag/frame-drop pin on every guest ROM (not only OxygenOS). Check for updates now. Guest Environment Update starts an on-phone restage when the installed image can be reused; the button is hidden when it cannot. No heat settings added.",
+  "apkTr": "https://github.com/clarksonjeremy909/OneOS-A54/releases/download/v0.5.26-a54/OneOS-A54-0.5.26-tr.apk",
+  "bytesTr": 81665244,
+  "sha256Tr": "15c1b37bcf9ead68838303e82f1337062c4b7ccdd43f49ee0976d55bb3267b40",
+  "apkEn": "https://github.com/clarksonjeremy909/OneOS-A54/releases/download/v0.5.26-a54/OneOS-A54-0.5.26-en.apk",
+  "bytesEn": 81665244,
+  "sha256En": "d04c4a3cdc3d347f3adcbf0e5dd0953fedae230794972c941ea0a6a69107ebb4"
 }
